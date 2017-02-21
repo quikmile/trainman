@@ -1,0 +1,46 @@
+--- 
+
+- name: create root project directory
+  file: path={{ project_root }} owner={{ ansible_ssh_user }} group={{ ansible_ssh_user }} mode=0777 state=directory
+  sudo: yes
+  tags:
+    - setup
+    - web
+    - deploy
+
+- name: deploy code from repository repo_branch
+  git: accept_hostkey=yes repo={{ repo_url }} dest={{ project_root }}/{{ project_name }} remote={{ repo_remote }} version={{ repo_branch }}
+  notify:
+    - restart uwsgi
+    - restart nginx
+  tags:
+    - deploy
+    - setup
+    - pull
+
+- name: Fix for pip bug
+  sudo: yes
+  shell: rm -rf /usr/local/lib/python2.7/dist-packages/requests*
+  tags:
+    - setup
+    - deploy
+
+- name: upgrade pip
+  sudo: yes
+  shell: easy_install -U pip
+  tags:
+    - setup
+    - web
+    - deploy
+
+- name: install python dependencies
+  notify: restart uwsgi
+  pip: >
+    requirements={{ python_requirements_file }}
+    state=present
+  sudo: yes
+  tags:
+    - setup
+    - deploy
+    - dependencies
+

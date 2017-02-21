@@ -1,0 +1,11 @@
+---
+
+system_packages:
+ - build-essential
+ - git
+ - htop
+ - libpq-dev
+ - cmake
+ - lsb-release
+
+remote_timezone: 'Asia/Kolkata'

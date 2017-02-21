@@ -1,0 +1,43 @@
+---
+
+- name: Add apt-key
+  command: sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+  sudo: yes
+  tags:
+    - setup
+    - mongo
+
+
+- name: Add mongodb repo
+  apt_repository:
+    repo: "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen"
+    state: present
+  sudo: yes
+  tags:
+    - setup
+    - mongo
+
+- name: update apt-get
+  apt: update_cache=yes
+  sudo: yes
+  tags:
+    - setup
+    - mongo
+
+- name: Install MongoDB.
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - mongodb-org
+  sudo: yes
+  tags:
+    - setup
+    - mongo
+
+- name: configure mongo server conf
+  template: src=mongod.conf.j2 dest=/etc/mongod.conf
+  sudo: yes
+  notify: restart mongod
+  tags:
+    - setup
+    - mongo
+

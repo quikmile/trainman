@@ -1,0 +1,6 @@
+---
+
+- name: restart trellio
+  service: name=trellio state=restarted
+  sudo: yes
+

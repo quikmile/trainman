@@ -1,0 +1,93 @@
+---
+
+- name: Check Yajl installation
+  stat: path=/home/{{ project_user }}/.local/lib/libyajl.so.2.1.1
+  register: yajl_exists
+  tags:
+    - setup
+    - trellio
+
+- name: Install yajl
+  include: roles/yajl/tasks/main.yml
+  when: yajl_exists.stat.exists == False
+  tags:
+    - setup
+    - trellio
+
+- name: Check Python 3.6 Installed
+  stat: path=/usr/local/bin/python3.6
+  register: py36_exists
+  tags:
+    - setup
+    - trellio
+    - python
+
+- name: Download Python
+  unarchive:
+    copy: no
+    src: "https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tgz"
+    dest: /tmp/
+    owner: "{{ project_user }}"
+    group: "{{ project_group }}"
+    mode: 0775
+  sudo: yes
+  when: py36_exists.stat.exists == False
+  tags:
+    - setup
+    - trellio
+    - python
+
+- name: Install Python
+  shell: cd /tmp/Python-3.6.0 && ./configure --prefix=/usr/local && make && make altinstall chdir=/tmp/Python-3.6.0/ creates=/usr/local/bin/python3.6
+  sudo: yes
+  when: py36_exists.stat.exists == False
+  tags:
+    - setup
+    - trellio
+    - python
+
+
+- name: Install python required packages.ansible create virtualenv
+  apt: pkg={{ item }} state=installed
+  with_items: python_packages
+  sudo: yes
+  tags:
+    - setup
+    - trellio
+    - python
+
+- name: Installing Virtualenv
+  pip: name=virtualenv
+  sudo: yes
+  tags:
+    - setup
+    - trellio
+    - python
+
+- name: Create Virtualenv & upgrade pip
+  pip:
+     name={{ item.name }}
+     virtualenv=$HOME/venv
+     virtualenv_python=python3.6
+  with_items:
+     - name: pip --upgrade
+  sudo: yes
+  tags:
+    - setup
+    - trellio
+    - python
+
+- name: Install trellio
+  shell: ~/venv/bin/pip install trellio --upgrade
+  tags:
+    - setup
+    - trellio
+
+- name: Copy trellio registry upstart file
+  sudo: yes
+  notify: restart trellio
+  template: src=trellio.conf.j2 dest=/etc/init/trellio.conf owner="{{ project_user }}" group="{{ project_group }}" backup=yes mode=0644
+  tags:
+    - setup
+    - trellio
+    - registry

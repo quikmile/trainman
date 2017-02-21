@@ -1,0 +1,16 @@
+server {
+    listen      80;
+    charset     utf-8;
+
+    client_max_body_size 75M;
+
+    {% for service in services %}
+
+    location /{{ service.name }}/{{ service.version }}/ {
+        proxy_pass http://{{ service.http_host }}:{{ service.http_port }};
+    }
+
+    {% endfor %}
+
+}
+

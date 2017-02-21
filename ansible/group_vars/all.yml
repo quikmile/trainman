@@ -1,0 +1,2 @@
+project_user: "{{ ansible_ssh_user }}"
+project_group: "{{ ansible_ssh_user }}"

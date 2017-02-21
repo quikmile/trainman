@@ -1,0 +1,96 @@
+---
+
+- name: Add postgres repository
+  sudo: yes
+  apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ {{ansible_distribution_release}}-pgdg main' state=present
+  tags:
+    - postgres
+    - setup
+
+- name: Add postgres repository key
+  sudo: yes
+  apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present validate_certs=no
+  tags:
+
+    - postgres
+    - setup
+
+- name: update apt-get
+  apt: update_cache=yes
+  sudo: yes
+  tags:
+    - postgres
+    - setup
+
+- name: ensure packages are installed
+  sudo: yes
+  apt: name={{item}}
+  with_items:
+    - postgresql-9.6
+    - libpq-dev
+  tags:
+    - postgres
+    - setup
+
+- name: ensure packages are installed
+  sudo: yes
+  apt: name={{item}}
+  with_items:
+    - postgresql-9.6-postgis-2.3
+  tags:
+    - postgis
+    - setup
+
+- name: ensure database is created
+  sudo: yes
+  sudo_user: postgres
+  postgresql_db: name={{ postgres_db }}
+  register: create_postgres_db
+  tags:
+    - postgres
+    - setup
+
+- name: ensure user has access to database
+  sudo: yes
+  sudo_user: postgres
+  postgresql_user: db={{ postgres_db }} name={{ postgres_user }} password={{ postgres_password }} priv=ALL
+  tags:
+    - postgres
+    - setup
+
+- name: ensure user does not have unnecessary privilege
+  sudo: yes
+  sudo_user: postgres
+  postgresql_user: name={{ postgres_user }} role_attr_flags=NOSUPERUSER,NOCREATEDB
+  notify: restart postgres
+  tags:
+    - postgres
+    - setup
+
+- name: enable postgis extension
+  sudo: yes
+  sudo_user: postgres
+  command: psql -d {{ postgres_db }} -c "CREATE EXTENSION postgis;CREATE EXTENSION postgis_topology;"
+  when: create_postgres_db.changed
+  notify: restart postgres
+  tags:
+    - postgis
+    - setup
+
+- name: Copy pg_hba.conf file
+  sudo: yes
+  notify:
+    - restart postgres
+  template: src=pg_hba.conf.j2 dest=/etc/postgresql/9.6/main/pg_hba.conf owner=root group=root mode=0755
+  tags:
+    - setup
+    - postgres
+
+- name: Copy postgresql.conf file
+  sudo: yes
+  notify:
+    - restart postgres
+  template: src=postgresql.conf.j2 dest=/etc/postgresql/9.6/main/postgresql.conf owner=root group=root mode=0755
+  tags:
+    - setup
+    - postgres

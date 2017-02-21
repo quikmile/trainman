@@ -1,0 +1,25 @@
+---
+- name: Installs uWSGI
+  apt: pkg=uwsgi state=installed update-cache=yes
+  sudo: yes
+  tags:
+    - setup
+    - uwsgi
+
+
+- name: Install uwsgi python plugin
+  apt: pkg=uwsgi-plugin-python state=installed update-cache=yes
+  sudo: yes
+  tags:
+    - setup
+    - uwsgi
+
+- name: uWsgi | Copy uwsgi.ini file
+  template: src=uwsgi.ini.j2 dest=/etc/uwsgi/apps-enabled/uwsgi.ini
+  sudo: yes
+  notify:
+    - restart uwsgi
+  tags:
+    - setup
+    - uwsgi
+    - uwsgiconf

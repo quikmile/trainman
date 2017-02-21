@@ -1,0 +1,10 @@
+system_packages:
+  - build-essential
+  - tree
+  - python-dev
+  - python-pip
+  - libevent-dev 
+  - lib32z1-dev 
+  - libssl-dev
+  - git
+  - redis-server

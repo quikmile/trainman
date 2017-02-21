@@ -1,0 +1,45 @@
+---
+
+- name: update apt-get
+  apt: update_cache=yes
+  become: true
+  tags:
+    - prepare
+
+- name: upgrade ubuntu server
+  apt: upgrade=dist
+  become: true
+  notify: reboot
+  tags:
+    - prepare
+
+
+- name: Set timezone variables
+  copy: content={{remote_timezone}}
+        dest=/etc/timezone
+        owner=root
+        group=root
+        mode=0644
+  become: true
+  notify:
+    - update timezone
+  tags:
+    - prepare
+
+
+- name: Install required system packages.
+  apt: pkg={{ item }} state=installed
+  with_items:
+   - build-essential
+   - git
+   - htop
+   - libpq-dev
+   - cmake
+   - lsb-release
+  become: true
+  tags:
+    - prepare
+
+
+
+

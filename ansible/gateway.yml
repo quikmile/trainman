@@ -1,0 +1,6 @@
+---
+
+- hosts: gateway
+  roles:
+    - common
+    - nginx

@@ -1,0 +1,18 @@
+---
+
+- name: Install required system packages.
+  apt: pkg={{ item }} state=installed
+  with_items: system_packages
+  sudo: yes
+  tags:
+    - setup
+    - redis
+
+- name: Copy redis conf file
+  sudo: yes
+  notify:
+    - restart redis
+  template: src=redis.conf.j2 dest=/etc/redis/redis.conf owner=root group=root mode=0755
+  tags:
+    - setup
+    - redis

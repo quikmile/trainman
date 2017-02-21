@@ -1,0 +1,26 @@
+[django_servers]
+52.76.12.205 ansible_ssh_user=ubuntu
+
+[celery_servers]
+52.76.31.220 ansible_ssh_user=ubuntu
+
+[redis_servers]
+52.76.31.220 ansible_ssh_user=ubuntu
+
+[mongo_servers]
+52.76.31.220 ansible_ssh_user=ubuntu
+
+[postgres_servers]
+pykart.cgi5ttg3ceni.ap-southeast-1.rds.amazonaws.com ansible_ssh_user=ubuntu
+
+[shipper:children]
+django_servers
+mongo_servers
+celery_servers
+redis_servers
+
+[shipper:vars]
+repo_remote=origin
+repo_branch=develop
+repo_url=git@bitbucket.org:pykart/shipper_project.git
+DEPLOYMENT_TYPE=STAGING

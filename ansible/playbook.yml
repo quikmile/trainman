@@ -1,0 +1,13 @@
+- hosts: trellio_registry
+  roles:
+    - common
+    - redis
+    - trellio
+
+
+- hosts: trellio_servers
+  roles:
+    - common
+    - nginx
+
+

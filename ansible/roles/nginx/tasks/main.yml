@@ -1,0 +1,33 @@
+---
+
+- name: Install Nginx
+  apt: pkg=nginx state=installed update-cache=yes
+  sudo: yes
+  tags:
+    - nginx
+
+- name: Remove default Nginx site config
+  file: path=/etc/nginx/sites-enabled/default state=absent
+  sudo: yes
+  notify:
+    - restart nginx
+  tags:
+    - nginx
+
+- name: Copy gateway.conf file
+  template: src=gateway.conf.j2 dest=/etc/nginx/sites-enabled/gateway.conf
+  sudo: yes
+  notify:
+    - reload nginx
+  tags:
+    - gateway
+
+
+- name: Copy {{ service_name }}.conf file
+  template: src=trellio.conf.j2 dest=/etc/nginx/sites-enabled/{{ service_name }}.conf
+  sudo: yes
+  notify:
+    - reload nginx
+  tags:
+    - service
+
