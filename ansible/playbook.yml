@@ -1,13 +1,15 @@
-- hosts: trellio_registry
+---
+
+- hosts: all
   roles:
     - common
-    - redis
-    - trellio
 
-
-- hosts: trellio_servers
+- hosts: gateway
   roles:
-    - common
     - nginx
 
+
+- hosts: postgres
+  roles:
+    - postgres
 

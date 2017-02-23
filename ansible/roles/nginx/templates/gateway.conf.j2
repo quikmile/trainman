@@ -6,10 +6,9 @@ server {
 
     {% for service in services %}
 
-    location /{{ service.name }}/{{ service.version }}/ {
+    location /{{ service.name }}/v{{ service.version }}/ {
         proxy_pass http://{{ service.http_host }}:{{ service.http_port }};
     }
-
     {% endfor %}
 
 }

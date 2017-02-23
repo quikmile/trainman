@@ -34,7 +34,7 @@
 
 - name: ensure packages are installed
   sudo: yes
-  apt: name={{item}}
+  apt: name={{ item }}
   with_items:
     - postgresql-9.6-postgis-2.3
   tags:
@@ -67,10 +67,11 @@
     - postgres
     - setup
 
-- name: enable postgis extension
+- name: create postgres extension
   sudo: yes
   sudo_user: postgres
-  command: psql -d {{ postgres_db }} -c "CREATE EXTENSION postgis;CREATE EXTENSION postgis_topology;"
+  command: psql -d {{ postgres_db }} -c "CREATE EXTENSION {{ item }};"
+  with_items: postgres_extensions
   when: create_postgres_db.changed
   notify: restart postgres
   tags:

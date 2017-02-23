@@ -26,6 +26,8 @@ class Service(BaseModel):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name='Database Type', null=True,
                                      blank=True)
 
+    service_registry = models.ForeignKey('services.ServiceRegistryNode')
+
     database_id = models.PositiveIntegerField(null=True, blank=True)
     content_object = GenericForeignKey('content_type', 'database_id')
     dependencies = JSONField(null=True, blank=True)
@@ -62,8 +64,6 @@ class ServiceNode(BaseNode):
 
     tcp_host = models.CharField(max_length=100)
     tcp_port = models.IntegerField(default=8001)
-
-    registry = models.ForeignKey('services.ServiceRegistryNode')
 
     signals = JSONField(null=True, blank=True)
     optional_settings = JSONField(null=True, blank=True)
