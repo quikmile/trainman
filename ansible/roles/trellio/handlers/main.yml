@@ -1,6 +1,9 @@
 ---
 
+- name: reload systemctl
+  sudo: yes
+  command: systemctl daemon-reload
+
 - name: restart trellio
   service: name=trellio state=restarted
   sudo: yes
-

@@ -1,2 +1,5 @@
-[gateway]
-10.0.0.2 ansible_ssh_user=ubuntu
+[all]
+205.147.101.145 ansible_user=ubuntu
+
+[postgres]
+205.147.101.145 ansible_user=ubuntu

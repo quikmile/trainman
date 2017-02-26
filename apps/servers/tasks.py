@@ -8,7 +8,7 @@ from ..services.models import ServiceNode
 
 @task
 def deploy_gateway():
-    PLAYBOOK = settings.ANSIBLE_DIR + 'gateway.yml'
+    PLAYBOOK = settings.ANSIBLE_DIR + 'playbook.yml'
     hosts = ['[gateway]']
     for gateway in APIGateway.objects.all():
         hosts.append('{} ansible_user={} ansible_sudo_pass={}'.format(gateway.server.ip_address,

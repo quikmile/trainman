@@ -7,4 +7,5 @@ from .models import *
 
 admin.site.register(Postgres)
 admin.site.register(PostgresNode)
+admin.site.register(RedisNode)
 # Register your models here.

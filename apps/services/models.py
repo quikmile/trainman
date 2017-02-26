@@ -6,6 +6,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields.array import ArrayField
 from django.contrib.postgres.fields.jsonb import JSONField
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch.dispatcher import receiver
 
 from ..base.models import BaseModel, BaseNode
 
@@ -74,7 +76,7 @@ class ServiceNode(BaseNode):
     content_object = GenericForeignKey('content_type', 'database_node_id')
 
     class Meta:
-        unique_together = ('server', 'service', 'service_node_type', 'instance', 'service_version', 'is_active')
+        unique_together = ('server', 'service', 'service_node_type', 'instance', 'is_active')
 
     def __unicode__(self):
         return '{} {}'.format(self.server.host_name, self.service.service_name)
@@ -90,3 +92,16 @@ class ServiceRegistryNode(BaseNode):
 
     def __unicode__(self):
         return '{}:{}'.format(self.registry_host, self.registry_port)
+
+    def save(self, *args, **kwargs):
+        if not self.registry_host:
+            self.registry_host = self.server.ip_address
+        super(ServiceRegistryNode, self).save(*args, **kwargs)
+
+
+from .tasks import *
+
+
+@receiver(post_save, sender=ServiceRegistryNode)
+def initiate_postgres_nodes_tasks(sender, instance, **kwargs):
+    deploy_registry.delay(instance.pk)

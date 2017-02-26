@@ -1,7 +1,7 @@
 ---
 
 - name: Check Yajl installation
-  stat: path=/home/{{ project_user }}/.local/lib/libyajl.so.2.1.1
+  stat: path=/home/{{ ansible_user }}/.local/lib/libyajl.so.2.1.1
   register: yajl_exists
   tags:
     - setup
@@ -27,8 +27,8 @@
     copy: no
     src: "https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tgz"
     dest: /tmp/
-    owner: "{{ project_user }}"
-    group: "{{ project_group }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
     mode: 0775
   sudo: yes
   when: py36_exists.stat.exists == False
@@ -47,9 +47,11 @@
     - python
 
 
-- name: Install python required packages.ansible create virtualenv
+- name: Install python required packages
   apt: pkg={{ item }} state=installed
-  with_items: python_packages
+  with_items:
+    - python-dev
+    - python-pip
   sudo: yes
   tags:
     - setup
@@ -67,7 +69,7 @@
 - name: Create Virtualenv & upgrade pip
   pip:
      name={{ item.name }}
-     virtualenv=$HOME/venv
+     virtualenv=/home/{{ ansible_user }}/venv
      virtualenv_python=python3.6
   with_items:
      - name: pip --upgrade
@@ -78,15 +80,17 @@
     - python
 
 - name: Install trellio
-  shell: ~/venv/bin/pip install trellio --upgrade
+  shell: /home/{{ ansible_user }}/venv/bin/pip install trellio --upgrade
   tags:
     - setup
     - trellio
 
 - name: Copy trellio registry upstart file
   sudo: yes
-  notify: restart trellio
-  template: src=trellio.conf.j2 dest=/etc/init/trellio.conf owner="{{ project_user }}" group="{{ project_group }}" backup=yes mode=0644
+  notify:
+    - reload systemctl
+    - restart trellio
+  template: src=trellio.service.j2 dest=/etc/systemd/system/trellio.service owner="{{ ansible_user }}" group="{{ ansible_user }}" backup=yes mode=0644
   tags:
     - setup
     - trellio

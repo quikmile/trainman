@@ -157,7 +157,7 @@ GITLAB_ACCESS_TOKEN = 'G8mmrpf5LKNpbRV5JVtY'
 ANSIBLE_DIR = os.path.join(BASE_DIR, "ansible/")
 ANSIBLE_SSH_USER = os.environ.get('ANSIBLE_SSH_USER', 'ubuntu')
 ANSIBLE_SSH_PASS = os.environ.get('ANSIBLE_SSH_PASS', 'ubuntu')
-ANSIBLE_PRIVATE_KEY = os.environ.get('ANSIBLE_PRIVATE_KEY', '~/.ssh/id_rsa.pub')
+ANSIBLE_PRIVATE_KEY = os.environ.get('ANSIBLE_PRIVATE_KEY', '/home/abhishek/.ssh/id_rsa.pub')
 
 BROKER_URL = os.environ.get('BROKER_URL', 'amqp://')
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'amqp://')

@@ -28,11 +28,12 @@
   with_items:
     - postgresql-9.6
     - libpq-dev
+    - python-psycopg2
   tags:
     - postgres
     - setup
 
-- name: ensure packages are installed
+- name: install postgis
   sudo: yes
   apt: name={{ item }}
   with_items:
@@ -44,7 +45,7 @@
 - name: ensure database is created
   sudo: yes
   sudo_user: postgres
-  postgresql_db: name={{ postgres_db }}
+  postgresql_db: name={{ db_name }}
   register: create_postgres_db
   tags:
     - postgres
@@ -53,7 +54,7 @@
 - name: ensure user has access to database
   sudo: yes
   sudo_user: postgres
-  postgresql_user: db={{ postgres_db }} name={{ postgres_user }} password={{ postgres_password }} priv=ALL
+  postgresql_user: db={{ db_name }} name={{ db_user }} password={{ db_pass }} priv=ALL
   tags:
     - postgres
     - setup
@@ -61,7 +62,7 @@
 - name: ensure user does not have unnecessary privilege
   sudo: yes
   sudo_user: postgres
-  postgresql_user: name={{ postgres_user }} role_attr_flags=NOSUPERUSER,NOCREATEDB
+  postgresql_user: name={{ db_user }} role_attr_flags=NOSUPERUSER,NOCREATEDB
   notify: restart postgres
   tags:
     - postgres
@@ -70,7 +71,7 @@
 - name: create postgres extension
   sudo: yes
   sudo_user: postgres
-  command: psql -d {{ postgres_db }} -c "CREATE EXTENSION {{ item }};"
+  command: psql -d {{ db_user }} -c "CREATE EXTENSION {{ item }};"
   with_items: postgres_extensions
   when: create_postgres_db.changed
   notify: restart postgres

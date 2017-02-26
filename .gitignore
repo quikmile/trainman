@@ -94,3 +94,5 @@ ENV/
 
 *.retry
 .idea/
+
+migrations/

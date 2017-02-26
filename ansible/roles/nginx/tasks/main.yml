@@ -24,7 +24,7 @@
 
 
 - name: Copy {{ service_name }}.conf file
-  template: src=trellio.conf.j2 dest=/etc/nginx/sites-enabled/{{ service_name }}.conf
+  template: src=trellio.service.j2 dest=/etc/nginx/sites-enabled/{{ service_name }}.conf
   sudo: yes
   notify:
     - reload nginx

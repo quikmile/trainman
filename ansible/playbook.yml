@@ -13,3 +13,11 @@
   roles:
     - postgres
 
+
+- hosts: redis
+  roles:
+    - redis
+
+- hosts: service_registry
+  roles:
+    - trellio

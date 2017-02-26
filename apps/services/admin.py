@@ -9,3 +9,4 @@ from .models import *
 admin.site.register(Service)
 admin.site.register(ServiceNode)
 admin.site.register(ServiceNodeType)
+admin.site.register(ServiceRegistryNode)

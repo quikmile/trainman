@@ -1,0 +1,16 @@
+[Unit]
+Description=Trellio Registry
+
+[Service]
+ExecStart=/home/{{ ansible_user }}/venv/bin/python -m trellio.registry
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=trellio
+User={{ ansible_user }}
+Group={{ ansible_user }}
+WorkingDirectory=/home/{{ ansible_user }}/venv/bin/
+
+
+[Install]
+WantedBy=multi-user.target

@@ -1,7 +1,7 @@
 ---
 
 - name: Export LD_LIBRARY_PATH
-  shell: export LD_LIBRARY_PATH=$HOME/.local/lib/:$LD_LIBRARY_PATH
+  shell: export LD_LIBRARY_PATH=/home/{{ ansible_user }}/.local/lib/:$LD_LIBRARY_PATH
   tags:
     - yajl
 
@@ -11,13 +11,13 @@
     - yajl
 
 - name: Configure Yajl
-  shell: cd /tmp/yajl && ./configure --prefix=$HOME/.local/
+  shell: cd /tmp/yajl && ./configure --prefix=/home/{{ ansible_user }}/.local/
   sudo: yes
   tags:
     - yajl
 
 - name: Cmake Yajl
-  shell: cd /tmp/yajl && cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local/
+  shell: cd /tmp/yajl && cmake -DCMAKE_INSTALL_PREFIX=/home/{{ ansible_user }}/.local/
   sudo: yes
   tags:
     - yajl
@@ -40,7 +40,7 @@
     path: "/usr/lib/x86_64-linux-gnu/libyajl.so"
 
 - name: Symbolic link Yajl
-  shell: ln -s $HOME/.local/lib/libyajl.so.2.1.1 /usr/lib/x86_64-linux-gnu/libyajl.so
+  shell: ln -s /home/{{ ansible_user }}/.local/lib/libyajl.so.2.1.1 /usr/lib/x86_64-linux-gnu/libyajl.so
   sudo: yes
   tags:
     - yajl
