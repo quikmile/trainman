@@ -52,7 +52,7 @@ def deploy_service(service_node_id):
                                                                   settings.ANSIBLE_SSH_USER,
                                                                   settings.ANSIBLE_SSH_PASS))
 
-    tags = ['prepare', 'trellio', 'nginx', 'service']
+    tags = ['prepare', 'trellio', 'service']
     config = service_node.get_config()
     run_data = {
         'repo_url': service_node.repo_url,
