@@ -45,7 +45,7 @@
 - name: ensure database is created
   sudo: yes
   sudo_user: postgres
-  postgresql_db: name='{{ db_name }}'
+  postgresql_db: name={{ db_name }}
   register: create_postgres_db
   tags:
     - postgres
@@ -59,13 +59,6 @@
     - postgres
     - setup
 
-- name: create user with password
-  become: yes
-  become_user: postgres
-  command: psql -d {{ db_user }} -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO {{ db_user }};"
-  tags:
-    - postgres
-    - setup
 
 - name: ensure user does not have unnecessary privilege
   become: yes
@@ -75,6 +68,15 @@
   tags:
     - postgres
     - setup
+
+- name: grant user permissions on all tables
+  become: yes
+  become_user: postgres
+  command: psql -d {{ db_name }} -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO {{ db_user }};"
+  tags:
+    - postgres
+    - setup
+
 
 - name: Copy sql file
   sudo: yes

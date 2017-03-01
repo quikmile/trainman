@@ -23,11 +23,11 @@
     - gateway
 
 
-- name: Copy {{ service_name }}.conf file
-  template: src=trellio_service.conf.j2 dest=/etc/nginx/sites-enabled/{{ service_name }}.conf
-  sudo: yes
-  notify:
-    - reload nginx
-  tags:
-    - service
+#- name: Copy {{ service_name }}.conf file
+#  template: src=trellio_service.conf.j2 dest=/etc/nginx/sites-enabled/{{ service_name }}.conf
+#  sudo: yes
+#  notify:
+#    - reload nginx
+#  tags:
+#    - service
 

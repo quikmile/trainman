@@ -24,8 +24,8 @@ class Postgres(BaseModel):
 
     # slaves = models.IntegerField(default=0)
 
-    class Meta:
-        unique_together = ('server', 'database_extensions')
+    # class Meta:
+    #     unique_together = ('server', 'database_extensions')
 
     def __unicode__(self):
         return '{} | Extensions - {}'.format(self.server.host_name, ', '.join(self.database_extensions))
@@ -156,4 +156,4 @@ from .tasks import *
 
 @receiver(post_save, sender=RedisNode)
 def initiate_redis_node_tasks(sender, instance, **kwargs):
-    deploy_redis.delay(instance.pk)
+    deploy_redis.delay(instance.pk, extra_tags=['prepare'])

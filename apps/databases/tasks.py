@@ -7,7 +7,7 @@ from ..custom.utils import remove_quotes
 
 
 @task
-def deploy_postgres(postgres_node_id):
+def deploy_postgres(postgres_node_id, extra_tags=()):
     PLAYBOOK = settings.ANSIBLE_DIR + 'playbook.yml'
     hosts = ['[postgres]']
 
@@ -25,7 +25,9 @@ def deploy_postgres(postgres_node_id):
         sql += 'create extension {};\n'.format(ext)
     sql += postgres_node.postgres.get_sql()
 
-    tags = ['prepare', 'postgres']
+    tags = ['postgres']
+    if extra_tags:
+        tags.extend(extra_tags)
 
     if 'postgis' in postgres_extensions:
         tags.append('postgis')
@@ -50,7 +52,7 @@ def deploy_postgres(postgres_node_id):
 
 
 @task
-def deploy_redis(redis_node_id):
+def deploy_redis(redis_node_id, extra_tags=()):
     PLAYBOOK = settings.ANSIBLE_DIR + 'playbook.yml'
     hosts = ['[redis]']
 
@@ -61,7 +63,9 @@ def deploy_redis(redis_node_id):
                                                                   settings.ANSIBLE_SSH_USER,
                                                                   settings.ANSIBLE_SSH_PASS))
 
-    tags = ['prepare', 'redis']
+    tags = ['redis']
+    if extra_tags:
+        tags.extend(extra_tags)
 
     run_data = {
     }

@@ -19,6 +19,8 @@ DATABASE_SERVER = (('On Service Host', 'On Service Host'),
                    ('Remote Host', 'Remote Host'))
 
 HTTP_SERVER = (('NGINX', 'NGINX'),)
+DEFAULT_HTTP_PORT = 8000
+DEFAULT_TCP_PORT = 8001
 
 
 class Service(BaseModel):
@@ -82,10 +84,10 @@ class ServiceNode(BaseModel):
     instance = models.ForeignKey('services.ServiceInstance')
 
     http_host = models.CharField(max_length=100, default='0.0.0.0')
-    http_port = models.IntegerField(default=8000)
+    http_port = models.IntegerField(default=DEFAULT_HTTP_PORT)
 
     tcp_host = models.CharField(max_length=100, default='0.0.0.0')
-    tcp_port = models.IntegerField(default=8001)
+    tcp_port = models.IntegerField(default=DEFAULT_TCP_PORT)
 
     optional_settings = JSONField(null=True, blank=True)
 
@@ -178,9 +180,9 @@ from .tasks import *
 
 @receiver(post_save, sender=ServiceRegistryNode)
 def initiate_registry_node_tasks(sender, instance, **kwargs):
-    deploy_registry.delay(instance.pk)
+    deploy_registry.delay(instance.pk, extra_tags=['prepare'])
 
 
 @receiver(post_save, sender=ServiceNode)
 def initiate_service_node_tasks(sender, instance, **kwargs):
-    deploy_service.delay(instance.pk)
+    deploy_service.delay(instance.pk, extra_tags=['prepare'])

@@ -7,7 +7,7 @@ from ..servers.tasks import deploy_gateway
 
 
 @task
-def deploy_registry(registry_node_id):
+def deploy_registry(registry_node_id, extra_tags=()):
     PLAYBOOK = settings.ANSIBLE_DIR + 'playbook.yml'
     hosts = ['[service_registry]']
 
@@ -18,7 +18,9 @@ def deploy_registry(registry_node_id):
                                                                   settings.ANSIBLE_SSH_USER,
                                                                   settings.ANSIBLE_SSH_PASS))
 
-    tags = ['prepare', 'trellio', 'registry']
+    tags = ['trellio', 'registry']
+    if extra_tags:
+        tags.extend(extra_tags)
 
     run_data = {
 
@@ -37,11 +39,11 @@ def deploy_registry(registry_node_id):
 
 
 @task
-def deploy_service(service_node_id):
+def deploy_service(service_node_id, extra_tags=()):
     service_node = ServiceNode.objects.get(pk=service_node_id)
 
     database = service_node.get_database()
-    database.deploy()
+    database.deploy(extra_tags)
 
     PLAYBOOK = settings.ANSIBLE_PLAYBOOK
     hosts = ['[trellio_service]']
@@ -52,7 +54,10 @@ def deploy_service(service_node_id):
                                                                   settings.ANSIBLE_SSH_USER,
                                                                   settings.ANSIBLE_SSH_PASS))
 
-    tags = ['prepare', 'trellio', 'service']
+    tags = ['trellio', 'service']
+    if extra_tags:
+        tags.extend(extra_tags)
+
     config = service_node.get_config()
     run_data = {
         'repo_url': service_node.repo_url,
@@ -73,4 +78,4 @@ def deploy_service(service_node_id):
 
     stats = runner.run()
 
-    # deploy_gateway.delay()
+    deploy_gateway.delay()

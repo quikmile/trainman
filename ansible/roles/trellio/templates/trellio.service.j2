@@ -4,9 +4,9 @@ Description=Trellio Registry
 [Service]
 ExecStart=/home/{{ ansible_user }}/venv/bin/python -m trellio.registry
 Restart=always
-StandardOutput=syslog
-StandardError=syslog
-SyslogIdentifier=trellio
+StandardOutput=/var/log/trellio_registry.log
+StandardError=/var/log/trellio_registry.log
+SyslogIdentifier=trellio_registry
 User={{ ansible_user }}
 Group={{ ansible_user }}
 WorkingDirectory=/home/{{ ansible_user }}/venv/bin/
