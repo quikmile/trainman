@@ -82,7 +82,6 @@
   sudo: yes
   template: src=db.sql.j2 dest=/tmp/db.sql owner=root group=root mode=0755
   tags:
-    - setup
     - postgres
 
 
@@ -93,15 +92,12 @@
   become_user: postgres
   tags:
     - postgres
-    - setup
 
 - name: Delete sql script
   file: path="/tmp/db.sql" state=absent
   sudo: yes
   tags:
     - postgres
-    - setup
-
 
 - name: Copy pg_hba.conf file
   sudo: yes

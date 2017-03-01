@@ -28,3 +28,7 @@
     - trellio
 
 
+
+- hosts: devops
+  roles:
+    - postgres
