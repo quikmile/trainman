@@ -45,39 +45,61 @@
 - name: ensure database is created
   sudo: yes
   sudo_user: postgres
-  postgresql_db: name={{ db_name }}
+  postgresql_db: name='{{ db_name }}'
   register: create_postgres_db
   tags:
     - postgres
     - setup
 
 - name: ensure user has access to database
-  sudo: yes
-  sudo_user: postgres
+  become: yes
+  become_user: postgres
   postgresql_user: db={{ db_name }} name={{ db_user }} password={{ db_pass }} priv=ALL
   tags:
     - postgres
     - setup
 
+- name: create user with password
+  become: yes
+  become_user: postgres
+  command: psql -d {{ db_user }} -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO {{ db_user }};"
+  tags:
+    - postgres
+    - setup
+
 - name: ensure user does not have unnecessary privilege
-  sudo: yes
-  sudo_user: postgres
+  become: yes
+  become_user: postgres
   postgresql_user: name={{ db_user }} role_attr_flags=NOSUPERUSER,NOCREATEDB
   notify: restart postgres
   tags:
     - postgres
     - setup
 
-- name: create postgres extension
+- name: Copy sql file
   sudo: yes
-  sudo_user: postgres
-  command: psql -d {{ db_user }} -c "CREATE EXTENSION {{ item }};"
-  with_items: postgres_extensions
-  when: create_postgres_db.changed
-  notify: restart postgres
+  template: src=db.sql.j2 dest=/tmp/db.sql owner=root group=root mode=0755
   tags:
-    - postgis
     - setup
+    - postgres
+
+
+- name: execute sql file
+  shell: psql -d {{ db_name }} -a -f /tmp/db.sql
+  with_items: sql
+  become: yes
+  become_user: postgres
+  tags:
+    - postgres
+    - setup
+
+- name: Delete sql script
+  file: path="/tmp/db.sql" state=absent
+  sudo: yes
+  tags:
+    - postgres
+    - setup
+
 
 - name: Copy pg_hba.conf file
   sudo: yes

@@ -37,8 +37,10 @@ class BaseModel(models.Model):
         abstract = True
 
     def save(self, *args, **kwargs):
+        self.is_created = False
         if not self.pk:
             self.created_on = int(time.time())
+            self.is_created = True
         self.updated_on = int(time.time())
         super(BaseModel, self).save(*args, **kwargs)
 
@@ -88,6 +90,9 @@ class BaseNode(BaseModel):
 
     class Meta:
         abstract = True
+
+    def deploy(self):
+        raise NotImplementedError
 
 
 class BaseDatabaseNode(BaseNode):

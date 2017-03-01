@@ -8,7 +8,9 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from ..base.models import BaseDatabaseNode, BaseModel
+from ..custom.gitlab.project_apis import GitlabProject
 from ..custom.utils import get_random_string
+from ..services.models import Service
 
 DEPLOYMENT_SERVER = (
     ('On Service Host', 'On Service Host'),
@@ -38,6 +40,29 @@ class Postgres(BaseModel):
             postgres_node.postgres = self
             postgres_node.save()
 
+    def get_database_settings(self):
+        master_db = self.postgresnode_set.filter(master__isnull=True).first()
+        settings = dict()
+        settings['database_name'] = master_db.database_name
+        settings['database_host'] = master_db.database_host
+        settings['database_port'] = master_db.database_port
+        settings['database_user'] = master_db.database_user
+        settings['database_password'] = master_db.database_password
+        if master_db.optional_settings and isinstance(master_db.optional_settings, dict):
+            settings.update(master_db.optional_settings)
+        return settings
+
+    def get_service(self):
+        return Service.objects.get(database_id=self.pk)
+
+    def get_sql(self):
+        service = self.get_service()
+        return GitlabProject.get_sql(service.gitlab_project_id)
+
+    def deploy(self):
+        for db_node in self.postgresnode_set.all():
+            db_node.deploy()
+
 
 class PostgresNode(BaseModel):
     postgres = models.ForeignKey('databases.Postgres')
@@ -49,8 +74,8 @@ class PostgresNode(BaseModel):
     database_password = models.CharField(max_length=100)
     optional_settings = JSONField(null=True, blank=True)
 
-    class Meta:
-        unique_together = ('database_host', 'database_port')
+    # class Meta:
+    #     unique_together = ('database_host', 'database_port')
 
     def __unicode__(self):
         return '{}'.format(self.postgres)
@@ -87,6 +112,9 @@ class PostgresNode(BaseModel):
     def generate_database_password():
         return get_random_string(length=15)
 
+    def deploy(self):
+        deploy_postgres.delay(self.pk)
+
 
 class RedisNode(BaseDatabaseNode):
     master = models.ForeignKey('self', null=True, blank=True)
@@ -114,13 +142,16 @@ class RedisNode(BaseDatabaseNode):
             self.database_name = get_random_string(10)
         super(RedisNode, self).save(*args, **kwargs)
 
+    def deploy(self):
+        deploy_redis.delay(self.pk)
+
 
 from .tasks import *
 
 
-@receiver(post_save, sender=PostgresNode)
-def initiate_postgres_nodes_tasks(sender, instance, **kwargs):
-    deploy_postgres.delay(instance.pk)
+# @receiver(post_save, sender=PostgresNode)
+# def initiate_postgres_nodes_tasks(sender, instance, **kwargs):
+#     deploy_postgres.delay(instance.pk)
 
 
 @receiver(post_save, sender=RedisNode)

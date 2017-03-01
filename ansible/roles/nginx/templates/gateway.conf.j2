@@ -6,8 +6,8 @@ server {
 
     {% for service in services %}
 
-    location /{{ service.name }}/v{{ service.version }}/ {
-        proxy_pass http://{{ service.http_host }}:{{ service.http_port }};
+    location /{{ service.service_uri }}/v{{ service.service_version }}/ {
+        proxy_pass http://{{ service.ip_address }}:{{ service.http_port }};
     }
     {% endfor %}
 

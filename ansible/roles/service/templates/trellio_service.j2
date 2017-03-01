@@ -1,0 +1,16 @@
+[Unit]
+Description={{ project_name|title }}
+
+[Service]
+ExecStart=/home/{{ ansible_user }}/venv/bin/python manage.py runserver
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier={{ service_name }}
+User={{ ansible_user }}
+Group={{ ansible_user }}
+WorkingDirectory=/home/{{ ansible_user }}/venv/lib/python3.6/site-packages/{{ service_name }}/
+
+
+[Install]
+WantedBy=multi-user.target

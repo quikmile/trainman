@@ -1,5 +1,5 @@
 [all]
 205.147.101.145 ansible_user=ubuntu
 
-[postgres]
+[trellio_service]
 205.147.101.145 ansible_user=ubuntu

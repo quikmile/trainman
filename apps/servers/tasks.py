@@ -8,27 +8,20 @@ from ..services.models import ServiceNode
 
 @task
 def deploy_gateway():
-    PLAYBOOK = settings.ANSIBLE_DIR + 'playbook.yml'
+    PLAYBOOK = settings.ANSIBLE_PLAYBOOK
     hosts = ['[gateway]']
     for gateway in APIGateway.objects.all():
         hosts.append('{} ansible_user={} ansible_sudo_pass={}'.format(gateway.server.ip_address,
                                                                       settings.ANSIBLE_SSH_USER,
                                                                       settings.ANSIBLE_SSH_PASS))
 
-    services = [{s.service.service_name,
-                 s.service_version,
-                 s.http_host,
-                 s.http_port} for s in ServiceNode.objects.all()]
-
-    run_data = {
-        'services': services
-    }
+    run_data = {'services': ServiceNode.objects.all()}
 
     hostnames = '\n'.join(hosts)
 
     runner = Runner(hostnames=hostnames,
                     playbook=PLAYBOOK,
-                    private_key_file=settings.ANSIBLE_PRIVATE_KEY,
+                    private_key_file=settings.ANSIBLE_PUBLIC_KEY,
                     run_data=run_data,
                     become_pass=settings.ANSIBLE_SSH_PASS,
                     tags=['prepare', 'nginx', 'gateway'])

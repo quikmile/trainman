@@ -1,0 +1,60 @@
+---
+
+#- name: Install trellio
+#  include: roles/trellio/tasks/main.yml
+#  sudo: yes
+#  tags:
+#    - setup
+#    - service
+- name: Make sure the known hosts file exists
+  file: "path=/etc/ssh/ssh_known_hosts state=touch"
+  sudo: yes
+  tags:
+    - setup
+    - service
+
+- name: add gitlab.com to known hosts
+  known_hosts:
+    path=/etc/ssh/ssh_known_hosts
+    name=gitlab.com
+    key="{{ lookup('pipe', 'ssh-keyscan -t rsa gitlab.com') }}"
+  sudo: yes
+  tags:
+    - setup
+    - service
+
+- name: Installing {{ project_name }}
+  pip:
+    name=git+{{ repo_url }}
+    virtualenv=/home/{{ ansible_user }}/venv
+    virtualenv_python=python3.6
+    editable=false
+  become: yes
+  become_user: "{{ ansible_user }}"
+  tags:
+    - setup
+    - service
+
+- name: Creating service config.json
+  sudo: yes
+  template: src=config.json.j2 dest=/home/{{ ansible_user }}/venv/lib/python3.6/site-packages/{{ service_name }}/config.json owner="{{ ansible_user }}" group="{{ ansible_user }}" mode=0777
+  tags:
+    - setup
+    - service
+
+
+- name: Creating service Upstart file
+  sudo: yes
+  notify:
+    - reload systemctl
+  template: src=trellio_service.j2 dest=/etc/systemd/system/{{ service_name }}.service owner="{{ ansible_user }}" group="{{ ansible_user }}" mode=0644
+  tags:
+    - setup
+    - service
+
+- name: restart service
+  sudo: yes
+  command: service {{ service_name }} restart
+  tags:
+    - setup
+    - service
