@@ -1,0 +1,4 @@
+environment_variables:
+  DB_USER: trainman
+  DB_PASS: trainman
+  DB_NAME: trainman

@@ -31,4 +31,5 @@
 
 - hosts: devops
   roles:
-    - postgres
+    - uwsgi
+    - nginx
