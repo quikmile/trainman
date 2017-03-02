@@ -167,3 +167,25 @@ CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'amqp://')
 ANSIBLE_CONFIG = os.path.join(ANSIBLE_DIR, "ansible.cfg")
 
 os.environ.setdefault('ANSIBLE_CONFIG', ANSIBLE_CONFIG)
+import os
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+    },
+    'celery': {
+        'handlers': ['console'],
+        'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        'propagate': True
+    }
+}
