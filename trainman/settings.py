@@ -159,7 +159,7 @@ ANSIBLE_DIR = os.path.join(BASE_DIR, "ansible/")
 ANSIBLE_PLAYBOOK = os.path.join(ANSIBLE_DIR, "playbook.yml")
 ANSIBLE_SSH_USER = os.environ.get('ANSIBLE_SSH_USER', 'ubuntu')
 ANSIBLE_SSH_PASS = os.environ.get('ANSIBLE_SSH_PASS', 'ubuntu')
-ANSIBLE_PUBLIC_KEY = os.environ.get('ANSIBLE_PUBLIC_KEY', '~/.ssh/id_rsa.pub')
+ANSIBLE_PUBLIC_KEY = os.environ.get('ANSIBLE_PUBLIC_KEY', '/home/ubuntu/.ssh/id_rsa.pub')
 
 BROKER_URL = os.environ.get('BROKER_URL', 'amqp://')
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'amqp://')
