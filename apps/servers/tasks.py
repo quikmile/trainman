@@ -7,7 +7,7 @@ from ..services.models import ServiceNode
 
 
 @task
-def deploy_gateway(extra_tags=()):
+def deploy_gateway():
     PLAYBOOK = settings.ANSIBLE_PLAYBOOK
     hosts = ['[gateway]']
     for gateway in APIGateway.objects.all():
@@ -19,9 +19,7 @@ def deploy_gateway(extra_tags=()):
 
     hostnames = '\n'.join(hosts)
 
-    tags = ['nginx', 'gateway']
-    if extra_tags:
-        tags.extend(extra_tags)
+    tags = ['prepare','nginx', 'gateway']
 
     runner = Runner(hostnames=hostnames,
                     playbook=PLAYBOOK,
