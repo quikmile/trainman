@@ -43,7 +43,7 @@ def deploy_service(service_node_id, extra_tags=()):
     service_node = ServiceNode.objects.get(pk=service_node_id)
 
     database = service_node.get_database()
-    database.deploy(extra_tags)
+    database.deploy()
 
     PLAYBOOK = settings.ANSIBLE_PLAYBOOK
     hosts = ['[trellio_service]']
