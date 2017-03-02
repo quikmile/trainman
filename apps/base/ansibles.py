@@ -71,7 +71,7 @@ class Options(object):
 
 
 class Runner(object):
-    def __init__(self, hostnames, playbook, private_key_file, run_data, become_pass, verbosity=0, tags=None):
+    def __init__(self, hostnames, playbook, private_key_file, run_data, become_pass, verbosity=1, tags=None):
 
         self.run_data = run_data
 
