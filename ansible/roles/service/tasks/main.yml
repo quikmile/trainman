@@ -29,21 +29,21 @@
     - setup
     - service
 
-- name: Install trellio
-  shell: /home/{{ ansible_user }}/venv/bin/pip install git+{{ repo_url }}
-  tags:
-    - setup
-    - service
-
-#- name: Installing {{ project_name }}
-#  pip:
-#    name=git+{{ repo_url }}
-#    virtualenv=/home/{{ ansible_user }}/venv
-#    virtualenv_python=python3.6
-#    editable=false
+#- name: Install trellio
+#  shell: /home/{{ ansible_user }}/venv/bin/pip install git+{{ repo_url }}
 #  tags:
 #    - setup
 #    - service
+
+- name: Installing {{ project_name }}
+  pip:
+    name=git+{{ repo_url }}
+    virtualenv=/home/{{ ansible_user }}/venv
+    virtualenv_python=python3.6
+    editable=false
+  tags:
+    - setup
+    - service
 
 - name: Creating service config.json
   sudo: yes
