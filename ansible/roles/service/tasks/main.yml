@@ -1,11 +1,5 @@
 ---
 
-#- name: Install trellio
-#  include: roles/trellio/tasks/main.yml
-#  sudo: yes
-#  tags:
-#    - setup
-#    - service
 - name: Make sure the known hosts file exists
   file: "path=/etc/ssh/ssh_known_hosts state=touch"
   sudo: yes
@@ -29,8 +23,6 @@
     virtualenv=/home/{{ ansible_user }}/venv
     virtualenv_python=python3.6
     editable=false
-  become: yes
-  become_user: "{{ ansible_user }}"
   tags:
     - setup
     - service
