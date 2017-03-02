@@ -2,7 +2,7 @@
 
 - name: update apt-get
   apt: update_cache=yes
-  become: true
+  sudo: yes
   tags:
     - prepare
 
