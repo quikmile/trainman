@@ -12,7 +12,8 @@
     path=/etc/ssh/ssh_known_hosts
     name=gitlab.com
     key="{{ lookup('pipe', 'ssh-keyscan -t rsa gitlab.com') }}"
-  sudo: yes
+  become: yes
+  become_user: ubuntu
   tags:
     - setup
     - service
@@ -24,7 +25,7 @@
     mode: 0755
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
-  sudo: yes
+  become: yes
   tags:
     - setup
     - service
