@@ -45,16 +45,16 @@
     - setup
     - service
 
-#- name: Installing {{ project_name }}
-#  pip:
-#    name=git+{{ repo_url }}
-#    virtualenv=/home/{{ ansible_user }}/venv
-#    virtualenv_python=python3.6
-#    editable=false
-#  sudo: yes
-#  tags:
-#    - setup
-#    - service
+- name: Installing {{ project_name }}
+  pip:
+    name=git+{{ repo_url }}
+    virtualenv=/home/{{ ansible_user }}/venv
+    virtualenv_python=python3.6
+    editable=false
+  sudo: yes
+  tags:
+    - setup
+    - service
 
 - name: Creating service config.json
   sudo: yes
