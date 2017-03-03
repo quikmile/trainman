@@ -13,7 +13,7 @@
     name=gitlab.com
     key="{{ lookup('pipe', 'ssh-keyscan -t rsa gitlab.com') }}"
   become: yes
-  become_user: ubuntu
+  become_user: "{{ ansible_user }}"
   tags:
     - setup
     - service
@@ -29,23 +29,15 @@
   tags:
     - setup
     - service
-#
-#- name: pull {{ project_name }} from gitlab
-#  git:
-#    repo={{ git_repo_url }}
-#    dest=/tmp/{{ service_name }}
-#    update=yes
-#    key_file=/root/.ssh/id_rsa
-#  tags:
-#    - setup
-#    - service
-#
-#- name: Install trellio
-#  shell: /home/{{ ansible_user }}/venv/bin/python /tmp/{{ service_name }}/setup.py install
-#  sudo: yes
-#  tags:
-#    - setup
-#    - service
+
+
+- name: Creating .netrc file
+  sudo: yes
+  template: src=.netrc.j2 dest=/home/{{ ansible_user }}/.netrc owner="{{ ansible_user }}" group="{{ ansible_user }}" mode=0664
+  tags:
+    - setup
+    - service
+
 
 - name: Installing {{ project_name }}
   pip:
@@ -54,7 +46,7 @@
     virtualenv_python=python3.6
     editable=false
   become: yes
-  become_user: ubuntu
+  become_user: "{{ ansible_user }}"
   tags:
     - setup
     - service

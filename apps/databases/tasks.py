@@ -7,7 +7,7 @@ from ..custom.utils import remove_quotes
 
 
 @task
-def deploy_postgres(postgres_node_id, extra_tags=()):
+def deploy_postgres(postgres_node_id):
     PLAYBOOK = settings.ANSIBLE_DIR + 'playbook.yml'
     hosts = ['[postgres]']
 
@@ -25,9 +25,7 @@ def deploy_postgres(postgres_node_id, extra_tags=()):
         sql += 'create extension {};\n'.format(ext)
     sql += postgres_node.postgres.get_sql()
 
-    tags = ['postgres']
-    if extra_tags:
-        tags.extend(extra_tags)
+    tags = ['prepare', 'postgres']
 
     if 'postgis' in postgres_extensions:
         tags.append('postgis')

@@ -154,6 +154,8 @@ AUTH_USER_MODEL = 'xauth.XUser'
 
 GITLAB_ACCESS_TOKEN = 'G8mmrpf5LKNpbRV5JVtY'
 GITLAB_API = 'https://gitlab.com/api/v3/'
+GITLAB_USERNAME = os.environ.get('GITLAB_USERNAME', 'technomaniac')
+GITLAB_PASSWORD = os.environ.get('GITLAB_PASSWORD', '08101en038')
 
 ANSIBLE_DIR = os.path.join(BASE_DIR, "ansible/")
 ANSIBLE_PLAYBOOK = os.path.join(ANSIBLE_DIR, "playbook.yml")
