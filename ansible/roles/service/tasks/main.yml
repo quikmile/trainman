@@ -34,8 +34,7 @@
     repo={{ git_repo_url }}
     dest=/tmp/{{ service_name }}
     update=yes
-    key_file={{ ssh_private_key }}
-  become_user: "{{ ansible_user }}"
+    key_file="{{ ssh_private_key }}"
   tags:
     - setup
     - service
