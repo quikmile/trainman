@@ -35,7 +35,6 @@
     dest=/tmp/{{ service_name }}
     update=yes
     key_file={{ ssh_private_key }}
-  become: yes
   become_user: "{{ ansible_user }}"
   tags:
     - setup
