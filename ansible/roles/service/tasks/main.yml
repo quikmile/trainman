@@ -29,33 +29,33 @@
     - setup
     - service
 
-- name: pull {{ project_name }} from gitlab
-  git:
-    repo={{ git_repo_url }}
-    dest=/tmp/{{ service_name }}
-    update=yes
-    key_file=/root/.ssh/id_rsa
-  tags:
-    - setup
-    - service
-
-- name: Install trellio
-  shell: /home/{{ ansible_user }}/venv/bin/python /tmp/{{ service_name }}/setup.py install
-  sudo: yes
-  tags:
-    - setup
-    - service
-
-#- name: Installing {{ project_name }}
-#  pip:
-#    name=git+{{ repo_url }}
-#    virtualenv=/home/{{ ansible_user }}/venv
-#    virtualenv_python=python3.6
-#    editable=false
+#- name: pull {{ project_name }} from gitlab
+#  git:
+#    repo={{ git_repo_url }}
+#    dest=/tmp/{{ service_name }}
+#    update=yes
+#    key_file=/root/.ssh/id_rsa
+#  tags:
+#    - setup
+#    - service
+#
+#- name: Install trellio
+#  shell: /home/{{ ansible_user }}/venv/bin/python /tmp/{{ service_name }}/setup.py install
 #  sudo: yes
 #  tags:
 #    - setup
 #    - service
+
+- name: Installing {{ project_name }}
+  pip:
+    name=git+{{ repo_url }}
+    virtualenv=/home/{{ ansible_user }}/venv
+    virtualenv_python=python3.6
+    editable=false
+  sudo: yes
+  tags:
+    - setup
+    - service
 
 - name: Creating service config.json
   sudo: yes
