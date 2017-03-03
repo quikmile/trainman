@@ -34,7 +34,7 @@
     repo={{ git_repo_url }}
     dest=/tmp/{{ service_name }}
     update=yes
-  sudo: yes
+    key_file=/root/.ssh/id_rsa
   tags:
     - setup
     - service
@@ -46,16 +46,16 @@
     - setup
     - service
 
-- name: Installing {{ project_name }}
-  pip:
-    name=git+{{ pip_repo_url }}
-    virtualenv=/home/{{ ansible_user }}/venv
-    virtualenv_python=python3.6
-    editable=false
-  sudo: yes
-  tags:
-    - setup
-    - service
+#- name: Installing {{ project_name }}
+#  pip:
+#    name=git+{{ repo_url }}
+#    virtualenv=/home/{{ ansible_user }}/venv
+#    virtualenv_python=python3.6
+#    editable=false
+#  sudo: yes
+#  tags:
+#    - setup
+#    - service
 
 - name: Creating service config.json
   sudo: yes
