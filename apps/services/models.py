@@ -95,7 +95,7 @@ class ServiceNode(BaseModel):
     optional_settings = JSONField(null=True, blank=True)
 
     class Meta:
-        unique_together = (('instance', 'is_active'), ('instance', 'http_port'), ('instance', 'tcp_port'))
+        unique_together = ('instance', 'is_active')
 
     def __unicode__(self):
         return '{}'.format(self.instance)
