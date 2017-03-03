@@ -33,7 +33,7 @@
   git:
     accept_hostkey: yes
     repo: git@gitlab.com:artifici/rbac_service.git
-    dest: /tmp/{{ service_name }}
+    dest: /tmp/rbac_service
     update: yes
   tags:
     - setup
