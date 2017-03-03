@@ -72,7 +72,7 @@ class Options(object):
 
 class Runner(object):
     def __init__(self, hostnames, playbook, private_key_file, run_data, become_pass, verbosity=0, tags=None,
-                 become_user='root'):
+                 become_user='ubuntu'):
 
         self.run_data = run_data
 
@@ -81,6 +81,9 @@ class Runner(object):
         self.options.verbosity = verbosity
         self.options.connection = 'ssh'  # Need a connection type "smart" or "ssh"
         self.options.become = True
+        self.options.sudo_user = become_user
+        self.options.ask_sudo_pass = become_pass
+        self.options.become_user = become_user
         self.options.become_method = 'sudo'
         self.options.become_user = become_user
         self.options.tags = tags
