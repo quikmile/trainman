@@ -63,7 +63,8 @@ def deploy_service(service_node_id, extra_tags=()):
         'pip_repo_url': service_node.pip_repo_url,
         'git_repo_url': service_node.git_repo_url,
         'project_name': service_node.service_verbose_name,
-        'service_name': service_node.get_service_directory()
+        'service_name': service_node.get_service_directory(),
+        'ssh_private_key': settings.ANSIBLE_PUBLIC_KEY
     }
 
     run_data.update(config)
