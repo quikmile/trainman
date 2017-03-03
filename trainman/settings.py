@@ -167,7 +167,6 @@ CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'amqp://')
 ANSIBLE_CONFIG = os.path.join(ANSIBLE_DIR, "ansible.cfg")
 
 os.environ.setdefault('ANSIBLE_CONFIG', ANSIBLE_CONFIG)
-import os
 
 LOGGING = {
     'version': 1,
