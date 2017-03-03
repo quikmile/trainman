@@ -1,2 +1,3 @@
 #!/bin/bash
-celery -A trainman worker -c 1 -l info
+source ~/venv/bin/activate
+celery -A trainman worker --loglevel=info --concurrency=1
