@@ -32,8 +32,14 @@
 - name: get the username running the deploy
   local_action: command whoami
   register: username_on_the_host
+  tags:
+    - setup
+    - service
 
 - debug: var=username_on_the_host
+  tags:
+    - setup
+    - service
 
 - name: pull {{ project_name }} from gitlab
   git:
