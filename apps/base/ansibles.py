@@ -72,7 +72,7 @@ class Options(object):
 
 class Runner(object):
     def __init__(self, hostnames, playbook, private_key_file, run_data, become_pass, verbosity=0, tags=None,
-                 become_user='ubuntu'):
+                 become_user='root'):
 
         self.run_data = run_data
 
