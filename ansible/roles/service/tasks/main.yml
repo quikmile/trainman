@@ -17,22 +17,22 @@
     - setup
     - service
 
-- name: give ownership to directory
-  file:
-    path: /home/{{ ansible_user }}/venv/
-    state: directory
-    mode: 0755
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-  sudo: yes
-  tags:
-    - setup
-    - service
+#- name: give ownership to directory
+#  file:
+#    path: /home/{{ ansible_user }}/venv/
+#    state: directory
+#    mode: 0755
+#    owner: "{{ ansible_user }}"
+#    group: "{{ ansible_user }}"
+#  sudo: yes
+#  tags:
+#    - setup
+#    - service
 
 - name: pull {{ project_name }} from gitlab
   git:
     accept_hostkey: yes
-    repo: "{{ git_repo_url }}"
+    repo: git@gitlab.com:artifici/rbac_service.git
     dest: /tmp/{{ service_name }}
     update: yes
   tags:
