@@ -81,7 +81,7 @@ class Runner(object):
         self.options.verbosity = verbosity
         self.options.connection = 'ssh'  # Need a connection type "smart" or "ssh"
         self.options.become = True
-        self.options.become_method = 'sudo'
+        self.options.become_method = 'su'
         self.options.become_user = become_user
         self.options.tags = tags
 
