@@ -31,6 +31,8 @@
 
 - name: pull {{ project_name }} from gitlab
   git: accept_hostkey=yes repo={{ git_repo_url }} dest=/tmp/{{ service_name }} remote=origin version=master
+  become: yes
+  become_user: root
   tags:
     - setup
     - service
