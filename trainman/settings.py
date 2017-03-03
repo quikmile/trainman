@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'dnz_az7^5(m*0)wo^9pb-&!3&#e%e4p%@!+#46hrlw@=hvn)n^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -82,8 +82,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('DB_NAME', 'trainman'),
-        'USER': os.environ.get('DB_USER', 'trainman'),
-        'PASSWORD': os.environ.get('DB_PASS', 'trainman'),
+        'USER': os.environ.get('DB_USER', 'abhishek'),
+        'PASSWORD': os.environ.get('DB_PASS', '1'),
         'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
         'PORT': '5432',
     }
@@ -159,7 +159,7 @@ ANSIBLE_DIR = os.path.join(BASE_DIR, "ansible/")
 ANSIBLE_PLAYBOOK = os.path.join(ANSIBLE_DIR, "playbook.yml")
 ANSIBLE_SSH_USER = os.environ.get('ANSIBLE_SSH_USER', 'ubuntu')
 ANSIBLE_SSH_PASS = os.environ.get('ANSIBLE_SSH_PASS', 'ubuntu')
-ANSIBLE_PUBLIC_KEY = os.environ.get('ANSIBLE_PUBLIC_KEY', '/home/ubuntu/.ssh/id_rsa')
+ANSIBLE_PUBLIC_KEY = os.environ.get('ANSIBLE_PUBLIC_KEY', '/home/abhishek/.ssh/id_rsa')
 
 BROKER_URL = os.environ.get('BROKER_URL', 'amqp://')
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'amqp://')
@@ -188,3 +188,5 @@ LOGGING = {
         'propagate': True
     }
 }
+
+import ansible
