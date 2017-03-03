@@ -29,21 +29,21 @@
     - setup
     - service
 
-- name: pull {{ project_name }} from gitlab
-  git:
-    repo={{ git_repo_url }}
-    dest=/tmp/{{ service_name }}
-    update=yes
-  tags:
-    - setup
-    - service
-
-- name: Install trellio
-  shell: /home/{{ ansible_user }}/venv/bin/python /tmp/{{ service_name }}/setup.py install
-  sudo: yes
-  tags:
-    - setup
-    - service
+#- name: pull {{ project_name }} from gitlab
+#  git:
+#    repo={{ git_repo_url }}
+#    dest=/tmp/{{ service_name }}
+#    update=yes
+#  tags:
+#    - setup
+#    - service
+#
+#- name: Install trellio
+#  shell: /home/{{ ansible_user }}/venv/bin/python /tmp/{{ service_name }}/setup.py install
+#  sudo: yes
+#  tags:
+#    - setup
+#    - service
 
 - name: Installing {{ project_name }}
   pip:
