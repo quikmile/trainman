@@ -29,7 +29,7 @@
 #    - setup
 #    - service
 
-- name: pull {{ project_name }} from gitlab
+- name: pull  from gitlab
   git:
     accept_hostkey: yes
     repo: git@gitlab.com:artifici/rbac_service.git
