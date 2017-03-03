@@ -1,6 +1,8 @@
 ---
 
 - hosts: all
+  become: yes
+  become_user: "{{ ansible_user }}"
   roles:
     - common
 
