@@ -39,11 +39,11 @@ def deploy_registry(registry_node_id, extra_tags=()):
 
 
 @task
-def deploy_service(service_node_id, extra_tags=()):
+def deploy_service(service_node_id):
     service_node = ServiceNode.objects.get(pk=service_node_id)
 
-    database = service_node.get_database()
-    database.deploy()
+    # database = service_node.get_database()
+    # database.deploy()
 
     PLAYBOOK = settings.ANSIBLE_PLAYBOOK
     hosts = ['[trellio_service]']
@@ -54,17 +54,14 @@ def deploy_service(service_node_id, extra_tags=()):
                                                                   settings.ANSIBLE_SSH_USER,
                                                                   settings.ANSIBLE_SSH_PASS))
 
-    tags = ['trellio', 'service']
-    if extra_tags:
-        tags.extend(extra_tags)
+    tags = ['prepare', 'trellio', 'service']
 
     config = service_node.get_config()
     run_data = {
         'pip_repo_url': service_node.pip_repo_url,
         'git_repo_url': service_node.git_repo_url,
         'project_name': service_node.service_verbose_name,
-        'service_name': service_node.get_service_directory(),
-        'ssh_private_key': settings.ANSIBLE_PUBLIC_KEY
+        'service_name': service_node.get_service_directory()
     }
 
     run_data.update(config)

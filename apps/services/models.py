@@ -189,4 +189,4 @@ def initiate_registry_node_tasks(sender, instance, **kwargs):
 
 @receiver(post_save, sender=ServiceNode)
 def initiate_service_node_tasks(sender, instance, **kwargs):
-    deploy_service.delay(instance.pk, extra_tags=['prepare'])
+    deploy_service.delay(instance.pk)
