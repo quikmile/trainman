@@ -82,8 +82,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('DB_NAME', 'trainman'),
-        'USER': os.environ.get('DB_USER', 'abhishek'),
-        'PASSWORD': os.environ.get('DB_PASS', '1'),
+        'USER': os.environ.get('DB_USER', 'trainman'),
+        'PASSWORD': os.environ.get('DB_PASS', 'trainman'),
         'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
         'PORT': '5432',
     }
@@ -159,7 +159,7 @@ ANSIBLE_DIR = os.path.join(BASE_DIR, "ansible/")
 ANSIBLE_PLAYBOOK = os.path.join(ANSIBLE_DIR, "playbook.yml")
 ANSIBLE_SSH_USER = os.environ.get('ANSIBLE_SSH_USER', 'ubuntu')
 ANSIBLE_SSH_PASS = os.environ.get('ANSIBLE_SSH_PASS', 'ubuntu')
-ANSIBLE_PUBLIC_KEY = os.environ.get('ANSIBLE_PUBLIC_KEY', '/home/abhishek/.ssh/id_rsa')
+ANSIBLE_PUBLIC_KEY = os.environ.get('ANSIBLE_PUBLIC_KEY', '/home/artifici/.ssh/id_rsa')
 
 BROKER_URL = os.environ.get('BROKER_URL', 'amqp://')
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'amqp://')
@@ -188,5 +188,3 @@ LOGGING = {
         'propagate': True
     }
 }
-
-import ansible
