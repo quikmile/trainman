@@ -2,13 +2,13 @@
 
 - name: update apt-get
   apt: update_cache=yes
-  sudo: yes
+  become: yes
   tags:
     - prepare
 
 - name: upgrade ubuntu server
   apt: upgrade=dist
-  become: true
+  become: yes
   notify: reboot
   tags:
     - prepare
@@ -20,7 +20,7 @@
         owner=root
         group=root
         mode=0644
-  become: true
+  become: yes
   notify:
     - update timezone
   tags:
@@ -36,7 +36,7 @@
    - libpq-dev
    - cmake
    - lsb-release
-  become: true
+  become: yes
   tags:
     - prepare
 
