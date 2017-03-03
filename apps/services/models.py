@@ -75,8 +75,11 @@ class ServiceInstance(BaseNode):
         if self.is_created:
             service_node = ServiceNode()
             service_node.instance = self
-            service_node.http_host = self.server.ip_address
-            service_node.tcp_host = self.server.ip_address
+            same_server_nodes = ServiceNode.objects.filter(instance__server=self.server).order_by('-http_port')
+            if same_server_nodes.exists():
+                node = same_server_nodes.first()
+                service_node.http_host = node.http_port + 2
+                service_node.tcp_port = node.tcp_port + 2
             service_node.save()
 
 
@@ -92,7 +95,7 @@ class ServiceNode(BaseModel):
     optional_settings = JSONField(null=True, blank=True)
 
     class Meta:
-        unique_together = (('instance', 'is_active'), ('http_host', 'http_port', 'tcp_port'))
+        unique_together = (('instance', 'is_active'), ('instance', 'http_port'), ('instance', 'tcp_port'))
 
     def __unicode__(self):
         return '{}'.format(self.instance)
