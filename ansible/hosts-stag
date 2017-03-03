@@ -1,4 +1,4 @@
-#[all]
+[all]
 205.147.101.145 ansible_user=ubuntu
 
 [trellio_service]
