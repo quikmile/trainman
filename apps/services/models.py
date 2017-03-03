@@ -106,11 +106,15 @@ class ServiceNode(BaseModel):
         return '{}'.format(self.service.service_name)
 
     @property
-    def repo_url(self):
+    def pip_repo_url(self):
         repo_url = self.service.repo_url
         if 'http' in repo_url:
             return repo_url
         return 'ssh://{}'.format(repo_url.replace(':', '/'))
+
+    @property
+    def git_repo_url(self):
+        return self.service.repo_url
 
     @property
     def ip_address(self):

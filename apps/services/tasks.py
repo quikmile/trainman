@@ -60,7 +60,8 @@ def deploy_service(service_node_id, extra_tags=()):
 
     config = service_node.get_config()
     run_data = {
-        'repo_url': service_node.repo_url,
+        'pip_repo_url': service_node.pip_repo_url,
+        'git_repo_url': service_node.git_repo_url,
         'project_name': service_node.service_verbose_name,
         'service_name': service_node.get_service_directory()
     }

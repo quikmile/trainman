@@ -17,7 +17,7 @@
     - setup
     - service
 
-- name:
+- name: give ownership to directory
   file:
     path: /home/{{ ansible_user }}/venv/
     state: directory
@@ -29,8 +29,8 @@
     - setup
     - service
 
-- name: pull {{ service_verbose_name }} from gitlab
-  git: accept_hostkey=yes repo={{ repo_url }} dest=/tmp/{{ service_name }} remote=origin version=master
+- name: pull {{ project_name }} from gitlab
+  git: accept_hostkey=yes repo={{ git_repo_url }} dest=/tmp/{{ service_name }} remote=origin version=master
   tags:
     - setup
     - service
