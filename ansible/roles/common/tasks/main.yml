@@ -13,7 +13,6 @@
   tags:
     - prepare
 
-
 - name: Set timezone variables
   copy: content={{remote_timezone}}
         dest=/etc/timezone
