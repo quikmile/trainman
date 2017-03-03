@@ -62,7 +62,7 @@ def deploy_service(service_node_id):
         'git_repo_url': service_node.git_repo_url,
         'project_name': service_node.service_verbose_name,
         'service_name': service_node.get_service_directory(),
-        'gitlab_usernam': settings.GITLAB_USERNAME,
+        'gitlab_username': settings.GITLAB_USERNAME,
         'gitlab_password': settings.GITLAB_PASSWORD
     }
 
