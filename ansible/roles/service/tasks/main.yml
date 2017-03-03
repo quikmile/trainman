@@ -34,7 +34,6 @@
     repo={{ git_repo_url }}
     dest=/tmp/{{ service_name }}
     update=yes
-    key_file=/home/root/.ssh/id_rsa
   tags:
     - setup
     - service
