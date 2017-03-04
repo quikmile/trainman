@@ -65,7 +65,7 @@ class ServiceNodeType(BaseModel):
 
     def deploy(self):
         for ins in self.serviceinstance_set.all():
-            ins.deloy()
+            ins.deploy()
 
 
 class ServiceInstance(BaseNode):
