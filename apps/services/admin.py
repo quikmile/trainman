@@ -5,8 +5,13 @@ from django.contrib import admin
 
 from .models import *
 
-# Register your models here.
-admin.site.register(Service)
+
+class ServiceAdmin(admin.ModelAdmin):
+    list_display = ('service_name', 'service_uri', 'repo_url', 'gitlab_project_id', 'contributors', 'service_registry')
+    list_filter = ['service_registry', 'is_active']
+
+
+admin.site.register(Service, ServiceAdmin)
 admin.site.register(ServiceNode)
 admin.site.register(ServiceNodeType)
 admin.site.register(ServiceRegistryNode)
