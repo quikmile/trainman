@@ -18,7 +18,7 @@
     - setup
     - service
 
-- name: set permissions directory
+- name: set permission to directory
   file:
     path: /home/{{ ansible_user }}/venv/
     state: directory
@@ -31,13 +31,16 @@
     - setup
     - service
 
-- name: give ownership to directory
-  command: chown -R {{ ansible_user }}:{{ ansible_user }} /home/{{ ansible_user }}/venv/
-  become: yes
-  become_user: "{{ ansible_user }}"
-  tags:
-    - setup
-    - service
+#- name: give ownership to directory
+#  file:
+#    path: /home/{{ ansible_user }}/venv/
+#    mode: 0777
+#    recurse: yes
+#  become: yes
+#  become_user: "{{ ansible_user }}"
+#  tags:
+#    - setup
+#    - service
 
 - name: Creating .netrc file
   sudo: yes
