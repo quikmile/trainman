@@ -41,6 +41,9 @@ class Service(BaseModel):
     http_server = models.CharField(choices=HTTP_SERVER, max_length=20, default='NGINX')
     service_uri = models.CharField(max_length=100, unique=True)
 
+    class Meta:
+        unique_together = ('database_id', 'content_object')
+
     def __unicode__(self):
         return '{}'.format(self.service_name)
 
