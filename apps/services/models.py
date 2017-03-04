@@ -89,8 +89,8 @@ class ServiceInstance(BaseNode):
             same_server_nodes = ServiceNode.objects.filter(instance__server=self.server).order_by('-http_port')
             if same_server_nodes.exists():
                 node = same_server_nodes.first()
-                service_node.http_host = node.http_port + 2
-                service_node.tcp_port = node.tcp_port + 2
+                service_node.http_port = node.http_port + 2
+                service_node.tcp_port = service_node.http_port + 1
             service_node.save()
 
     def deploy(self):
