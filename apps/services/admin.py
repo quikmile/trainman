@@ -7,7 +7,7 @@ from .models import *
 
 
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ('service_name', 'service_uri', 'repo_url', 'gitlab_project_id', 'contributors', 'service_registry')
+    list_display = ('service_name', 'service_uri', 'content_object', 'database_id', 'contributors', 'service_registry')
     list_filter = ['service_registry', 'is_active']
 
 
