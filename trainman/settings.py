@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 
+import requests.packages.urllib3
+
+requests.packages.urllib3.disable_warnings()
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
@@ -21,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'dnz_az7^5(m*0)wo^9pb-&!3&#e%e4p%@!+#46hrlw@=hvn)n^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -36,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_slack',
     'apps.xauth',
     'apps.servers',
     'apps.databases',
@@ -157,8 +161,6 @@ GITLAB_API = 'https://gitlab.com/api/v3/'
 GITLAB_USERNAME = os.environ.get('GITLAB_USERNAME', 'technomaniac')
 GITLAB_PASSWORD = os.environ.get('GITLAB_PASSWORD', '08101en038')
 
-
-
 ANSIBLE_DIR = os.path.join(BASE_DIR, "ansible/")
 ANSIBLE_PLAYBOOK = os.path.join(ANSIBLE_DIR, "playbook.yml")
 ANSIBLE_SSH_USER = os.environ.get('ANSIBLE_SSH_USER', 'ubuntu')
@@ -167,28 +169,49 @@ ANSIBLE_PUBLIC_KEY = os.environ.get('ANSIBLE_PUBLIC_KEY', '/home/artifici/.ssh/i
 
 BROKER_URL = os.environ.get('BROKER_URL', 'amqp://')
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'amqp://')
+CELERY_REDIRECT_STDOUTS_LEVEL = 'INFO'
 
 ANSIBLE_CONFIG = os.path.join(ANSIBLE_DIR, "ansible.cfg")
 
 os.environ.setdefault('ANSIBLE_CONFIG', ANSIBLE_CONFIG)
 
+SLACK_TOKEN = 'xoxp-133294310241-134061212741-150399949303-995e018f74eef9a5d858c29fafce6819'
+SLACK_BACKEND = 'django_slack.backends.CeleryBackend'
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
         },
+        'slack_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'slack-error': {
+            'level': 'ERROR',
+            'api_key': SLACK_TOKEN,
+            'class': 'slacker_log_handler.SlackerLogHandler',
+            'channel': '#infra'
+        },
+        'slack-info': {
+            'level': 'INFO',
+            'api_key': SLACK_TOKEN,
+            'class': 'slacker_log_handler.SlackerLogHandler',
+            'channel': '#infra'
+        }
     },
     'loggers': {
         'django': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-        },
-    },
-    'celery': {
-        'handlers': ['console'],
-        'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
-        'propagate': True
+            'handlers': ['console', 'slack-error'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO')
+        }
     }
 }
