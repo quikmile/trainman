@@ -49,7 +49,7 @@ class Service(BaseModel):
 
     def deploy(self):
         for snt in self.servicenodetype_set.all():
-            snt.deloy()
+            snt.deploy()
 
 
 class ServiceNodeType(BaseModel):
@@ -92,7 +92,7 @@ class ServiceInstance(BaseNode):
 
     def deploy(self):
         for node in self.servicenode_set.all():
-            node.deloy()
+            node.deploy()
 
 
 class ServiceNode(BaseModel):
