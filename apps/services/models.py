@@ -94,8 +94,8 @@ class ServiceNode(BaseModel):
 
     optional_settings = JSONField(null=True, blank=True)
 
-    class Meta:
-        unique_together = ('instance', 'is_active')
+    # class Meta:
+    #     unique_together = ('instance', 'is_active')
 
     def __unicode__(self):
         return '{}'.format(self.instance)
