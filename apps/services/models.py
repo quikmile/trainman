@@ -47,6 +47,10 @@ class Service(BaseModel):
     def get_database(self):
         return self.content_object
 
+    def deploy(self):
+        for snt in self.servicenodetype_set.all():
+            snt.deloy()
+
 
 class ServiceNodeType(BaseModel):
     service = models.ForeignKey('services.Service')
@@ -58,6 +62,10 @@ class ServiceNodeType(BaseModel):
 
     def __unicode__(self):
         return '{} | {} v{}'.format(self.server_type, self.service.service_name, self.version)
+
+    def deploy(self):
+        for ins in self.serviceinstance_set.all():
+            ins.deloy()
 
 
 class ServiceInstance(BaseNode):
@@ -82,6 +90,10 @@ class ServiceInstance(BaseNode):
                 service_node.tcp_port = node.tcp_port + 2
             service_node.save()
 
+    def deploy(self):
+        for node in self.servicenode_set.all():
+            node.deloy()
+
 
 class ServiceNode(BaseModel):
     instance = models.ForeignKey('services.ServiceInstance')
@@ -99,6 +111,9 @@ class ServiceNode(BaseModel):
 
     def __unicode__(self):
         return '{}'.format(self.instance)
+
+    def deploy(self):
+        deploy_service.delay(self.pk)
 
     @property
     def service(self):

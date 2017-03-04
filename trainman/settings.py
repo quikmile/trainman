@@ -157,6 +157,8 @@ GITLAB_API = 'https://gitlab.com/api/v3/'
 GITLAB_USERNAME = os.environ.get('GITLAB_USERNAME', 'technomaniac')
 GITLAB_PASSWORD = os.environ.get('GITLAB_PASSWORD', '08101en038')
 
+
+
 ANSIBLE_DIR = os.path.join(BASE_DIR, "ansible/")
 ANSIBLE_PLAYBOOK = os.path.join(ANSIBLE_DIR, "playbook.yml")
 ANSIBLE_SSH_USER = os.environ.get('ANSIBLE_SSH_USER', 'ubuntu')
