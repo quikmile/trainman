@@ -1,47 +1,5 @@
 ---
 
-#- name: Make sure the known hosts file exists
-#  file: "path=/etc/ssh/ssh_known_hosts state=touch"
-#  sudo: yes
-#  tags:
-#    - setup
-#    - service
-#
-#- name: add gitlab.com to known hosts
-#  known_hosts:
-#    path=/etc/ssh/ssh_known_hosts
-#    name=gitlab.com
-#    key="{{ lookup('pipe', 'ssh-keyscan -t rsa gitlab.com') }}"
-#  become: yes
-#  become_user: "{{ ansible_user }}"
-#  tags:
-#    - setup
-#    - service
-
-- name: set permission to directory
-  file:
-    path: /home/{{ ansible_user }}/venv/
-    state: directory
-    mode: 0777
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
-  become: yes
-  become_user: "{{ ansible_user }}"
-  tags:
-    - setup
-    - service
-
-#- name: give ownership to directory
-#  file:
-#    path: /home/{{ ansible_user }}/venv/
-#    mode: 0777
-#    recurse: yes
-#  become: yes
-#  become_user: "{{ ansible_user }}"
-#  tags:
-#    - setup
-#    - service
-
 - name: Creating .netrc file
   sudo: yes
   template: src=.netrc.j2 dest=/home/{{ ansible_user }}/.netrc owner="{{ ansible_user }}" group="{{ ansible_user }}" mode=0664
@@ -57,7 +15,6 @@
     virtualenv_python=python3.6
     editable=false
   become: yes
-  become_user: "{{ ansible_user }}"
   tags:
     - setup
     - service
