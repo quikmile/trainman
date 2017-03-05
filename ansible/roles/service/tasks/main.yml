@@ -1,22 +1,22 @@
 ---
 
-- name: Make sure the known hosts file exists
-  file: "path=/etc/ssh/ssh_known_hosts state=touch"
-  sudo: yes
-  tags:
-    - setup
-    - service
-
-- name: add gitlab.com to known hosts
-  known_hosts:
-    path=/etc/ssh/ssh_known_hosts
-    name=gitlab.com
-    key="{{ lookup('pipe', 'ssh-keyscan -t rsa gitlab.com') }}"
-  become: yes
-  become_user: "{{ ansible_user }}"
-  tags:
-    - setup
-    - service
+#- name: Make sure the known hosts file exists
+#  file: "path=/etc/ssh/ssh_known_hosts state=touch"
+#  sudo: yes
+#  tags:
+#    - setup
+#    - service
+#
+#- name: add gitlab.com to known hosts
+#  known_hosts:
+#    path=/etc/ssh/ssh_known_hosts
+#    name=gitlab.com
+#    key="{{ lookup('pipe', 'ssh-keyscan -t rsa gitlab.com') }}"
+#  become: yes
+#  become_user: "{{ ansible_user }}"
+#  tags:
+#    - setup
+#    - service
 
 - name: set permission to directory
   file:
