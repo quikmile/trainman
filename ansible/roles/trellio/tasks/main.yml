@@ -73,16 +73,14 @@
      virtualenv_python=python3.6
   with_items:
      - name: pip --upgrade
-  become: yes
   become_user: "{{ ansible_user }}"
   tags:
     - setup
     - trellio
     - python
 
-- name: Install trellio
+- name: Installing trellio
   shell: /home/{{ ansible_user }}/venv/bin/pip install trellio --upgrade
-  become: yes
   become_user: "{{ ansible_user }}"
   tags:
     - setup
