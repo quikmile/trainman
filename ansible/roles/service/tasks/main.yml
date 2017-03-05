@@ -14,8 +14,6 @@
     virtualenv=/home/{{ ansible_user }}/venv
     virtualenv_python=python3.6
     editable=false
-  become: yes
-  become_user: root
   tags:
     - setup
     - service
