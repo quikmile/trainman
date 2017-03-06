@@ -13,6 +13,8 @@
     name=git+{{ pip_repo_url }}
     virtualenv=/home/{{ ansible_user }}/venv
     virtualenv_python=python3.6
+    editable=false
+    state=latest
   become_user: "{{ ansible_user }}"
   tags:
     - setup
