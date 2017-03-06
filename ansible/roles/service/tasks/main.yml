@@ -10,7 +10,7 @@
 
 - name: Installing {{ project_name }}
   pip:
-    name=git+{{ pip_repo_url }}
+    name=git+{{ pip_repo_url }} --upgrade
     virtualenv=/home/{{ ansible_user }}/venv
     virtualenv_python=python3.6
     editable=false
