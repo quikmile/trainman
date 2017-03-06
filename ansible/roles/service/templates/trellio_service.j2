@@ -4,8 +4,6 @@ Description={{ project_name|title }}
 [Service]
 ExecStart=/home/{{ ansible_user }}/venv/bin/python manage.py runserver
 Restart=always
-StandardOutput=/var/log/{{ service_name }}.log
-StandardError=/var/log/{{ service_name }}.log
 SyslogIdentifier={{ service_name }}
 User={{ ansible_user }}
 Group={{ ansible_user }}
