@@ -80,7 +80,7 @@
     - python
 
 - name: Installing trellio
-  shell: /home/{{ ansible_user }}/venv/bin/pip install trellio --upgrade
+  shell: /home/{{ ansible_user }}/venv/bin/pip install trellio --upgrade --no-cache-dir
   become_user: "{{ ansible_user }}"
   tags:
     - setup
