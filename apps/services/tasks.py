@@ -59,11 +59,12 @@ def deploy_service(service_node_id):
     tags = ['prepare', 'trellio', 'service']
 
     config = service_node.get_config()
+    config['SERVICE_NAME'] = service_node.get_service_directory()
     run_data = {
         'pip_repo_url': service_node.pip_repo_url,
         'git_repo_url': service_node.git_repo_url,
         'project_name': service_node.service_verbose_name,
-        'service_name': service_node.get_service_directory(),
+        'service_name': config['SERVICE_NAME'],
         'gitlab_username': settings.GITLAB_USERNAME,
         'gitlab_password': settings.GITLAB_PASSWORD,
         'service_config': json.dumps(config, sort_keys=False, indent=4, separators=(',', ': '))
