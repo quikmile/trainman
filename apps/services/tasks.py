@@ -1,3 +1,5 @@
+import json
+
 from celery.task.base import task
 from django.conf import settings
 
@@ -63,10 +65,9 @@ def deploy_service(service_node_id):
         'project_name': service_node.service_verbose_name,
         'service_name': service_node.get_service_directory(),
         'gitlab_username': settings.GITLAB_USERNAME,
-        'gitlab_password': settings.GITLAB_PASSWORD
+        'gitlab_password': settings.GITLAB_PASSWORD,
+        'service_config': json.dumps(config)
     }
-
-    run_data.update(config)
 
     hostnames = '\n'.join(hosts)
 
