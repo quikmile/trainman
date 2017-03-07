@@ -48,8 +48,12 @@ class Postgres(BaseModel):
         settings['database_port'] = master_db.database_port
         settings['database_user'] = master_db.database_user
         settings['database_password'] = master_db.database_password
-        if master_db.optional_settings and isinstance(master_db.optional_settings, dict):
+
+        try:
+            print master_db.optional_settings
             settings.update(master_db.optional_settings)
+        except:
+            pass
         return settings
 
     def get_service(self):
