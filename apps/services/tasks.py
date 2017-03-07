@@ -66,7 +66,7 @@ def deploy_service(service_node_id):
         'service_name': service_node.get_service_directory(),
         'gitlab_username': settings.GITLAB_USERNAME,
         'gitlab_password': settings.GITLAB_PASSWORD,
-        'service_config': json.dumps(config)
+        'service_config': json.dumps(config, sort_keys=False, indent=4, separators=(',', ': '))
     }
 
     hostnames = '\n'.join(hosts)
