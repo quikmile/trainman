@@ -159,22 +159,22 @@ class ServiceNode(BaseModel):
     def get_config(self):
         optional_settings = dict()
         config = dict()
-        config['host_name'] = self.instance.server.host_name
-        config['service_version'] = self.service_version
-        config['http_host'] = self.http_host
-        config['http_port'] = self.http_port
-        config['tcp_host'] = self.tcp_host
-        config['tcp_port'] = self.tcp_port
-        config['registry_host'] = self.service.service_registry.registry_host
-        config['registry_port'] = self.service.service_registry.registry_port
-        config['redis_host'] = self.service.service_registry.redis.database_host
-        config['redis_port'] = self.service.service_registry.redis.database_port
+        config['HOST_NAME'] = self.instance.server.host_name
+        config['SERVICE_VERSION'] = self.service_version
+        config['HTTP_HOST'] = self.http_host
+        config['HTTP_PORT'] = self.http_port
+        config['TCP_HOST'] = self.tcp_host
+        config['TCP_PORT'] = self.tcp_port
+        config['REGISTRY_HOST'] = self.service.service_registry.registry_host
+        config['REGISTRY_PORT'] = self.service.service_registry.registry_port
+        config['REDIS_HOST'] = self.service.service_registry.redis.database_host
+        config['REDIS_PORT'] = self.service.service_registry.redis.database_port
 
         if self.optional_settings and isinstance(self.optional_settings, dict):
             optional_settings = self.optional_settings
 
-        config['signals'] = optional_settings.get('signals', {})
-        config['middlewares'] = optional_settings.get('middlewares', {})
+        config['SIGNALS'] = optional_settings.get('signals', {})
+        config['MIDDLEWARES'] = optional_settings.get('middlewares', {})
 
         database = self.get_database()
         config['DATABASE_SETTINGS'] = database.get_database_settings()
