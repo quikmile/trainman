@@ -43,11 +43,11 @@ class Postgres(BaseModel):
     def get_database_settings(self):
         master_db = self.postgresnode_set.filter(master__isnull=True).first()
         settings = dict()
-        settings['database_name'] = master_db.database_name
-        settings['database_host'] = master_db.database_host
-        settings['database_port'] = master_db.database_port
-        settings['database_user'] = master_db.database_user
-        settings['database_password'] = master_db.database_password
+        settings['database'] = master_db.database_name
+        settings['host'] = master_db.database_host
+        settings['port'] = master_db.database_port
+        settings['user'] = master_db.database_user
+        settings['password'] = master_db.database_password
         if master_db.optional_settings and isinstance(master_db.optional_settings, dict):
             settings.update(master_db.optional_settings)
         return settings
