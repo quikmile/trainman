@@ -3,7 +3,9 @@ from .base import Gitlab
 
 class GitlabProject(Gitlab):
     @classmethod
-    def get_project_tree(cls, project_id):
+    def get_project_tree(cls, project_id, recursive=False):
+        if recursive is True:
+            return cls.get('projects/{}/repository/tree/?recursive=true'.format(project_id))
         return cls.get('projects/{}/repository/tree/'.format(project_id))
 
     @classmethod
@@ -25,3 +27,10 @@ class GitlabProject(Gitlab):
         for file in sql_files:
             sql += cls.read_file(project_id, file)
         return sql
+
+    @classmethod
+    def get_config(cls, project_id):
+        tree = cls.get_project_tree(project_id, recursive=True)
+        config_file = [i['path'] for i in tree if 'config.json' in i['path']]
+        config = cls.read_file(project_id, config_file[0])
+        return {'config_path': config_file[0], 'config_content': config}

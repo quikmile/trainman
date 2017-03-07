@@ -58,9 +58,13 @@ def deploy_service(service_node_id):
 
     tags = ['prepare', 'trellio', 'service']
 
-    config = service_node.get_config()
-    config['SERVICE_NAME'] = service_node.get_service_directory()
+    config = service_node.get_config_file()
+    config_dict = json.loads(config['config_content'])
+
+    config['SERVICE_NAME'] = config_dict['SERVICE_NAME']
+
     run_data = {
+        'config_path': config['config_path'],
         'pip_repo_url': service_node.pip_repo_url,
         'git_repo_url': service_node.git_repo_url,
         'project_name': service_node.service_verbose_name,

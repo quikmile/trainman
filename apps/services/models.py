@@ -149,9 +149,9 @@ class ServiceNode(BaseModel):
     def service_uri(self):
         return self.instance.service_node_type.service.service_uri
 
-    def get_service_directory(self):
+    def get_config_file(self):
         project_id = self.service.gitlab_project_id
-        return GitlabProject.get_dir_name(project_id)
+        return GitlabProject.get_config(project_id)
 
     def get_database(self):
         return self.service.get_database()

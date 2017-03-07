@@ -24,7 +24,7 @@
 
 - name: Creating service config.json
   sudo: yes
-  template: src=config.json.j2 dest=/home/{{ ansible_user }}/venv/lib/python3.6/site-packages/{{ service_name }}/config.json owner="{{ ansible_user }}" group="{{ ansible_user }}" mode=0777
+  template: src=config.json.j2 dest=/home/{{ ansible_user }}/venv/lib/python3.6/site-packages/{{ config_path }} owner="{{ ansible_user }}" group="{{ ansible_user }}" mode=0777
   tags:
     - setup
     - service
