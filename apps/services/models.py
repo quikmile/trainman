@@ -177,8 +177,7 @@ class ServiceNode(BaseModel):
         config['middlewares'] = optional_settings.get('middlewares', {})
 
         database = self.get_database()
-        database_settings = database.get_database_settings()
-        config.update(database_settings)
+        config['DATABASE_SETTINGS'] = database.get_database_settings()
 
         return config
 
