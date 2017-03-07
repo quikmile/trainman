@@ -16,7 +16,7 @@
     editable=false
     state=latest
   with_items:
-     - name: git+{{ pip_repo_url }} --upgrade --no-cache-dir
+     - name: git+{{ pip_repo_url }}
   become_user: "{{ ansible_user }}"
   tags:
     - setup
