@@ -149,9 +149,9 @@ class RedisNode(BaseDatabaseNode):
 from .tasks import *
 
 
-# @receiver(post_save, sender=PostgresNode)
-# def initiate_postgres_nodes_tasks(sender, instance, **kwargs):
-#     deploy_postgres.delay(instance.pk)
+@receiver(post_save, sender=PostgresNode)
+def initiate_postgres_nodes_tasks(sender, instance, **kwargs):
+    deploy_postgres.delay(instance.pk)
 
 
 @receiver(post_save, sender=RedisNode)
