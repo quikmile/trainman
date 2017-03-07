@@ -58,10 +58,11 @@ def deploy_service(service_node_id):
 
     tags = ['prepare', 'trellio', 'service']
 
-    config = service_node.get_config_file()
-    config_dict = json.loads(config['config_content'])
+    gitlab_config = service_node.get_config_file()
+    gitlab_config_dict = json.loads(gitlab_config['config_content'])
 
-    config['SERVICE_NAME'] = config_dict['SERVICE_NAME']
+    config = service_node.get_config()
+    config['SERVICE_NAME'] = gitlab_config_dict['SERVICE_NAME']
 
     run_data = {
         'config_path': config['config_path'],
