@@ -19,7 +19,7 @@ def deploy_gateway():
 
     hostnames = '\n'.join(hosts)
 
-    tags = ['prepare','nginx', 'gateway']
+    tags = ['prepare', 'nginx', 'gateway']
 
     runner = Runner(hostnames=hostnames,
                     playbook=PLAYBOOK,

@@ -41,11 +41,12 @@ def deploy_registry(registry_node_id, extra_tags=()):
 
 
 @task
-def deploy_service(service_node_id):
+def deploy_service(service_node_id, **options):
     service_node = ServiceNode.objects.get(pk=service_node_id)
 
-    database = service_node.get_database()
-    database.deploy()
+    if options.get('database'):
+        database = service_node.get_database()
+        database.deploy()
 
     PLAYBOOK = settings.ANSIBLE_PLAYBOOK
     hosts = ['[trellio_service]']
@@ -56,7 +57,9 @@ def deploy_service(service_node_id):
                                                                   settings.ANSIBLE_SSH_USER,
                                                                   settings.ANSIBLE_SSH_PASS))
 
-    tags = ['prepare', 'trellio', 'service']
+    tags = ['trellio', 'service']
+    if options.get('tags'):
+        tags.extend(options.get('tags'))
 
     gitlab_config = service_node.get_config_file()
     gitlab_config_dict = json.loads(gitlab_config['config_content'])
@@ -86,4 +89,5 @@ def deploy_service(service_node_id):
 
     stats = runner.run()
 
-    deploy_gateway.delay()
+    if options.get('tags') and 'prepare' in options.get('tags'):
+        deploy_gateway.delay()

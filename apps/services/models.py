@@ -115,6 +115,14 @@ class ServiceNode(BaseModel):
     def __unicode__(self):
         return '{}'.format(self.instance)
 
+    def save(self, *args, **kwargs):
+        super(ServiceNode, self).save(*args, **kwargs)
+        options = dict()
+        if self.is_created:
+            options['database'] = True
+            options['tags'] = ['prepare']
+        deploy_service.delay(self.pk, **options)
+
     def deploy(self):
         deploy_service.delay(self.pk)
 
@@ -206,7 +214,6 @@ from .tasks import *
 def initiate_registry_node_tasks(sender, instance, **kwargs):
     deploy_registry.delay(instance.pk, extra_tags=['prepare'])
 
-
-@receiver(post_save, sender=ServiceNode)
-def initiate_service_node_tasks(sender, instance, **kwargs):
-    deploy_service.delay(instance.pk)
+# @receiver(post_save, sender=ServiceNode)
+# def initiate_service_node_tasks(sender, instance, **kwargs):
+#     deploy_service.delay(instance.pk)
