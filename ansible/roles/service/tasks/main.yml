@@ -39,6 +39,13 @@
     - setup
     - service
 
+- name: enable service
+  sudo: yes
+  command: systemctl enable {{ service_name }}.service
+  tags:
+    - setup
+    - service
+
 - name: restart service
   sudo: yes
   command: service {{ service_name }} restart
