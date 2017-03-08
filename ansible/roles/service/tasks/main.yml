@@ -39,7 +39,14 @@
     - setup
     - service
 
-- name: enable service
+- name: disable service
+  sudo: yes
+  command: systemctl disable {{ service_name }}.service
+  tags:
+    - setup
+    - service
+
+- name: re-enable service
   sudo: yes
   command: systemctl enable {{ service_name }}.service
   tags:
