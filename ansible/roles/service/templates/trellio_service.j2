@@ -3,7 +3,6 @@ Description={{ project_name|title }}
 
 [Service]
 ExecStart=/home/{{ ansible_user }}/venv/bin/python manage.py runserver
-Type=notify
 Restart=always
 RestartSec=3
 SyslogIdentifier={{ service_name }}
