@@ -90,6 +90,8 @@
   sudo: yes
   notify:
     - reload systemctl
+    - disable trellio
+    - enable trellio
     - restart trellio
   template: src=trellio.service.j2 dest=/etc/systemd/system/trellio.service owner="{{ ansible_user }}" group="{{ ansible_user }}" backup=yes mode=0644
   tags:

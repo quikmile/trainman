@@ -4,6 +4,7 @@ Description=Trellio Registry
 [Service]
 ExecStart=/home/{{ ansible_user }}/venv/bin/python -m trellio.registry
 Restart=always
+RestartSec=3
 SyslogIdentifier=trellio_registry
 User={{ ansible_user }}
 Group={{ ansible_user }}

@@ -69,14 +69,6 @@
     - postgres
     - setup
 
-- name: grant user permissions on all tables
-  become: yes
-  become_user: postgres
-  command: psql -d {{ db_name }} -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO {{ db_user }};"
-  tags:
-    - postgres
-    - setup
-
 
 - name: Copy sql file
   sudo: yes
@@ -99,6 +91,13 @@
   tags:
     - postgres
 
+- name: grant user permissions on all tables
+  become: yes
+  become_user: postgres
+  command: psql -d {{ db_name }} -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO {{ db_user }};"
+  tags:
+    - postgres
+    - setup
 
 - name: Copy pg_hba.conf file
   sudo: yes

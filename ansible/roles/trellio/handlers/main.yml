@@ -4,6 +4,14 @@
   sudo: yes
   command: systemctl daemon-reload
 
+- name: disable trellio
+  sudo: yes
+  command: systemctl disable trellio.service
+
+- name: enable trellio
+  sudo: yes
+  command: systemctl enable trellio.service
+
 - name: restart trellio
   service: name=trellio state=restarted
   sudo: yes
