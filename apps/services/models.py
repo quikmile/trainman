@@ -120,7 +120,7 @@ class ServiceNode(BaseModel):
         options = dict()
         if self.is_created:
             options['database'] = True
-            options['tags'] = ['prepare']
+            options['tags'] = ['prepare', 'trellio']
         deploy_service.delay(self.pk, **options)
 
     def deploy(self):
