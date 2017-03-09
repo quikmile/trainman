@@ -28,8 +28,8 @@ location /v{{ service.service_version }}/{{ service.service_uri }}/ {
 
         {% if service.service_uri != 'rbac' %}
 auth_request     /auth;
-        auth_request_set $auth_status $upstream_http_xauth;
-        proxy_set_body $auth_status;
+        auth_request_set $auth_xauth $upstream_http_xauth;
+        proxy_set_body $auth_xauth;
         {% endif %}
 
         proxy_pass http://{{ service.service_uri }}/;
