@@ -17,7 +17,6 @@ server {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
     location = /auth {
-            internal;
             proxy_pass              http://rbac/auth/;
             proxy_pass_request_body off;
             proxy_set_header        Content-Length "";
@@ -29,7 +28,7 @@ location /v{{ service.service_version }}/{{ service.service_uri }}/ {
 
         {% if service.service_uri != 'rbac' %}
 auth_request     /auth;
-        auth_request_set $auth_status $upstream_http_xauth_status;
+        auth_request_set $auth_status $upstream_http_xauth;
         proxy_set_body $auth_status;
         {% endif %}
 
