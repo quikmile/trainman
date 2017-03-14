@@ -8,6 +8,13 @@
     - service
 
 
+- name: Set permission and ownership to venv
+  file: dest=/home/{{ ansible_user }}/venv owner={{ ansible_user }} group={{ ansible_user }} mode=0777 recurse=yes state=directory
+  become: yes
+  tags:
+    - setup
+    - service
+
 - name: Installing {{ project_name }}
   pip:
     name={{ item.name }}
