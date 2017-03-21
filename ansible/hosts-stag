@@ -1,8 +1,11 @@
 [all]
-205.147.101.145 ansible_user=ubuntu
+205.147.103.228 ansible_user=artifici
 
-[trellio_service]
-205.147.101.145 ansible_user=ubuntu
+[postgres]
+205.147.103.228 ansible_user=artifici
+
+#[trellio_service]
+#205.147.101.145 ansible_user=ubuntu
 
 #[devops]
 #205.147.103.24 ansible_user=ubuntu
