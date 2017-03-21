@@ -154,7 +154,7 @@ class Runner(object):
         # the playbook callback file
         self.pbex._tqm.send_callback(
             'record_logs',
-            user_id='ubuntu',
+            user_id='artifici',
             success=run_success
         )
 
