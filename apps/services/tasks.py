@@ -68,6 +68,7 @@ def deploy_service(service_node_id, **options):
     config['SERVICE_NAME'] = gitlab_config_dict['SERVICE_NAME']
 
     run_data = {
+        'project_root': gitlab_config['config_path'].split('/')[0],
         'config_path': gitlab_config['config_path'],
         'pip_repo_url': service_node.pip_repo_url,
         'git_repo_url': service_node.git_repo_url,
