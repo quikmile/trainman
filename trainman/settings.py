@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
-
 import requests.packages.urllib3
 
 requests.packages.urllib3.disable_warnings()
