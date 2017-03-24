@@ -17,6 +17,14 @@ server {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
     location = /auth {
+            if ($request_method = 'OPTIONS') {
+                add_header "Access-Control-Allow-Origin"  *;
+                add_header "Access-Control-Allow-Methods" "POST, OPTIONS, PUT, GET, DELETE";
+                add_header "Access-Control-Allow-Headers" "Authorization";
+                return 204;
+            }
+            add_header 'Access-Control-Allow-Origin' *;
+
             internal;
             proxy_pass              http://rbac/auth/;
             proxy_pass_request_body off;
@@ -26,6 +34,14 @@ server {
 
     {% for service in services %}
 location /v{{ service.service_version }}/{{ service.service_uri }}/ {
+
+        if ($request_method = 'OPTIONS') {
+            add_header "Access-Control-Allow-Origin"  *;
+            add_header "Access-Control-Allow-Methods" "POST, OPTIONS, PUT, GET, DELETE";
+            add_header "Access-Control-Allow-Headers" "Authorization";
+            return 204;
+        }
+        add_header 'Access-Control-Allow-Origin' *;
 
         {% if service.service_uri != 'rbac' %}
 auth_request     /auth;
