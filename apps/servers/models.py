@@ -30,4 +30,4 @@ class APIGateway(BaseModel):
         extra_tags = []
         if self.is_created:
             extra_tags = ['prepare', 'nginx']
-        deploy_gateway.delay(email=self.user.username, extra_tags=extra_tags)
+        deploy_gateway.delay(self.pk, email=self.user.username, extra_tags=extra_tags)
