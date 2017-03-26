@@ -39,6 +39,12 @@
   tags:
     - nginx
 
+- name: Create snippets directory
+  file: path=/etc/nginx/snippets state=directory
+  sudo: yes
+  tags:
+    - nginx
+
 - name: Copy letsencrypt.conf file
   template: src=letsencrypt.conf.j2 dest=/etc/nginx/snippets/letsencrypt.conf
   sudo: yes
