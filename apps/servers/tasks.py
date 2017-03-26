@@ -15,6 +15,12 @@ def deploy_gateway(gateway_id, email='', extra_tags=()):
                                                                   settings.ANSIBLE_SSH_USER,
                                                                   settings.ANSIBLE_SSH_PASS))
 
+    if not email:
+        try:
+            email = settings.ADMINS[0][1]
+        except:
+            email = ''
+
     run_data = {'services': ServiceNode.objects.all(),
                 'hostname': gateway.domain,
                 'email': email}

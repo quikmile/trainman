@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-ADMINS = []
+ADMINS = [('Abhishek', 'abhishek@artificilabs.com')]
 
 # Application definition
 
