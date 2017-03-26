@@ -34,7 +34,7 @@
     - nginx
 
 - name: update fastcgi_param file
-  template: src=fastcgi_param.j2 dest=/etc/nginx/fastcgi_params
+  template: src=fastcgi_params.j2 dest=/etc/nginx/fastcgi_params
   sudo: yes
   tags:
     - nginx
