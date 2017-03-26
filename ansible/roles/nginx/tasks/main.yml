@@ -45,8 +45,8 @@
   tags:
     - nginx
 
-- name: Copy letsencrypt.conf file
-  template: src=letsencrypt.conf.j2 dest=/etc/nginx/snippets/letsencrypt.conf
+- name: Create site-enabled directory
+  file: path=/etc/nginx/sites-enabled state=directory
   sudo: yes
   tags:
     - nginx
@@ -55,6 +55,13 @@
   template: src=ssl.conf.j2 dest=/etc/nginx/snippets/ssl.conf
   sudo: yes
   tags:
+    - nginx
+
+- name: Copy letsencrypt.conf file
+  template: src=letsencrypt.conf.j2 dest=/etc/nginx/snippets/letsencrypt.conf
+  sudo: yes
+  tags:
+    - letsencrypt
     - nginx
 
 - name: create /var/www/letsencrypt/.well-known/acme-challenge directory
@@ -75,6 +82,15 @@
 
 - name: generate certificate
   shell: letsencrypt certonly --webroot -w /var/www/letsencrypt -d {{ domain }} --email {{ email }} --agree-tos
+  tags:
+    - letsencrypt
+    - nginx
+
+- name: Remove temp domain.conf file
+  file: path=/etc/nginx/sites-enabled/domain.conf state=absent
+  sudo: yes
+  notify:
+    - restart nginx
   tags:
     - letsencrypt
     - nginx
