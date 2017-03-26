@@ -81,7 +81,7 @@
     - nginx
 
 - name: generate certificate
-  shell: letsencrypt certonly --webroot -w /var/www/letsencrypt -d {{ domain }} --email {{ email }} --agree-tos
+  shell: letsencrypt certonly --webroot -w /var/www/letsencrypt -d {{ hostname }} --email {{ email }} --agree-tos
   tags:
     - letsencrypt
     - nginx
