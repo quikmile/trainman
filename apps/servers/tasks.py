@@ -7,14 +7,17 @@ from ..services.models import ServiceNode
 
 
 @task
-def deploy_gateway(extra_tags=()):
+def deploy_gateway(gateway_id, email='', extra_tags=()):
     hosts = ['[gateway]']
-    for gateway in APIGateway.objects.all():
-        hosts.append('{} ansible_user={} ansible_sudo_pass={}'.format(gateway.server.ip_address,
-                                                                      settings.ANSIBLE_SSH_USER,
-                                                                      settings.ANSIBLE_SSH_PASS))
+    gateway = APIGateway.objects.get(pk=gateway_id)
 
-    run_data = {'services': ServiceNode.objects.all()}
+    hosts.append('{} ansible_user={} ansible_sudo_pass={}'.format(gateway.server.ip_address,
+                                                                  settings.ANSIBLE_SSH_USER,
+                                                                  settings.ANSIBLE_SSH_PASS))
+
+    run_data = {'services': ServiceNode.objects.all(),
+                'hostname': gateway.domain,
+                'email': email}
 
     hostnames = '\n'.join(hosts)
 

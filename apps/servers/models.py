@@ -17,11 +17,12 @@ class Server(BaseModel):
 
 
 class APIGateway(BaseModel):
+    domain = models.CharField(max_length=100, null=True, blank=True)
     server = models.ForeignKey('servers.Server')
     http_server = models.CharField(choices=HTTP_SERVER, max_length=20, default='NGINX')
 
     def __unicode__(self):
-        return '{} | {}'.format(self.server, self.http_server)
+        return '{} | {} | {}'.format(self.server, self.domain, self.http_server)
 
     def save(self, *args, **kwargs):
         super(APIGateway, self).save(*args, **kwargs)
@@ -29,4 +30,4 @@ class APIGateway(BaseModel):
         extra_tags = []
         if self.is_created:
             extra_tags = ['prepare', 'nginx']
-        deploy_gateway.delay(extra_tags=extra_tags)
+        deploy_gateway.delay(email=self.user.username, extra_tags=extra_tags)
