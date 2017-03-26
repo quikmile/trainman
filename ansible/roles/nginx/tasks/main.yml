@@ -7,7 +7,7 @@
     - nginx
 
 - name: Add signing key
-  command: wget -q -O- http://nginx.org/keys/nginx_signing.key | sudo apt-key add -
+  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present validate_certs=no
   sudo: yes
   tags:
     - nginx
