@@ -24,6 +24,8 @@
 - name: Copy nginx.conf file
   template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
   sudo: yes
+  notify:
+    - restart nginx
   tags:
     - nginx
 
@@ -36,6 +38,8 @@
 - name: update fastcgi_param file
   template: src=fastcgi_params.j2 dest=/etc/nginx/fastcgi_params
   sudo: yes
+  notify:
+    - restart nginx
   tags:
     - nginx
 
@@ -54,12 +58,16 @@
 - name: Copy ssl.conf file
   template: src=ssl.conf.j2 dest=/etc/nginx/snippets/ssl.conf
   sudo: yes
+  notify:
+    - restart nginx
   tags:
     - nginx
 
 - name: Copy letsencrypt.conf file
   template: src=letsencrypt.conf.j2 dest=/etc/nginx/snippets/letsencrypt.conf
   sudo: yes
+  notify:
+    - restart nginx
   tags:
     - letsencrypt
     - nginx
