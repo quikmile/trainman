@@ -7,8 +7,7 @@ from ..services.models import ServiceNode
 
 
 @task
-def deploy_gateway():
-    PLAYBOOK = settings.ANSIBLE_PLAYBOOK
+def deploy_gateway(extra_tags=()):
     hosts = ['[gateway]']
     for gateway in APIGateway.objects.all():
         hosts.append('{} ansible_user={} ansible_sudo_pass={}'.format(gateway.server.ip_address,
@@ -19,10 +18,10 @@ def deploy_gateway():
 
     hostnames = '\n'.join(hosts)
 
-    tags = ['prepare', 'nginx', 'gateway']
+    tags = list(extra_tags) + ['gateway']
 
     runner = Runner(hostnames=hostnames,
-                    playbook=PLAYBOOK,
+                    playbook=settings.ANSIBLE_PLAYBOOK,
                     private_key_file=settings.ANSIBLE_PUBLIC_KEY,
                     run_data=run_data,
                     become_pass=settings.ANSIBLE_SSH_PASS,

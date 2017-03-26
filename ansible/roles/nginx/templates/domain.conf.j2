@@ -1,0 +1,14 @@
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server ipv6only=on;
+	server_name {{ hostname }};
+
+	include /etc/nginx/snippets/letsencrypt.conf;
+
+	#root /var/www/mydomain;
+	#index index.html;
+
+    location / {
+		try_files $uri $uri/ =404;
+	}
+}

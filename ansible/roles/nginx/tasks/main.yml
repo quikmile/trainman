@@ -1,33 +1,85 @@
 ---
 
-- name: Install Nginx
-  apt: pkg=nginx state=installed update-cache=yes
+- name: Create /etc/apt/sources.list.d/nginx.list
+  template: src=nginx.list.j2 dest=/etc/apt/sources.list.d/nginx.list
   sudo: yes
   tags:
     - nginx
 
-- name: Remove default Nginx site config
-  file: path=/etc/nginx/sites-enabled/default state=absent
+- name: Add signing key
+  command: wget -q -O- http://nginx.org/keys/nginx_signing.key | sudo apt-key add -
+  sudo: yes
+  tags:
+    - nginx
+
+- name: Install Nginx
+  apt: pkg={{ item }} state=installed update-cache=yes
+  sudo: yes
+  with_items:
+    - nginx
+    - letsencrypt
+  tags:
+    - nginx
+
+- name: Copy nginx.conf file
+  template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+  sudo: yes
+  tags:
+    - nginx
+
+- name: Remove conf.d directory
+  file: path=/etc/nginx/conf.d state=absent
+  sudo: yes
+  tags:
+    - nginx
+
+- name: update fastcgi_param file
+  template: src=fastcgi_param.j2 dest=/etc/nginx/fastcgi_params
+  sudo: yes
+  tags:
+    - nginx
+
+- name: Copy letsencrypt.conf file
+  template: src=letsencrypt.conf.j2 dest=/etc/nginx/snippets/letsencrypt.conf
+  sudo: yes
+  tags:
+    - nginx
+
+- name: Copy ssl.conf file
+  template: src=ssl.conf.j2 dest=/etc/nginx/snippets/ssl.conf
+  sudo: yes
+  tags:
+    - nginx
+
+- name: create /var/www/letsencrypt/.well-known/acme-challenge directory
+  file: path=/var/www/letsencrypt/.well-known/acme-challenge state=directory
+  sudo: yes
+  tags:
+    - letsencrypt
+    - nginx
+
+- name: create temporary domain.conf file
+  template: src=domain.conf.j2 dest=/etc/nginx/sites-enabled/domain.conf
   sudo: yes
   notify:
     - restart nginx
   tags:
+    - letsencrypt
     - nginx
 
-- name: Copy gateway.conf file
+- name: generate certificate
+  shell: letsencrypt certonly --webroot -w /var/www/letsencrypt -d {{ domain }} --email {{ email }} --agree-tos
+  tags:
+    - letsencrypt
+    - nginx
+
+- name: create gateway.conf file
   template: src=gateway.conf.j2 dest=/etc/nginx/sites-enabled/gateway.conf
   sudo: yes
   notify:
     - reload nginx
   tags:
     - gateway
+    - nginx
 
-
-#- name: Copy {{ service_name }}.conf file
-#  template: src=trellio_service.conf.j2 dest=/etc/nginx/sites-enabled/{{ service_name }}.conf
-#  sudo: yes
-#  notify:
-#    - reload nginx
-#  tags:
-#    - service
 

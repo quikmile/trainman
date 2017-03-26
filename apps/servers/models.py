@@ -26,4 +26,7 @@ class APIGateway(BaseModel):
     def save(self, *args, **kwargs):
         super(APIGateway, self).save(*args, **kwargs)
         from .tasks import deploy_gateway
-        deploy_gateway.delay()
+        extra_tags = []
+        if self.is_created:
+            extra_tags = ['prepare', 'nginx']
+        deploy_gateway.delay(extra_tags=extra_tags)

@@ -4,12 +4,34 @@ upstream {{ service.service_uri }} {
 }
 {% endfor %}
 
-
 server {
-    listen      80;
+    listen 80 default_server;
+	listen [::]:80 default_server ipv6only=on;
     charset     utf-8;
 
-    client_max_body_size 75M;
+    server_name {{ hostname }};
+
+	include /etc/nginx/snippets/letsencrypt.conf;
+
+	location / {
+		return 301 https://{{ hostname }}$request_uri;
+	}
+}
+
+server {
+    server_name {{ hostname }};
+    charset     utf-8;
+	listen 443 ssl http2 default_server;
+	listen [::]:443 ssl http2 default_server ipv6only=on;
+
+	ssl_certificate /etc/letsencrypt/live/{{ hostname }}/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/{{ hostname }}/privkey.pem;
+	ssl_trusted_certificate /etc/letsencrypt/live/{{ hostname }}/fullchain.pem;
+	include /etc/nginx/snippets/ssl.conf;
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
 
     proxy_set_header HOST $host;
     proxy_set_header X-Forwarded-Proto $scheme;

@@ -1,5 +1,9 @@
 ---
 
+- name: reload cache
+  apt: update_cache=yes
+  sudo: yes
+
 - name: restart nginx
   service: name=nginx state=restarted
   sudo: yes
