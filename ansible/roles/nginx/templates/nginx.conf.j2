@@ -6,7 +6,7 @@ pid        /var/run/nginx.pid;
 
 
 events {
-    worker_connections  1024 * {{ ansible_processor_vcpus }};
+    worker_connections  1024;
 }
 
 
