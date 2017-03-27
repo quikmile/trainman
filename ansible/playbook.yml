@@ -6,7 +6,6 @@
 
 - hosts: trellio_service
   roles:
-    - trellio
     - service
 
 - hosts: gateway
