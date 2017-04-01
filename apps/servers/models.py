@@ -49,6 +49,6 @@ class SMTPServer(BaseModel):
         settings = dict()
         settings['smtp_host'] = self.smtp_host
         settings['smtp_port'] = self.smtp_port
-        settings['smtp_user'] = self.smtp_host
+        settings['smtp_user'] = self.smtp_user
         settings['smtp_password'] = self.smtp_password
         return settings
