@@ -7,4 +7,5 @@ from .models import *
 
 admin.site.register(Server)
 admin.site.register(APIGateway)
+admin.site.register(SMTPServer)
 # Register your models here.
