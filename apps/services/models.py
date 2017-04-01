@@ -191,6 +191,8 @@ class ServiceNode(BaseModel):
         if self.service.smtp_server:
             config['SMTP_SETTINGS'] = self.service.smtp_server.get_smtp_settings()
 
+        if self.service.contributors:
+            config['ADMIN_EMAILS'] = self.service.contributors
         return config
 
 
