@@ -31,3 +31,24 @@ class APIGateway(BaseModel):
         if self.is_created:
             extra_tags = ['prepare', 'nginx']
         deploy_gateway.delay(self.pk, extra_tags=extra_tags)
+
+
+class SMTPServer(BaseModel):
+    smtp_host = models.CharField(max_length=100)
+    smtp_port = models.IntegerField(default=587)
+    smtp_user = models.EmailField(max_length=200)
+    smtp_password = models.CharField(max_length=100)
+
+    class Meta:
+        unique_together = ('smtp_host', 'smtp_port', 'smtp_user')
+
+    def __unicode__(self):
+        return '{} - {}'.format(self.smtp_host, self.smtp_user)
+
+    def get_smtp_settings(self):
+        settings = dict()
+        settings['smtp_host'] = self.smtp_host
+        settings['smtp_port'] = self.smtp_port
+        settings['smtp_user'] = self.smtp_host
+        settings['smtp_password'] = self.smtp_password
+        return settings

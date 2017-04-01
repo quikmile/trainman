@@ -38,6 +38,7 @@ class Service(BaseModel):
     content_object = GenericForeignKey('content_type', 'database_id')
     dependencies = JSONField(null=True, blank=True)
 
+    smtp_server = models.ForeignKey('servers.SMTPServer', null=True, blank=True)
     http_server = models.CharField(choices=HTTP_SERVER, max_length=20, default='NGINX')
     service_uri = models.CharField(max_length=100, unique=True)
 
@@ -186,6 +187,9 @@ class ServiceNode(BaseModel):
 
         database = self.get_database()
         config['DATABASE_SETTINGS'] = database.get_database_settings()
+
+        if self.service.smtp_server:
+            config['SMTP_SETTINGS'] = self.service.smtp_server.get_smtp_settings()
 
         return config
 
