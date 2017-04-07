@@ -183,7 +183,7 @@ class ServiceNode(BaseModel):
             optional_settings = self.optional_settings
 
         config['SIGNALS'] = optional_settings.get('signals', {})
-        config['MIDDLEWARES'] = optional_settings.get('middlewares', {})
+        config['MIDDLEWARES'] = optional_settings.get('middlewares', [])
 
         database = self.get_database()
         config['DATABASE_SETTINGS'] = database.get_database_settings()
