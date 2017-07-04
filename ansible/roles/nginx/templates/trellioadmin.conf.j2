@@ -1,4 +1,4 @@
-upstream {{ service.service_uri }} {
+upstream {{ project_name }} {
     server unix:///tmp/{{ project_name }}.sock max_fails=5 fail_timeout=10s;
 }
 
