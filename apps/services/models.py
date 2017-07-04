@@ -215,16 +215,15 @@ class ServiceRegistryNode(BaseNode):
 
 class TrellioAdmin(BaseNode):
     project_name = models.CharField(max_length=100, unique=True)
-    project_uri = models.CharField(max_length=50, unique=True)
     project_owner = models.EmailField(max_length=200)
     repo_url = models.CharField(max_length=200, unique=True)
     domain = models.CharField(max_length=200, unique=True)
 
     def save(self, *args, **kwargs):
+        super(TrellioAdmin, self).save(*args, **kwargs)
         from .tasks import deploy_trellio_admin
         if self.is_created:
             deploy_trellio_admin.delay(self.pk, extra_tags=['prepare', 'setup'])
-        super(TrellioAdmin, self).save(*args, **kwargs)
 
     def get_environment_variables(self):
         env_vars = dict()
