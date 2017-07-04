@@ -5,33 +5,33 @@
   sudo: yes
   tags:
     - setup
-    - web
     - deploy
 
 - name: deploy code from repository repo_branch
   git: accept_hostkey=yes repo={{ repo_url }} dest={{ project_root }}/{{ project_name }} remote={{ repo_remote }} version={{ repo_branch }}
   notify:
     - restart uwsgi
-    - restart nginx
   tags:
     - deploy
     - setup
-    - pull
 
-- name: Fix for pip bug
-  sudo: yes
-  shell: rm -rf /usr/local/lib/python2.7/dist-packages/requests*
-  tags:
-    - setup
-    - deploy
+#- name: Fix for pip bug
+#  sudo: yes
+#  shell: rm -rf /usr/local/lib/python2.7/dist-packages/requests*
+#  tags:
+#    - setup
 
-- name: upgrade pip
-  sudo: yes
-  shell: easy_install -U pip
+- name: Create Virtualenv & upgrade pip
+  pip:
+     name={{ item.name }}
+     virtualenv=/home/{{ ansible_user }}/venv
+     virtualenv_python=python3
+  with_items:
+     - name: pip --upgrade
+  become_user: "{{ ansible_user }}"
   tags:
     - setup
-    - web
-    - deploy
+    - virtualenv
 
 - name: install python dependencies
   notify: restart uwsgi

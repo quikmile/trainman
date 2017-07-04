@@ -3,6 +3,7 @@ import json
 from celery.task.base import task
 from django.conf import settings
 
+from apps.services.models import TrellioAdmin
 from .models import ServiceRegistryNode, ServiceNode
 from ..base.ansibles import Runner
 from ..servers.tasks import deploy_gateway
@@ -92,3 +93,42 @@ def deploy_service(service_node_id, **options):
 
     if options.get('tags') and 'prepare' in options.get('tags'):
         deploy_gateway.delay()
+
+
+@task
+def deploy_trellio_admin(trellio_admin_id, extra_tags=()):
+    trellio_admin = TrellioAdmin.objects.get(pk=trellio_admin_id)
+
+    PLAYBOOK = settings.ANSIBLE_PLAYBOOK
+    hosts = ['[trellio_admin]']
+
+    host = trellio_admin.server.ip_address
+
+    hosts.append('{} ansible_user={} ansible_sudo_pass={}'.format(host,
+                                                                  settings.ANSIBLE_SSH_USER,
+                                                                  settings.ANSIBLE_SSH_PASS))
+    tags = list(extra_tags) + ['trellioadmin']
+    if 'setup' in tags:
+        tags.append('nginx')
+
+    run_data = {
+        'hostname': trellio_admin.domain,
+        'project_root': '/srv',
+        'project_name': 'trellioadmin',
+        'project_src': 'trellioadmin',
+        'environment_variables': trellio_admin.get_environment_variables(),
+        'db_name': trellio_admin.get_db_name(),
+        'db_user': trellio_admin.get_db_user(),
+        'db_pass': trellio_admin.get_db_pass()
+    }
+
+    hostnames = '\n'.join(hosts)
+
+    runner = Runner(hostnames=hostnames,
+                    playbook=PLAYBOOK,
+                    private_key_file=settings.ANSIBLE_PUBLIC_KEY,
+                    run_data=run_data,
+                    become_pass=settings.ANSIBLE_SSH_PASS,
+                    tags=tags)
+
+    stats = runner.run()

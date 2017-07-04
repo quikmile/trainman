@@ -40,7 +40,6 @@
     - postgresql-9.6-postgis-2.3
   tags:
     - postgis
-    - setup
 
 - name: ensure database is created
   sudo: yes
@@ -97,7 +96,6 @@
   command: psql -d {{ db_name }} -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO {{ db_user }};"
   tags:
     - postgres
-    - setup
 
 - name: Copy pg_hba.conf file
   sudo: yes
