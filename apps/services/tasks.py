@@ -3,8 +3,7 @@ import json
 from celery.task.base import task
 from django.conf import settings
 
-from apps.services.models import TrellioAdmin
-from .models import ServiceRegistryNode, ServiceNode
+from .models import ServiceRegistryNode, ServiceNode, TrellioAdmin
 from ..base.ansibles import Runner
 from ..servers.tasks import deploy_gateway
 
