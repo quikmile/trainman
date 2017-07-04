@@ -112,6 +112,7 @@ def deploy_trellio_admin(trellio_admin_id, extra_tags=()):
 
     run_data = {
         'hostname': trellio_admin.domain,
+        'email': trellio_admin.project_owner,
         'project_root': '/srv',
         'project_name': 'trellioadmin',
         'project_src': 'trellioadmin',
