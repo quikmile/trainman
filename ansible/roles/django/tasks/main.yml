@@ -16,10 +16,11 @@
 
 - name: deploy code from repository repo_branch
   git: repo={{ repo_url }} dest={{ project_root }}
+  become_user: "{{ ansible_user }}"
   notify:
     - restart uwsgi
   tags:
-    - deploy
+    - setup
     - trellioadmin
 
 #- name: Fix for pip bug
