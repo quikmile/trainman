@@ -15,7 +15,7 @@
     - trellioadmin
 
 - name: deploy code from repository repo_branch
-  git: accept_hostkey=yes repo={{ repo_url }} dest={{ project_root }} remote=origin version=master
+  shell: git clone { repo_url }} {{ project_root }}
   notify:
     - restart uwsgi
   tags:
