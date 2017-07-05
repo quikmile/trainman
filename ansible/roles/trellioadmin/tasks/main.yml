@@ -35,5 +35,6 @@
     cd {{ project_root }}/{{ project_name }}
     git add .
     git commit -m "updated models by inspect db command by trainman"
+    git push
   tags:
     - trellioadmin
