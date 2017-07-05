@@ -34,7 +34,7 @@
     - trellioadmin
 
 - name: creating apps
-  shell: /home/{{ ansible_user }}/venv/bin/python {{ project_root }}/{{ project_name }}/manage.py startapp {{ project_root }}/{{ project_name }}/apps/{{ item.service }}
+  shell: /home/{{ ansible_user }}/venv/bin/python {{ project_root }}/{{ project_name }}/manage.py startapp {{ item.service }} {{ project_root }}/{{ project_name }}/apps/{{ item.service }}
   with_items:
     - "{{ services }}"
   notify:
