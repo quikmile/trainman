@@ -242,6 +242,10 @@ class TrellioAdmin(BaseNode):
     def get_db_name(self):
         return 'trellioadmin'
 
+    def deploy(self):
+        from .tasks import deploy_trellio_admin
+        deploy_trellio_admin.delay(self.pk)
+
 
 from .tasks import *
 
