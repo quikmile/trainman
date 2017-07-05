@@ -16,9 +16,9 @@
 
 - name: create apps
   shell: |
-    mkdir {{ project_root }}/{{ project_name }}/apps/"{{ item.service }}"
-    python {{ project_root }}/{{ project_name }}/manage.py startapp {{ project_root }}/{{ project_name }}/apps/"{{ item.service }}"
-    python {{ project_root }}/{{ project_name }}/manage.py inspectdb --database="{{ item.service }}" > {{ project_root }}/{{ project_name }}/apps/"{{ item.service }}"/models.py
+    mkdir {{ project_root }}/{{ project_name }}/apps/{{ item.service }}
+    python {{ project_root }}/{{ project_name }}/manage.py startapp {{ project_root }}/{{ project_name }}/apps/{{ item.service }}
+    python {{ project_root }}/{{ project_name }}/manage.py inspectdb --database={{ item.service }} > {{ project_root }}/{{ project_name }}/apps/{{ item.service }}/models.py
     python {{ project_root }}/{{ project_name }}/manage.py makemigrations
     python {{ project_root }}/{{ project_name }}/manage.py migrate
   sudo: yes
