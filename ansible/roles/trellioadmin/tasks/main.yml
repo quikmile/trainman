@@ -25,15 +25,21 @@
   tags:
     - trellioadmin
 
+- name: create app directories
+  file: path={{ project_root }}/{{ project_name }}/apps/{{ item.service }} owner={{ ansible_ssh_user }} group={{ ansible_ssh_user }} mode=0777 state=directory
+  sudo: yes
+  with_items:
+    - "{{ services }}"
+  tags:
+    - trellioadmin
+
 - name: create apps
   shell: |
     cd {{ project_root }}/{{ project_name }}
-    mkdir apps/{{ item.service }}
     /home/{{ ansible_user }}/venv/bin/python manage.py startapp apps/{{ item.service }}
     /home/{{ ansible_user }}/venv/bin/python manage.py inspectdb --database={{ item.service }} > apps/{{ item.service }}/models.py
     /home/{{ ansible_user }}/venv/bin/python manage.py makemigrations
     /home/{{ ansible_user }}/venv/bin/python manage.py migrate
-  sudo: yes
   with_items:
     - "{{ services }}"
   notify:
@@ -42,10 +48,11 @@
     - trellioadmin
 
 - name: commit code
-  shell: |
-    cd {{ project_root }}/{{ project_name }}
-    git add .
-    git commit -m "updated models by inspect db command by trainman"
-    git push
+  command: "{{ item }}"
+  with_items:
+    - cd {{ project_root }}/{{ project_name }}
+    - git add .
+    - git commit -m "updated models by inspect db command by trainman"
+    - git push
   tags:
     - trellioadmin
