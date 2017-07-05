@@ -39,6 +39,7 @@ class XUser(AbstractBaseUser):
     def created(self):
         return datetime.fromtimestamp(self.created_on).strftime(settings.XDATE_FORMAT)
 
+
     @property
     def updated(self):
         return datetime.fromtimestamp(self.updated_on).strftime(settings.XDATE_FORMAT)
