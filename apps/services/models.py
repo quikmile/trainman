@@ -33,7 +33,7 @@ class Service(BaseModel):
                                      blank=True)
 
     service_registry = models.ForeignKey('services.ServiceRegistryNode')
-
+    trellio_admin = models.ForeignKey('services.TrellioAdmin', null=True, blank=True)
     database_id = models.PositiveIntegerField(null=True, blank=True)
     content_object = GenericForeignKey('content_type', 'database_id')
     dependencies = JSONField(null=True, blank=True)

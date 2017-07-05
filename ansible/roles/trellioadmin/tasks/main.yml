@@ -1,0 +1,24 @@
+---
+
+- name: trellioadmin copy settings.py
+  template: src=settings.py.j2 dest={{ project_root }}/{{ project_name }}/{{ project_name }}/settings.py
+  sudo: yes
+  notify:
+    - restart uwsgi
+  tags:
+    - trellioadmin
+
+- name: create apps
+  shell: |
+    mkdir {{ project_root }}/{{ project_name }}/apps/"{{ item.service }}"
+    python {{ project_root }}/{{ project_name }}/manage.py startapp {{ project_root }}/{{ project_name }}/apps/"{{ item.service }}"
+    python {{ project_root }}/{{ project_name }}/manage.py inspectdb --database="{{ item.service }}" > {{ project_root }}/{{ project_name }}/apps/"{{ item.service }}"/models.py
+    python {{ project_root }}/{{ project_name }}/manage.py makemigrations
+    python {{ project_root }}/{{ project_name }}/manage.py migrate
+  sudo: yes
+  with_items:
+    - "{{ services }}"
+  notify:
+    - restart uwsgi
+  tags:
+    - trellioadmin

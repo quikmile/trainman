@@ -110,6 +110,16 @@ def deploy_trellio_admin(trellio_admin_id, extra_tags=()):
     if 'setup' in tags:
         tags.append('nginx')
 
+    services = []
+    for service in trellio_admin.service_set.all():
+        database = service.get_database()
+
+        data = dict()
+        data['service'] = service.service_uri
+        data['database'] = database.get_database_settings()
+
+        services.append(data)
+
     run_data = {
         'hostname': trellio_admin.domain,
         'email': trellio_admin.project_owner,
@@ -119,7 +129,8 @@ def deploy_trellio_admin(trellio_admin_id, extra_tags=()):
         'environment_variables': trellio_admin.get_environment_variables(),
         'db_name': trellio_admin.get_db_name(),
         'db_user': trellio_admin.get_db_user(),
-        'db_pass': trellio_admin.get_db_pass()
+        'db_pass': trellio_admin.get_db_pass(),
+        'services': services
     }
 
     hostnames = '\n'.join(hosts)
