@@ -30,10 +30,6 @@ server {
 	ssl_trusted_certificate /etc/letsencrypt/live/{{ hostname }}/fullchain.pem;
 	include /etc/nginx/snippets/ssl.conf;
 
-	location / {
-		try_files $uri $uri/ =404;
-	}
-
     proxy_set_header HOST $host;
     proxy_set_header X-Forwarded-Proto $scheme;
     proxy_set_header X-Real-IP $remote_addr;
@@ -49,7 +45,7 @@ server {
     }
 
     location / {
-        uwsgi_pass  unix:///tmp/{{ project_name }}.sock;
+        uwsgi_pass  unix:///tmp/{{ project_name }}.sock/admin/;
         include     uwsgi_params;
     }
 
