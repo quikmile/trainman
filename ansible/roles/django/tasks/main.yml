@@ -1,11 +1,18 @@
 --- 
 
+- name: Creating .netrc file
+  become: yes
+  template: src=.netrc.j2 dest=/home/{{ ansible_user }}/.netrc owner=root group=root mode=0664
+  tags:
+    - setup
+    - trellioadmin
+
 - name: create root project directory
   file: path={{ project_root }} owner={{ ansible_ssh_user }} group={{ ansible_ssh_user }} mode=0777 state=directory
   sudo: yes
   tags:
     - setup
-    - deploy
+    - trellioadmin
 
 - name: deploy code from repository repo_branch
   git: accept_hostkey=yes repo={{ repo_url }} dest={{ project_root }} remote=origin version=master
@@ -13,7 +20,7 @@
     - restart uwsgi
   tags:
     - deploy
-    - setup
+    - trellioadmin
 
 #- name: Fix for pip bug
 #  sudo: yes
@@ -31,7 +38,7 @@
   become_user: "{{ ansible_user }}"
   tags:
     - setup
-    - deploy
+    - trellioadmin
     - virtualenv
 
 - name: install python dependencies
@@ -42,7 +49,7 @@
   sudo: yes
   tags:
     - setup
-    - deploy
+    - trellioadmin
     - dependencies
 
 
