@@ -6,6 +6,17 @@
     - setup
     - postgres
 
+- name: setup xauth and createsuperuser
+  shell: |
+    cd {{ project_root }}/{{ project_name }}
+    /home/{{ ansible_user }}/venv/bin/python manage.py makemigrations xauth
+    /home/{{ ansible_user }}/venv/bin/python manage.py migrate
+  notify:
+    - restart uwsgi
+  tags:
+    - setup
+    - trellioadmin
+
 - name: trellioadmin copy settings.py
   template: src=settings.py.j2 dest={{ project_root }}/{{ project_name }}/{{ project_name }}/settings.py
   sudo: yes
