@@ -15,7 +15,7 @@
     - trellioadmin
 
 - name: deploy code from repository repo_branch
-  git: repo={{ repo_url }} dest={{ project_root }}
+  git: repo={{ repo_url }} dest={{ project_root }}/{{ project_name }}
   become_user: "{{ ansible_user }}"
   notify:
     - restart uwsgi
