@@ -131,7 +131,9 @@ def deploy_trellio_admin(trellio_admin_id, extra_tags=()):
         'db_name': trellio_admin.get_db_name(),
         'db_user': trellio_admin.get_db_user(),
         'db_pass': trellio_admin.get_db_pass(),
-        'services': services
+        'services': services,
+        'gitlab_username': settings.GITLAB_USERNAME,
+        'gitlab_password': settings.GITLAB_PASSWORD
     }
 
     hostnames = '\n'.join(hosts)
