@@ -225,7 +225,7 @@ class TrellioAdmin(BaseNode):
         tags = []
         if self.is_created:
             tags = ['prepare', 'setup']
-        deploy_trellio_admin.delay(self.pk, extra_tags=tags)
+        deploy_trellio_admin.delay(self.pk, extra_tags=['prepare', 'setup'])
 
     def get_environment_variables(self):
         env_vars = dict()
