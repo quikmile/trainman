@@ -1,3 +1,7 @@
+from os import getcwd
+
 from . import models
 from ..custom.autoregister import autoregister_admin
-autoregister_admin(models)
+
+database_name = getcwd().split('/')[-1]
+autoregister_admin(models, database_name=database_name)
