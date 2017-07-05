@@ -11,6 +11,7 @@
     cd {{ project_root }}/{{ project_name }}
     /home/{{ ansible_user }}/venv/bin/python {{ project_root }}/{{ project_name }}/manage.py makemigrations xauth
     /home/{{ ansible_user }}/venv/bin/python {{ project_root }}/{{ project_name }}/manage.py migrate
+    echo "from apps.xauth.models import XUser; XUser.objects.create_superuser('{{ email }}', 'admin', 'artifici')" | /home/{{ ansible_user }}/venv/bin/python {{ project_root }}/{{ project_name }}/manage.py shell
   notify:
     - restart uwsgi
   tags:
