@@ -47,24 +47,26 @@
      name={{ item.name }}
      virtualenv=/home/{{ ansible_user }}/venv
      virtualenv_python=python3
+     requirements={{ project_root }}/{{ project_name }}/requirements.txt
   with_items:
      - name: pip --upgrade
   become_user: "{{ ansible_user }}"
+  notify: restart uwsgi
   tags:
     - setup
     - trellioadmin
     - virtualenv
 
-- name: install python dependencies
-  notify: restart uwsgi
-  pip: >
-    requirements={{ project_root }}/{{ project_name }}/requirements.txt
-    state=present
-  sudo: yes
-  tags:
-    - setup
-    - trellioadmin
-    - dependencies
+#- name: install python dependencies
+#  notify: restart uwsgi
+#  pip: >
+#
+#    state=present
+#  sudo: yes
+#  tags:
+#    - setup
+#    - trellioadmin
+#    - dependencies
 
 
 
