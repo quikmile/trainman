@@ -1,5 +1,11 @@
 ---
 
+- name: Install postgres
+  include: roles/postgres/tasks/main.yml
+  tags:
+    - setup
+    - postgres
+
 - name: trellioadmin copy settings.py
   template: src=settings.py.j2 dest={{ project_root }}/{{ project_name }}/{{ project_name }}/settings.py
   sudo: yes
