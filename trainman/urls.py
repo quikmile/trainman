@@ -20,6 +20,7 @@ from django.contrib import admin
 
 urlpatterns = [
                   # url(r'^static/(?P<path>.*)$', 'django.views.static.serve', settings.STATIC_ROOT),
-                  url(r'^/', admin.site.urls),
+                  url(r'^admin/', admin.site.urls),
+                  url(r'^services/', include('apps.services.urls', namespace='services')),
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

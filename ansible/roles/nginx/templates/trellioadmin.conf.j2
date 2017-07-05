@@ -45,7 +45,7 @@ server {
     }
 
     location / {
-        uwsgi_pass  unix:///tmp/{{ project_name }}.sock/admin/;
+        uwsgi_pass  {{ project_name }};
         include     uwsgi_params;
     }
 
