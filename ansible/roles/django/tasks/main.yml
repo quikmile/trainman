@@ -28,6 +28,15 @@
 #  shell: rm -rf /usr/local/lib/python2.7/dist-packages/requests*
 #  tags:
 #    - setup
+- name: Install python required packages
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - python-dev
+    - python-pip
+  sudo: yes
+  tags:
+    - setup
+    - trellioadmin
 
 - name: Create Virtualenv & upgrade pip
   pip:
