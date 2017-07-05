@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.xauth',
     {% for service in services %}
-    'apps.{{ service.service }}',
+'apps.{{ service.service }}',
     {% endfor %}
 ]
 

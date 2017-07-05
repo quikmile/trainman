@@ -16,7 +16,7 @@
 
 - name: create apps
   shell: |
-    source ~/venv/bin/activate
+    source /home/{{ ansible_user }}/venv/bin/activate
     cd {{ project_root }}/{{ project_name }}
     mkdir apps/{{ item.service }}
     python manage.py startapp apps/{{ item.service }}
