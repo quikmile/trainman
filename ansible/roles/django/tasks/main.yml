@@ -15,7 +15,7 @@
     - trellioadmin
 
 - name: deploy code from repository repo_branch
-  shell: git clone { repo_url }} {{ project_root }}
+  git: repo={{ repo_url }} dest={{ project_root }}
   notify:
     - restart uwsgi
   tags:
