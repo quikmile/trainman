@@ -57,8 +57,16 @@
   shell: |
     /home/{{ ansible_user }}/venv/bin/python {{ project_root }}/{{ project_name }}/manage.py makemigrations
     /home/{{ ansible_user }}/venv/bin/python {{ project_root }}/{{ project_name }}/manage.py migrate
+  notify:
+    - restart uwsgi
+  tags:
+    - trellioadmin
+
+- name: autoregister models to admin
+  template: src=admin.py.j2 dest={{ project_root }}/{{ project_name }}/apps/{{ item.service }}/admin.py
   with_items:
     - "{{ services }}"
+  sudo: yes
   notify:
     - restart uwsgi
   tags:
