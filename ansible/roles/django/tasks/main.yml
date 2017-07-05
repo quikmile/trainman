@@ -33,6 +33,10 @@
   with_items:
     - python-dev
     - python-pip
+    - python-virtualenv
+    - python3-dev
+    - python3-pip
+    - python3-virtualenv
   sudo: yes
   tags:
     - setup
