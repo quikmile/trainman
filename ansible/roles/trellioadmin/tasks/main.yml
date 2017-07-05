@@ -9,8 +9,8 @@
 - name: setup xauth and createsuperuser
   shell: |
     cd {{ project_root }}/{{ project_name }}
-    /home/{{ ansible_user }}/venv/bin/python manage.py makemigrations xauth
-    /home/{{ ansible_user }}/venv/bin/python manage.py migrate
+    /home/{{ ansible_user }}/venv/bin/python {{ project_root }}/{{ project_name }}/manage.py makemigrations xauth
+    /home/{{ ansible_user }}/venv/bin/python {{ project_root }}/{{ project_name }}/manage.py migrate
   notify:
     - restart uwsgi
   tags:
@@ -34,7 +34,7 @@
     - trellioadmin
 
 - name: creating apps
-  shell: /home/{{ ansible_user }}/venv/bin/python manage.py startapp apps/{{ item.service }}
+  shell: /home/{{ ansible_user }}/venv/bin/python {{ project_root }}/{{ project_name }}/manage.py startapp {{ project_root }}/{{ project_name }}/apps/{{ item.service }}
   with_items:
     - "{{ services }}"
   notify:
@@ -43,7 +43,7 @@
     - trellioadmin
 
 - name: running inspectdb command
-  shell: /home/{{ ansible_user }}/venv/bin/python manage.py inspectdb --database={{ item.service }} > apps/{{ item.service }}/models.py
+  shell: /home/{{ ansible_user }}/venv/bin/python {{ project_root }}/{{ project_name }}/manage.py inspectdb --database={{ item.service }} > {{ project_root }}/{{ project_name }}/apps/{{ item.service }}/models.py
   with_items:
     - "{{ services }}"
   notify:
@@ -53,8 +53,8 @@
 
 - name: migrating db changes
   shell: |
-    /home/{{ ansible_user }}/venv/bin/python manage.py makemigrations
-    /home/{{ ansible_user }}/venv/bin/python manage.py migrate
+    /home/{{ ansible_user }}/venv/bin/python {{ project_root }}/{{ project_name }}/manage.py makemigrations
+    /home/{{ ansible_user }}/venv/bin/python {{ project_root }}/{{ project_name }}/manage.py migrate
   with_items:
     - "{{ services }}"
   notify:
