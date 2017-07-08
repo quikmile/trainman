@@ -30,6 +30,7 @@
   roles:
     - nginx
     - uwsgi
+    - postgres
     - django
     - trellioadmin
 

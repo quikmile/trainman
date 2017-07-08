@@ -1,11 +1,5 @@
 ---
 
-- name: Install postgres
-  include: roles/postgres/tasks/main.yml
-  tags:
-    - setup
-    - postgres
-
 - name: setup xauth and createsuperuser
   shell: |
     cd {{ project_root }}/{{ project_name }}
