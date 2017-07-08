@@ -29,7 +29,6 @@
 - hosts: trellio_admin
   roles:
     - nginx
-    - uwsgi
     - postgres
     - django
     - trellioadmin
