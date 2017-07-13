@@ -104,14 +104,6 @@
     - letsencrypt
     - nginx
 
-- name: create gateway.conf file
-  template: src=gateway.conf.j2 dest=/etc/nginx/sites-enabled/gateway.conf
-  sudo: yes
-  notify:
-    - reload nginx
-  tags:
-    - gateway
-
 
 - name: create trellioadmin.conf file
   template: src=trellioadmin.conf.j2 dest=/etc/nginx/sites-enabled/trellioadmin.conf
@@ -120,4 +112,12 @@
     - reload nginx
   tags:
     - trellioadmin
+  ignore_errors: yes
 
+- name: create gateway.conf file
+  template: src=gateway.conf.j2 dest=/etc/nginx/sites-enabled/gateway.conf
+  sudo: yes
+  notify:
+    - reload nginx
+  tags:
+    - gateway
