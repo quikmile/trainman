@@ -179,12 +179,6 @@ class ServiceNode(BaseModel):
         config['REDIS_HOST'] = self.service.service_registry.redis.database_host
         config['REDIS_PORT'] = self.service.service_registry.redis.database_port
 
-        if self.optional_settings and isinstance(self.optional_settings, dict):
-            optional_settings = self.optional_settings
-
-        config['SIGNALS'] = optional_settings.get('signals', {})
-        config['MIDDLEWARES'] = optional_settings.get('middlewares', [])
-
         database = self.get_database()
         config['DATABASE_SETTINGS'] = database.get_database_settings()
 
@@ -193,6 +187,10 @@ class ServiceNode(BaseModel):
 
         if self.service.contributors:
             config['ADMIN_EMAILS'] = self.service.contributors
+
+        if self.optional_settings and isinstance(self.optional_settings, dict):
+            config.update(self.optional_settings)
+
         return config
 
 
