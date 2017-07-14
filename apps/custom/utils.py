@@ -54,7 +54,7 @@ def create_model_admin(model, database=None):
             continue
         field_list.append(f.name)
 
-    class ModelAdmin(MultiDBModelAdmin):
+    class ModelAdmin(admin.ModelAdmin):
         using = database
 
         list_display = field_list
