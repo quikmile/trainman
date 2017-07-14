@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+import os
 
-from django.contrib import admin
+from django.apps import apps
 
-from .models import *
+from ..custom.utils import register_all_models
 
-admin.site.register(Postgres)
-admin.site.register(PostgresNode)
-admin.site.register(RedisNode)
-# Register your models here.
+app_label = os.path.abspath(__file__).split('/')[-2]
+app = apps.get_app_config(app_label)
+register_all_models(models=app.models, database=app_label)

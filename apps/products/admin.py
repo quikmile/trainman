@@ -1,6 +1,13 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+import os
 
-from django.contrib import admin
+from django.apps import apps
+
+from ..custom.utils import register_all_models
+
+app_label = os.path.abspath(__file__).split('/')[-2]
+app = apps.get_app_config(app_label)
+register_all_models(models=app.models, database=app_label)
+# -*- coding: utf-8 -*-
+
 
 # Register your models here.
