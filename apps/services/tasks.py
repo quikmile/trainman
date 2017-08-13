@@ -57,7 +57,7 @@ def deploy_service(service_node_id, **options):
                                                                   settings.ANSIBLE_SSH_USER,
                                                                   settings.ANSIBLE_SSH_PASS))
 
-    tags = ['service']
+    tags = []
     if options.get('tags'):
         tags.extend(options.get('tags'))
 

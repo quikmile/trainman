@@ -28,6 +28,7 @@
   tags:
     - setup
     - service
+    - deploy
 
 - name: Creating service config.json
   sudo: yes
@@ -35,7 +36,7 @@
   tags:
     - setup
     - service
-
+    - deploy
 
 - name: Creating service Upstart file
   sudo: yes
@@ -66,3 +67,4 @@
   tags:
     - setup
     - service
+    - deploy

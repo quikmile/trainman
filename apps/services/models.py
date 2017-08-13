@@ -121,7 +121,9 @@ class ServiceNode(BaseModel):
         options = dict()
         if self.is_created:
             options['database'] = True
-            options['tags'] = ['prepare', 'trellio']
+            options['tags'] = ['prepare', 'trellio', 'service']
+        else:
+            options['tags'] = ['deploy']
         deploy_service.delay(self.pk, **options)
 
     def deploy(self):
@@ -180,7 +182,8 @@ class ServiceNode(BaseModel):
         config['REDIS_PORT'] = self.service.service_registry.redis.database_port
 
         database = self.get_database()
-        config['DATABASE_SETTINGS'] = database.get_database_settings()
+        if database:
+            config['DATABASE_SETTINGS'] = database.get_database_settings()
 
         if self.service.smtp_server:
             config['SMTP_SETTINGS'] = self.service.smtp_server.get_smtp_settings()
