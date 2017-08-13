@@ -46,7 +46,8 @@ def deploy_service(service_node_id, **options):
 
     if options.get('database'):
         database = service_node.get_database()
-        database.deploy()
+        if database:
+            database.deploy()
 
     PLAYBOOK = settings.ANSIBLE_PLAYBOOK
     hosts = ['[trellio_service]']
