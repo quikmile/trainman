@@ -48,8 +48,8 @@ def deploy_postgres(postgres_node_id):
 
     stats = runner.run()
 
-    service = postgres_node.postgres.get_service()
-    service.trellio_admin.deploy()
+    # service = postgres_node.postgres.get_service()
+    # service.trellio_admin.deploy()
 
 
 @task
