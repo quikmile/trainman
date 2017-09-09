@@ -72,7 +72,6 @@
 - name: Copy sql file
   sudo: yes
   template: src=db.sql.j2 dest=/tmp/db.sql owner=root group=root mode=0755
-  ignore_errors: yes
   tags:
     - postgres
 
@@ -82,14 +81,12 @@
   with_items: sql
   become: yes
   become_user: postgres
-  ignore_errors: yes
   tags:
     - postgres
 
 - name: Delete sql script
   file: path="/tmp/db.sql" state=absent
   sudo: yes
-  ignore_errors: yes
   tags:
     - postgres
 
