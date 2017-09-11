@@ -37,6 +37,10 @@ def deploy_postgres(postgres_node_id):
         'db_pass': remove_quotes(postgres_node.database_password)
     }
 
+    fdws = postgres_node.postgres.get_foreign_data_wrappers()
+    if fdws:
+        run_data.update({'fdws': fdws})
+
     hostnames = '\n'.join(hosts)
 
     runner = Runner(hostnames=hostnames,

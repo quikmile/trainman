@@ -55,6 +55,30 @@ class Postgres(BaseModel):
     def get_service(self):
         return Service.objects.get(database_id=self.pk)
 
+    def get_foreign_data_wrappers(self):
+        service = self.get_service()
+        fdws = []
+        if isinstance(service.dependencies, dict) and service.dependencies.get('postgres_fdw'):
+            fdw = dict()
+            for service_name in service.dependencies['postgres_fdw']:
+                fdw_service = Service.objects.get(service_name=service_name)
+                fdw_database = fdw_service.get_database()
+                fdw_database_settings = fdw_database.get_database_settings()
+
+                fdw['service_name'] = service_name
+                fdw['schema'] = service_name.replace('_service', '')
+                fdw['foreign_extensions'] = list(fdw_database.database_extensions)
+                fdw['foreign_host'] = fdw_database_settings['host']
+                fdw['foreign_port'] = fdw_database_settings['port']
+                fdw['foreign_dbname'] = fdw_database_settings['database']
+                fdw['foreign_user'] = fdw_database_settings['user']
+                fdw['foreign_password'] = fdw_database_settings['password']
+                fdw['local_user'] = self.get_database_settings()['user']
+
+                fdws.append(fdw)
+
+        return fdws
+
     def get_sql(self):
         service = self.get_service()
         return GitlabProject.get_sql(service.gitlab_project_id)
