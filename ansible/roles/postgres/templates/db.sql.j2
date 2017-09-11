@@ -13,7 +13,7 @@
         CREATE SERVER {{ fdw.service_name }} FOREIGN DATA WRAPPER postgres_fdw
         OPTIONS (host '{{ fdw.foreign_host }}', port {{ fdw.foreign_port }}, dbname '{{ fdw.foreign_dbname }}');
 
-        CREATE USER MAPPING FOR CURRENT_USER SERVER {{ fdw.service_name }}
+        CREATE USER MAPPING FOR {{ fdw.local_user }} SERVER {{ fdw.service_name }}
         OPTIONS ( USER '{{ fdw.foreign_user }}', PASSWORD '{{ fdw.foreign_password }}');
 
         CREATE SCHEMA {{ fdw.schema }};
