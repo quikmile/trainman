@@ -27,5 +27,6 @@
 
         GRANT ALL PRIVILEGES ON SCHEMA {{ fdw.schema }} TO {{ fdw.local_user }};
 
+        GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA {{ fdw.schema }} TO {{ fdw.local_user }};
     {% endfor %}
 {% endif %}
