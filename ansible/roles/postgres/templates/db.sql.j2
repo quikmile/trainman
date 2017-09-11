@@ -6,12 +6,12 @@
 
     {% for fdw in fdws %}
 
-        {% for ext in fwd.extensions %}
+        {% for ext in fdw.extensions %}
             CREATE EXTENSION {{ ext }};
         {% endfor %}
 
         CREATE SERVER {{ fdw.service_name }} FOREIGN DATA WRAPPER postgres_fdw
-        OPTIONS (host '{{ fdw.foreign_host }}', port {{ fwd.foreign_port }}, dbname '{{ fdw.foreign_dbname }}');
+        OPTIONS (host '{{ fdw.foreign_host }}', port {{ fdw.foreign_port }}, dbname '{{ fdw.foreign_dbname }}');
 
         CREATE USER MAPPING FOR CURRENT_USER SERVER {{ fdw.service_name }}
         OPTIONS ( USER '{{ fdw.foreign_user }}', PASSWORD '{{ fdw.foreign_password }}');
