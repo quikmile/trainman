@@ -6,7 +6,7 @@
 
     {% for fdw in fdws %}
 
-        {% for ext in fdw.extensions %}
+        {% for ext in fdw.foreign_extensions %}
             CREATE EXTENSION {{ ext }};
         {% endfor %}
 
