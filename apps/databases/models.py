@@ -59,12 +59,12 @@ class Postgres(BaseModel):
         service = self.get_service()
         fdws = []
         if isinstance(service.dependencies, dict) and service.dependencies.get('postgres_fdw'):
-            fdw = dict()
             for service_name in service.dependencies['postgres_fdw']:
                 fdw_service = Service.objects.get(service_name=service_name)
                 fdw_database = fdw_service.get_database()
                 fdw_database_settings = fdw_database.get_database_settings()
 
+                fdw = dict()
                 fdw['service_name'] = '_'.join(service_name.split()).lower()
                 fdw['schema'] = fdw['service_name'].replace('_service', '')
                 fdw['foreign_extensions'] = list(fdw_database.database_extensions)
