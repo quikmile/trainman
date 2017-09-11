@@ -1,1 +1,14 @@
 {{ sql }}
+{% if fdws %}
+    CREATE EXTENSION postgres_fdw;
+    {% for fdw in fdws %}
+    {% for ext in fwd.extensions %}
+    CREATE EXTENSION {{ ext }};
+    {% endfor %}
+    CREATE SERVER {{ fdw.service_name }} FOREIGN DATA WRAPPER postgres_fdw OPTIONS (host '{{ fdw.foreign_host }}', dbname '{{ fdw.foreign_dbname }}');
+    CREATE USER MAPPING FOR CURRENT_USER SERVER {{ fdw.service_name }} OPTIONS ( USER '{{ fdw.foreign_user }}', PASSWORD '{{ fdw.foreign_password }}');
+    CREATE SCHEMA {{ fdw.schema }};
+    IMPORT FOREIGN SCHEMA public FROM SERVER {{ fdw.service_name }} INTO {{ fdw.schema }};
+    GRANT USAGE ON FOREIGN SERVER {{ fdw.service_name }} TO {{ fdw.current_user }};
+    {% endfor %}
+{% endif %}
