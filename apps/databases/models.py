@@ -65,8 +65,8 @@ class Postgres(BaseModel):
                 fdw_database = fdw_service.get_database()
                 fdw_database_settings = fdw_database.get_database_settings()
 
-                fdw['service_name'] = service_name
-                fdw['schema'] = service_name.replace('_service', '')
+                fdw['service_name'] = '_'.join(service_name.split()).lower()
+                fdw['schema'] = fdw['service_name'].replace('_service', '')
                 fdw['foreign_extensions'] = list(fdw_database.database_extensions)
                 fdw['foreign_host'] = fdw_database_settings['host']
                 fdw['foreign_port'] = fdw_database_settings['port']
