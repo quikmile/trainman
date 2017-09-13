@@ -1,6 +1,6 @@
 {% for service in services %}
 upstream {{ service.service_uri }} {
-    server {{ service.ip_address }}:{{ service.http_port }} max_fails=5 fail_timeout=10s;
+    server {{ service.ip_address }}:{{ service.http_port }} max_fails=3;
 }
 {% endfor %}
 
