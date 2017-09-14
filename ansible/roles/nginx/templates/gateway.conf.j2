@@ -34,7 +34,6 @@ server {
 	}
 
     location = /auth {
-        add_header "Access-Control-Allow-Origin" *;
 
         if ($request_method = 'OPTIONS') {
             add_header "Access-Control-Allow-Origin" *;
@@ -56,9 +55,6 @@ server {
 
     {% for service in services %}
         location /v{{ service.service_version }}/{{ service.service_uri }}/ {
-
-
-        add_header "Access-Control-Allow-Origin" *;
 
         if ($request_method = 'OPTIONS') {
             add_header "Access-Control-Allow-Origin" *;
