@@ -56,6 +56,8 @@ server {
     {% for service in services %}
         location /v{{ service.service_version }}/{{ service.service_uri }}/ {
 
+        add_header "Access-Control-Allow-Origin" *;
+
         if ($request_method = 'OPTIONS') {
             add_header "Access-Control-Allow-Origin" *;
             add_header "Access-Control-Allow-Methods" "POST, OPTIONS, PUT, GET, DELETE";
