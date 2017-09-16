@@ -8,6 +8,7 @@ from django.contrib.postgres.fields.jsonb import JSONField
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch.dispatcher import receiver
+from django_pgjson.fields import JsonBField
 
 from ..base.models import BaseModel, BaseNode
 from ..custom.gitlab.project_apis import GitlabProject
@@ -41,9 +42,13 @@ class Service(BaseModel):
     smtp_server = models.ForeignKey('servers.SMTPServer', null=True, blank=True)
     http_server = models.CharField(choices=HTTP_SERVER, max_length=20, default='NGINX')
     service_uri = models.CharField(max_length=100, unique=True)
+    service_config = JsonBField(null=True, blank=True)
 
     # class Meta:
     #     unique_together = ('database_id', 'content_object')
+    def save(self, *args, **kwargs):
+        self.service_config = self.get_service_config()
+        super(Service, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return '{}'.format(self.service_name)
@@ -54,6 +59,16 @@ class Service(BaseModel):
     def deploy(self):
         for snt in self.servicenodetype_set.all():
             snt.deploy()
+
+    def get_service_config(self):
+        project_id = self.gitlab_project_id
+        return json.loads(GitlabProject.get_config(project_id))
+
+    @classmethod
+    def get_service_by_name_version(cls, name, version):
+        service = cls.objects.get(service_config__contains={"service_name": name},
+                                  servicenodetype__version=int(version))
+        return service
 
 
 class ServiceNodeType(BaseModel):
@@ -155,6 +170,13 @@ class ServiceNode(BaseModel):
     @property
     def service_version(self):
         return self.instance.service_node_type.version
+
+    @property
+    def service_name(self):
+        config = self.instance.service_node_type.service.service_config
+        if not config.get('service_name'):
+            raise Exception('service_name not found service_config')
+        return config['service_name']
 
     @property
     def service_uri(self):
