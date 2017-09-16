@@ -70,7 +70,8 @@ server {
         proxy_set_header X-Original-URI $request_uri;
 
         {% if service.service_uri !='rbac' %}
-            auth_request     /auth
+            set $args $args&service_name={{ service.service_name }}&{{ service.service_version }};
+            auth_request     /auth$args
             auth_request_set $auth_status $upstream_status;
             auth_request_set $user_id $upstream_http_x_user_id;
             auth_request_set $user_subs $upstream_http_x_user_subs;
