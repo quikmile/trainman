@@ -62,7 +62,8 @@ class Service(BaseModel):
 
     def get_service_config(self):
         project_id = self.gitlab_project_id
-        return json.loads(GitlabProject.get_config(project_id))
+        config = GitlabProject.get_config(project_id)
+        return json.loads(config['config_content'])
 
     @classmethod
     def get_service_by_name_version(cls, name, version):
