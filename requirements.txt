@@ -8,7 +8,7 @@ cffi==1.9.1
 cryptography==1.7.2
 Django==1.11a1
 django-celery==3.2.1
-django-pgjson==0.3.1
+django-pgjsonb==0.0.29
 django-slack==5.8.0
 enum34==1.1.6
 five==0.4.0
@@ -20,6 +20,7 @@ MarkupSafe==0.23
 ordereddict==1.1
 packaging==16.8
 paramiko==2.1.2
+pkg-resources==0.0.0
 psycopg2==2.6.2
 pyasn1==0.2.2
 pycparser==2.17
