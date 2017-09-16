@@ -175,9 +175,9 @@ class ServiceNode(BaseModel):
     @property
     def service_name(self):
         config = self.instance.service_node_type.service.service_config
-        if not config.get('service_name'):
+        if not config.get('SERVICE_NAME'):
             raise Exception('service_name not found service_config')
-        return config['service_name']
+        return config['SERVICE_NAME']
 
     @property
     def service_uri(self):
