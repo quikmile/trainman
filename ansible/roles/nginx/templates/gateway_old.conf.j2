@@ -1,0 +1,95 @@
+{% for service in services %}
+upstream {{ service.service_uri }} {
+    server {{ service.ip_address }}:{{ service.http_port }} max_fails=3;
+}
+{% endfor %}
+
+server {
+    listen 80 default_server;
+	listen [::]:80 default_server ipv6only=on;
+    charset     utf-8;
+
+    server_name {{ hostname }};
+
+	include /etc/nginx/snippets/letsencrypt.conf;
+
+	location / {
+		return 301 https://{{ hostname }}$request_uri;
+	}
+}
+
+server {
+    server_name {{ hostname }};
+    charset     utf-8;
+	listen 443 ssl http2 default_server;
+	listen [::]:443 ssl http2 default_server ipv6only=on;
+
+	ssl_certificate /etc/letsencrypt/live/{{ hostname }}/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/{{ hostname }}/privkey.pem;
+	ssl_trusted_certificate /etc/letsencrypt/live/{{ hostname }}/fullchain.pem;
+	include /etc/nginx/snippets/ssl.conf;
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+
+    location = /auth {
+
+        if ($request_method = 'OPTIONS') {
+            add_header "Access-Control-Allow-Origin"  '*';
+            add_header "Access-Control-Max-Age" 1728000;
+            add_header "Access-Control-Allow-Methods" "POST, OPTIONS, PUT, GET, DELETE";
+            add_header "Access-Control-Allow-Headers" "Authorization, Content-Type, Accept, Origin, X-Requested-With, Referer, HOST, X-Forwarded-Proto, X-Real-IP, X-Forwarded-For, X-Original-URI";
+            return 204;
+        }
+
+        add_header "Access-Control-Allow-Origin" '*';
+
+        internal;
+        proxy_pass              http://rbac/auth/;
+        proxy_pass_request_body off;
+        proxy_set_header        Content-Length "";
+        #proxy_set_header HOST $host;
+        #proxy_set_header X-Forwarded-Proto $scheme;
+        #proxy_set_header X-Real-IP $remote_addr;
+        #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #proxy_set_header X-Original-URI $request_uri;
+    }
+
+    {% for service in services %}
+        location /v{{ service.service_version }}/{{ service.service_uri }}/ {
+
+            proxy_set_header HOST $host;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Original-URI $request_uri;
+
+            if ($request_method = 'OPTIONS') {
+                add_header "Access-Control-Allow-Origin"  '*';
+                add_header "Access-Control-Max-Age" 1728000;
+                add_header "Access-Control-Allow-Methods" "POST, OPTIONS, PUT, GET, DELETE";
+                add_header "Access-Control-Allow-Headers" "Authorization, Content-Type, Accept, Origin, X-Requested-With, Referer";
+                return 204;
+            }
+
+            add_header "Access-Control-Allow-Origin" '*';
+
+            {% if service.service_uri !='rbac' %}
+                auth_request     /auth;
+                auth_request_set $auth_status $upstream_status;
+                auth_request_set $user_id $upstream_http_x_user_id;
+                auth_request_set $user_subs $upstream_http_x_user_subs;
+                auth_request_set $subscriptions $upstream_http_x_subscriptions;
+
+                proxy_set_header x-user-id $user_id;
+                proxy_set_header x-user-subs $user_subs;
+                proxy_set_header x-subscriptions $subscriptions;
+            {% endif %}
+
+            proxy_pass http://{{ service.service_uri }}/;
+        }
+    {% endfor %}
+
+}
+
