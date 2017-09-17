@@ -34,6 +34,7 @@ server {
 	}
 
     location = /auth {
+        add_header "Access-Control-Allow-Origin" *;
 
         if ($request_method = 'OPTIONS') {
             add_header "Access-Control-Allow-Origin" *;
@@ -59,6 +60,7 @@ server {
         add_header "Access-Control-Allow-Origin" *;
 
         if ($request_method = 'OPTIONS') {
+            add_header "Access-Control-Allow-Origin" *;
             add_header "Access-Control-Allow-Methods" "POST, OPTIONS, PUT, GET, DELETE";
             add_header "Access-Control-Allow-Headers" "Authorization, Content-Type, Accept";
             return 204;
