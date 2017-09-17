@@ -33,17 +33,14 @@ server {
 		try_files $uri $uri/ =404;
 	}
 
-
-
     location = /auth {
             if ($request_method = 'OPTIONS') {
-                add_header "Access-Control-Allow-Origin"  *;
-                add_header  "Access-Control-Allow-Credentials" "true";
+                add_header "Access-Control-Allow-Origin"  '*';
                 add_header "Access-Control-Allow-Methods" "POST, OPTIONS, PUT, GET, DELETE";
                 add_header "Access-Control-Allow-Headers" "Authorization, Content-Type, Accept";
                 return 204;
             }
-            add_header 'Access-Control-Allow-Origin' *;
+            add_header 'Access-Control-Allow-Origin' '*';
 
             internal;
             proxy_pass              http://rbac/auth/;
@@ -61,13 +58,12 @@ server {
         proxy_set_header X-Original-URI $request_uri;
 
         if ($request_method = 'OPTIONS') {
-            add_header "Access-Control-Allow-Origin"  *;
-            add_header  "Access-Control-Allow-Credentials" "true";
+            add_header "Access-Control-Allow-Origin"  '*';
             add_header "Access-Control-Allow-Methods" "POST, OPTIONS, PUT, GET, DELETE";
             add_header "Access-Control-Allow-Headers" "Authorization, Content-Type, Accept";
             return 204;
         }
-            add_header 'Access-Control-Allow-Origin' "*";
+            add_header 'Access-Control-Allow-Origin' '*';
 
         {% if service.service_uri != 'rbac' %}
             auth_request     /auth;
@@ -75,6 +71,7 @@ server {
             auth_request_set $user_id $upstream_http_x_user_id;
             auth_request_set $user_subs $upstream_http_x_user_subs;
             auth_request_set $subscriptions $upstream_http_x_subscriptions;
+
             proxy_set_header x-user-id $user_id;
             proxy_set_header x-user-subs $user_subs;
             proxy_set_header x-$subscriptions $subscriptions;
