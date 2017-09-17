@@ -72,7 +72,7 @@ server {
             return 204;
         }
 
-        add_header 'Access-Control-Allow-Origin' *;
+        add_header 'Access-Control-Allow-Origin' "*";
 
         {% if service.service_uri !='rbac' %}
             auth_request     /auth;
