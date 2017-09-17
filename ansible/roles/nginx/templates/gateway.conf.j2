@@ -36,15 +36,10 @@ server {
 
 
     location = /auth {
-
-            if ($request_method = 'GET') {
-                add_header 'Access-Control-Allow-Origin' *;
-                add_header "Access-Control-Allow-Methods" "POST, OPTIONS, PUT, GET, DELETE";
-                add_header "Access-Control-Allow-Headers" "Authorization, Content-Type, Accept";
-            }
+            add_header "Access-Control-Allow-Origin" '*';
 
             if ($request_method = 'OPTIONS') {
-                add_header "Access-Control-Allow-Origin"  *;
+                add_header "Access-Control-Allow-Origin"  '*';
                 add_header "Access-Control-Allow-Methods" "POST, OPTIONS, PUT, GET, DELETE";
                 add_header "Access-Control-Allow-Headers" "Authorization, Content-Type, Accept";
                 return 200;
@@ -66,13 +61,14 @@ location /v{{ service.service_version }}/{{ service.service_uri }}/ {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Original-URI $request_uri;
 
+        add_header "Access-Control-Allow-Origin" '*';
+
         if ($request_method = 'OPTIONS') {
-            add_header "Access-Control-Allow-Origin"  *;
+            add_header "Access-Control-Allow-Origin"  '*';
             add_header "Access-Control-Allow-Methods" "POST, OPTIONS, PUT, GET, DELETE";
             add_header "Access-Control-Allow-Headers" "Authorization, Content-Type, Accept";
             return 200;
         }
-        add_header 'Access-Control-Allow-Origin' *;
 
         {% if service.service_uri != 'rbac' %}
         auth_request     /auth;
