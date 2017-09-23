@@ -1,4 +1,4 @@
-import os
+import os, sys
 from datetime import datetime
 from tempfile import NamedTemporaryFile
 
@@ -8,6 +8,8 @@ from ansible.parsing.dataloader import DataLoader
 from ansible.plugins.callback import CallbackBase
 from ansible.utils.display import Display
 from ansible.vars import VariableManager
+
+PY_VERSION = sys.version_info.major
 
 
 class Options(object):
@@ -105,6 +107,14 @@ class Runner(object):
         # Parse hosts, I haven't found a good way to
         # pass hosts in without using a parsed template :(
         # (Maybe you know how?)
+        if PY_VERSION == 3:
+            lines = hostnames.split('\n')
+            hostnames = ''
+            for line in lines:
+                if 'ansible_user' in line:
+                    hostnames += line + ' ansible_python_interpreter=/usr/bin/python3\n'
+                else:
+                    hostnames += line + '\n'
         self.hosts = NamedTemporaryFile(delete=False)
         self.hosts.write(bytes("""[run_hosts]\n%s""" % hostnames, 'UTF-8'))
         self.hosts.close()
