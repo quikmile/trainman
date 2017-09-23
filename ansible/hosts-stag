@@ -7,13 +7,11 @@
 #[trellio_service]
 #205.147.101.145 ansible_user=ubuntu
 
-#[devops]
-#205.147.103.24 ansible_user=ubuntu
 
-#[devops:vars]
-#db_user=trainman
-#db_name=trainman
-##db_pass=trainman
-#project_name=trainman
-#project_root=/home/{{ ansible_user }}
-#project_src=trainman
+[devops:vars]
+db_user=trainman
+db_name=trainman
+db_pass=trainman
+project_name=trainman
+project_root=/home/{{ ansible_user }}
+project_src=trainman
