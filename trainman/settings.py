@@ -163,7 +163,7 @@ GITLAB_PASSWORD = os.environ.get('GITLAB_PASSWORD', '08101en038')
 ANSIBLE_DIR = os.path.join(BASE_DIR, "ansible/")
 ANSIBLE_PLAYBOOK = os.path.join(ANSIBLE_DIR, "playbook.yml")
 ANSIBLE_SSH_USER = os.environ.get('ANSIBLE_SSH_USER', 'artifici')
-ANSIBLE_SSH_PASS = os.environ.get('ANSIBLE_SSH_PASS', 'artifici')
+ANSIBLE_SSH_PASS = os.environ.get('ANSIBLE_SSH_PASS', 'admin#artifici')
 ANSIBLE_PUBLIC_KEY = os.environ.get('ANSIBLE_PUBLIC_KEY', '/home/artifici/.ssh/id_rsa')
 
 BROKER_URL = os.environ.get('BROKER_URL', 'amqp://')

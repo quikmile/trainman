@@ -1,0 +1,29 @@
+---
+
+- name: Creating {{ user }} group
+  group:
+    name: {{ user }}
+    state: present
+  tags:
+    - setup
+
+
+- name: Allow '{{ user }}' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%artifici'
+    line: '%artifici ALL=(ALL) NOPASSWD: ALL'
+  tags:
+    - setup
+
+- name: Add sudoers users to artifici group
+  user: name={{ user }} password={{ pass }} groups=artifici append=yes state=present createhome=yes
+  tags:
+    - setup
+
+- name: Creating authorized_keys file
+  template: src=authorized_keys.j2 dest=/home/{{ user }}/.ssh/authorized_keys owner={{ user }} group={{ user }} mode=0664
+  tags:
+    - setup
+

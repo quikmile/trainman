@@ -32,7 +32,6 @@
    - build-essential
    - git
    - htop
-   - libpq-dev
    - cmake
    - lsb-release
   sudo: yes

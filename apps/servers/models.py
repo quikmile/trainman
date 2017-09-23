@@ -15,6 +15,14 @@ class Server(BaseModel):
     def __unicode__(self):
         return '{} | {}'.format(self.host_name, self.ip_address)
 
+    def save(self, *args, **kwargs):
+        super(Server, self).save(*args, **kwargs)
+        from .tasks import server_setup
+        extra_tags = []
+        if self.is_created:
+            extra_tags = ['prepare']
+        server_setup.delay(self.pk, extra_tags=extra_tags)
+
 
 class APIGateway(BaseModel):
     domain = models.CharField(max_length=100, null=True, blank=True)
