@@ -1,14 +1,14 @@
 ---
 
-- name: Creating {{ user }} group
+- name: Creating "{{ user }}" group
   group:
-    name: {{ user }}
+    name: "{{ user }}"
     state: present
   tags:
     - setup
 
 
-- name: Allow '{{ user }}' group to have passwordless sudo
+- name: Allow "{{ user }}" group to have passwordless sudo
   lineinfile:
     dest: /etc/sudoers
     state: present
