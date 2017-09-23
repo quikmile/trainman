@@ -1,4 +1,5 @@
-import os, sys
+import os
+import sys
 from datetime import datetime
 from tempfile import NamedTemporaryFile
 
@@ -9,7 +10,7 @@ from ansible.plugins.callback import CallbackBase
 from ansible.utils.display import Display
 from ansible.vars import VariableManager
 
-PY_VERSION = sys.version_info.major
+PY_VERSION = int(sys.version_info.major)
 
 
 class Options(object):
@@ -115,6 +116,7 @@ class Runner(object):
                     hostnames += line + ' ansible_python_interpreter=/usr/bin/python3\n'
                 else:
                     hostnames += line + '\n'
+        print(hostnames)
         self.hosts = NamedTemporaryFile(delete=False)
         self.hosts.write(bytes("""[run_hosts]\n%s""" % hostnames, 'UTF-8'))
         self.hosts.close()
