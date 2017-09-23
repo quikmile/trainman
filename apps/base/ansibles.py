@@ -108,6 +108,8 @@ class Runner(object):
         # Parse hosts, I haven't found a good way to
         # pass hosts in without using a parsed template :(
         # (Maybe you know how?)
+
+        self.hosts = NamedTemporaryFile(delete=False)
         if PY_VERSION == 3:
             lines = hostnames.split('\n')
             hostnames = ''
@@ -116,9 +118,9 @@ class Runner(object):
                     hostnames += line + ' ansible_python_interpreter=/usr/bin/python3\n'
                 else:
                     hostnames += line + '\n'
-        print(hostnames)
-        self.hosts = NamedTemporaryFile(delete=False)
-        self.hosts.write(bytes("""[run_hosts]\n%s""" % hostnames, 'UTF-8'))
+            self.hosts.write(bytes("""[run_hosts]\n%s""" % hostnames, 'UTF-8'))
+
+        self.hosts.write("""[run_hosts]\n%s""" % hostnames)
         self.hosts.close()
 
         # This was my attempt to pass in hosts directly.

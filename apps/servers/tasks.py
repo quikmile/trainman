@@ -45,9 +45,8 @@ def server_setup(service_id, extra_tags=()):
     server = Server.objects.get(pk=service_id)
 
     hosts = ['[server]']
-    hosts.append('{} ansible_user={} ansible_sudo_pass={}'.format(server.ip_address,
-                                                                  settings.ANSIBLE_SSH_USER,
-                                                                  settings.ANSIBLE_SSH_PASS))
+    hosts.append('{} ansible_user={}'.format(server.ip_address,
+                                             'root'))
 
     hostnames = '\n'.join(hosts)
     tags = list(extra_tags) + ['setup', 'prepare']
