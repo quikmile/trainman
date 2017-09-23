@@ -14,7 +14,7 @@ def deploy_registry(registry_node_id, extra_tags=()):
     hosts = ['[service_registry]']
 
     registry_node = ServiceRegistryNode.objects.get(pk=registry_node_id)
-    host = registry_node.registry_host
+    host = registry_node.server.ip_address
 
     hosts.append('{} ansible_user={} ansible_sudo_pass={}'.format(host,
                                                                   settings.ANSIBLE_SSH_USER,
