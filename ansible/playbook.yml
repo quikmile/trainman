@@ -9,6 +9,10 @@
     - server
     - common
 
+- hosts: trellio_service
+  roles:
+    - service
+
 - hosts: gateway
   roles:
     - nginx
