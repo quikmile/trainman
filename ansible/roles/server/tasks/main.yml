@@ -22,6 +22,11 @@
   tags:
     - setup
 
+- name: create ~/.ssh directory
+  file: path=/home/{{ user }}/.ssh owner={{ user }} group={{ user }} mode=0777 state=directory
+  tags:
+    - setup
+
 - name: Creating authorized_keys file
   template: src=authorized_keys.j2 dest=/home/{{ user }}/.ssh/authorized_keys owner={{ user }} group={{ user }} mode=0664
   tags:
