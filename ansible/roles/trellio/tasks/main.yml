@@ -38,7 +38,7 @@
     - python
 
 - name: Install Python
-  shell: cd /tmp/Python-3.6.2 && ./configure --prefix=/usr/local && make && make altinstall chdir=/tmp/Python-3.6.2/ creates=/usr/local/bin/python3.6
+  shell: cd /tmp/Python-3.6.2 && ./configure --prefix=/usr/local && make altinstall chdir=/tmp/Python-3.6.2/ creates=/usr/local/bin/python3.6
   sudo: yes
   when: py36_exists.stat.exists == False
   tags:
