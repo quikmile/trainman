@@ -20,7 +20,7 @@ class Server(BaseModel):
         from .tasks import server_setup
         extra_tags = []
         if self.is_created:
-            extra_tags = ['prepare']
+            extra_tags = []
         server_setup.delay(self.pk, extra_tags=extra_tags)
 
 

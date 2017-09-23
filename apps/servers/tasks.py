@@ -48,7 +48,7 @@ def server_setup(service_id, extra_tags=()):
     hosts.append('{} ansible_user={}'.format(server.ip_address, 'root'))
 
     hostnames = '\n'.join(hosts)
-    tags = list(extra_tags) + ['setup']
+    tags = list(extra_tags) + ['setup', 'prepare']
 
     run_data = {
         'user': settings.ANSIBLE_SSH_USER,
