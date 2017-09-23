@@ -45,7 +45,7 @@ def server_setup(service_id, extra_tags=()):
     server = Server.objects.get(pk=service_id)
 
     hosts = ['[server]']
-    hosts.append('{} ansible_user={}'.format(server.server.ip_address, 'root'))
+    hosts.append('{} ansible_user={}'.format(server.ip_address, 'root'))
 
     hostnames = '\n'.join(hosts)
     tags = list(extra_tags) + ['setup']
