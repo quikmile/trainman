@@ -59,7 +59,7 @@ def deploy_redis(redis_node_id, extra_tags=()):
     hosts = ['[redis]']
 
     redis_node = RedisNode.objects.get(pk=redis_node_id)
-    host = redis_node.database_host
+    host = redis_node.server.ip_address
 
     hosts.append('{} ansible_user={} ansible_sudo_pass={}'.format(host,
                                                                   settings.ANSIBLE_SSH_USER,
