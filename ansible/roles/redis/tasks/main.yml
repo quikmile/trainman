@@ -4,13 +4,13 @@
   apt: pkg={{ item }} state=installed
   with_items:
     - redis-server
-  sudo: yes
+  become: yes
   tags:
     - setup
     - redis
 
 - name: Copy redis conf file
-  sudo: yes
+  become: yes
   notify:
     - restart redis
   template: src=redis.conf.j2 dest=/etc/redis/redis.conf owner=root group=root mode=0755
