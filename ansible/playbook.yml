@@ -1,8 +1,8 @@
 ---
 
-- hosts: all
-  roles:
-    - common
+#- hosts: all
+#  roles:
+#    - common
 
 - hosts: server
   roles:
