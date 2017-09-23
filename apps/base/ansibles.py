@@ -10,7 +10,9 @@ from ansible.plugins.callback import CallbackBase
 from ansible.utils.display import Display
 from ansible.vars import VariableManager
 
-PY_VERSION = int(sys.version_info.major)
+PY_VERSION = ''
+if sys.version_info.major == 3:
+    PY_VERSION = 3
 
 
 class Options(object):
@@ -110,17 +112,19 @@ class Runner(object):
         # (Maybe you know how?)
 
         self.hosts = NamedTemporaryFile(delete=False)
-        if PY_VERSION == 3:
-            lines = hostnames.split('\n')
-            hostnames = ''
-            for line in lines:
-                if 'ansible_user' in line:
-                    hostnames += line + ' ansible_python_interpreter=/usr/bin/python3\n'
-                else:
-                    hostnames += line + '\n'
-            self.hosts.write(bytes("""[run_hosts]\n%s""" % hostnames, 'UTF-8'))
 
-        self.hosts.write("""[run_hosts]\n%s""" % hostnames)
+        lines = hostnames.split('\n')
+        hostnames = ''
+        for line in lines:
+            if 'ansible_user' in line:
+                hostnames += line + ' ansible_python_interpreter=/usr/bin/python{}\n'.format(PY_VERSION)
+            else:
+                hostnames += line + '\n'
+
+        if PY_VERSION == 3:
+            self.hosts.write(bytes("""[run_hosts]\n%s""" % hostnames, 'UTF-8'))
+        else:
+            self.hosts.write("""[run_hosts]\n%s""" % hostnames)
         self.hosts.close()
 
         # This was my attempt to pass in hosts directly.
