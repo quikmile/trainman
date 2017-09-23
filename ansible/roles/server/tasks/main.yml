@@ -14,24 +14,24 @@
 
 
 - name: create ~/.ssh directory
-  file: path=/home/{{ user }}/.ssh owner={{ user }} group={{ user }} mode=0777 state=directory
+  file: path=/home/{{ user }}/.ssh owner={{ user }} group={{ user }} mode=0700 state=directory
   tags:
     - setup
 
 - name: Creating authorized_keys file
-  template: src=authorized_keys.j2 dest=/home/{{ user }}/.ssh/authorized_keys owner={{ user }} group={{ user }}
+  template: src=authorized_keys.j2 dest=/home/{{ user }}/.ssh/authorized_keys mode=0644 owner={{ user }} group={{ user }}
   tags:
     - setup
 
-
-- name: create /root/.ssh directory
-  file: path=/root/.ssh owner=root group=root mode=0777 state=directory
-  tags:
-    - setup
-
-- name: Creating authorized_keys file
-  template: src=authorized_keys.j2 dest=/root/.ssh/authorized_keys owner=root group=root
-  tags:
-    - setup
-
+#
+#- name: create /root/.ssh directory
+#  file: path=/root/.ssh owner=root group=root mode=0700 state=directory
+#  tags:
+#    - setup
+#
+#- name: Creating authorized_keys file
+#  template: src=authorized_keys.j2 dest=/root/.ssh/authorized_keys mode=0644 owner=root group=root
+#  tags:
+#    - setup
+#
 
