@@ -1,6 +1,13 @@
 ---
 
-- name: Creating "{{ user }}" group
+- name: Creating group "{{ user }}"
+  group:
+    name: "{{ user }}"
+    state: present
+  tags:
+    - setup
+
+- name: Creating user "{{ user }}"
   user: name={{ user }} groups="sudo,admin,{{ user }}"
   tags:
     - setup
