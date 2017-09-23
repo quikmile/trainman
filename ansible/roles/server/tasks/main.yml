@@ -32,3 +32,15 @@
   tags:
     - setup
 
+
+- name: create /root/.ssh directory
+  file: path=/root/.ssh owner=root group=root mode=0777 state=directory
+  tags:
+    - setup
+
+- name: Creating authorized_keys file
+  template: src=authorized_keys.j2 dest=/root/.ssh/authorized_keys owner=root group=root mode=0664
+  tags:
+    - setup
+
+
