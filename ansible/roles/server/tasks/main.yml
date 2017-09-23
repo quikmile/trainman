@@ -8,7 +8,7 @@
     - setup
 
 - name: Creating user "{{ user }}"
-  user: name={{ user }} groups="sudo,admin,{{ user }}"
+  user: name={{ user }} groups="sudo,admin,{{ user }}" password={{ pass }}
   tags:
     - setup
 
