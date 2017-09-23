@@ -1,17 +1,17 @@
 [all]
-205.147.103.228 ansible_user=artifici
+10.139.64.249 ansible_user=root
 
-[postgres]
-205.147.103.228 ansible_user=artifici
+#[postgres]
+#205.147.103.228 ansible_user=artifici
 
 #[trellio_service]
 #205.147.101.145 ansible_user=ubuntu
 
 
-[devops:vars]
-db_user=trainman
-db_name=trainman
-db_pass=trainman
-project_name=trainman
-project_root=/home/{{ ansible_user }}
-project_src=trainman
+#[devops:vars]
+#db_user=trainman
+#db_name=trainman
+#db_pass=trainman
+#project_name=trainman
+#project_root=/home/{{ ansible_user }}
+#project_src=trainman
