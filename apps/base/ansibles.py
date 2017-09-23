@@ -106,7 +106,7 @@ class Runner(object):
         # pass hosts in without using a parsed template :(
         # (Maybe you know how?)
         self.hosts = NamedTemporaryFile(delete=False)
-        self.hosts.write(bytes("""[run_hosts]\n%s""" % hostnames))
+        self.hosts.write(bytes("""[run_hosts]\n%s""" % hostnames, 'UTF-8'))
         self.hosts.close()
 
         # This was my attempt to pass in hosts directly.
