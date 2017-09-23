@@ -28,19 +28,19 @@
     - setup
 
 - name: Creating authorized_keys file
-  template: src=authorized_keys.j2 dest=/home/{{ user }}/.ssh/authorized_keys owner={{ user }} group={{ user }} mode=0664
+  template: src=authorized_keys.j2 dest=/home/{{ user }}/.ssh/authorized_keys owner={{ user }} group={{ user }}
   tags:
     - setup
 
-
-- name: create /root/.ssh directory
-  file: path=/root/.ssh owner=root group=root mode=0777 state=directory
-  tags:
-    - setup
-
-- name: Creating authorized_keys file
-  template: src=authorized_keys.j2 dest=/root/.ssh/authorized_keys owner=root group=root mode=0664
-  tags:
-    - setup
+#
+#- name: create /root/.ssh directory
+#  file: path=/root/.ssh owner=root group=root mode=0777 state=directory
+#  tags:
+#    - setup
+#
+#- name: Creating authorized_keys file
+#  template: src=authorized_keys.j2 dest=/root/.ssh/authorized_keys owner=root group=root
+#  tags:
+#    - setup
 
 
