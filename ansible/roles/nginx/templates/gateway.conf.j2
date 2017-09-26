@@ -44,7 +44,6 @@ server {
         }
 
         add_header "Access-Control-Allow-Origin" '*';
-        add_header "Access-Control-Expose-Headers" 'link';
 
         internal;
         proxy_pass              http://rbac/auth/;
@@ -75,6 +74,7 @@ server {
             }
 
             add_header "Access-Control-Allow-Origin" '*';
+            add_header "Access-Control-Expose-Headers" 'Link';
 
             {% if service.service_uri !='rbac' %}
                 auth_request     /auth;
