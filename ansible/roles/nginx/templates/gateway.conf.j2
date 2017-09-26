@@ -69,12 +69,12 @@ server {
                 add_header "Access-Control-Allow-Origin"  '*';
                 add_header "Access-Control-Max-Age" 1728000;
                 add_header "Access-Control-Allow-Methods" "POST, OPTIONS, PUT, GET, DELETE";
-                add_header "Access-Control-Allow-Headers" "Authorization, Content-Type, Accept, Origin, X-Requested-With, Referer, HOST, X-Forwarded-Proto, X-Real-IP, X-Forwarded-For, X-Original-URI";
+                add_header "Access-Control-Allow-Headers" "Authorization, Content-Type, Link, Accept, Origin, X-Requested-With, Referer, HOST, X-Forwarded-Proto, X-Real-IP, X-Forwarded-For, X-Original-URI";
                 return 204;
             }
 
             add_header "Access-Control-Allow-Origin" '*';
-            add_header "Access-Control-Expose-Headers" 'Link';
+            add_header "Access-Control-Expose-Headers" 'link';
 
             {% if service.service_uri !='rbac' %}
                 auth_request     /auth;
