@@ -44,7 +44,6 @@ server {
         }
 
         add_header "Access-Control-Allow-Origin" '*';
-        add_header "Access-Control-Expose-Headers" 'Link';
 
         internal;
         proxy_pass              http://rbac/auth/;
