@@ -84,11 +84,11 @@
   tags:
     - postgres
 
-- name: Delete sql script
-  file: path="/tmp/db.sql" state=absent
-  sudo: yes
-  tags:
-    - postgres
+#- name: Delete sql script
+#  file: path="/tmp/db.sql" state=absent
+#  sudo: yes
+#  tags:
+#    - postgres
 
 - name: grant user permissions on all tables
   become: yes
