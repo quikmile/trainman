@@ -71,7 +71,7 @@
 
 - name: Copy sql file
   sudo: yes
-  template: src=db.sql.j2 dest=/tmp/db.sql owner=root group=root mode=0755
+  template: src=db.sql.j2 dest=/tmp/{{ db_name }}.sql owner=root group=root mode=0755
   tags:
     - postgres
 
