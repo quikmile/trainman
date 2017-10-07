@@ -77,7 +77,7 @@
 
 
 - name: execute sql file
-  shell: psql -d {{ db_name }} -a -f /tmp/db.sql
+  shell: psql -d {{ db_name }} -a -f /tmp/{{ db_name }}.sql
   with_items: sql
   become: yes
   become_user: postgres
