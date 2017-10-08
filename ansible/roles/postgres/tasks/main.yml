@@ -26,7 +26,7 @@
   sudo: yes
   apt: name={{item}}
   with_items:
-    - postgresql-9.6
+    - postgresql-10
     - libpq-dev
     - python-psycopg2
   tags:
@@ -37,7 +37,7 @@
   sudo: yes
   apt: name={{ item }}
   with_items:
-    - postgresql-9.6-postgis-2.3
+    - postgresql-10-postgis-2.4
   tags:
     - postgis
 
@@ -101,7 +101,7 @@
   sudo: yes
   notify:
     - restart postgres
-  template: src=pg_hba.conf.j2 dest=/etc/postgresql/9.6/main/pg_hba.conf owner=root group=root mode=0755
+  template: src=pg_hba.conf.j2 dest=/etc/postgresql/10/main/pg_hba.conf owner=root group=root mode=0755
   tags:
     - setup
     - postgres
@@ -110,7 +110,7 @@
   sudo: yes
   notify:
     - restart postgres
-  template: src=postgresql.conf.j2 dest=/etc/postgresql/9.6/main/postgresql.conf owner=root group=root mode=0755
+  template: src=postgresql.conf.j2 dest=/etc/postgresql/10/main/postgresql.conf owner=root group=root mode=0755
   tags:
     - setup
     - postgres
