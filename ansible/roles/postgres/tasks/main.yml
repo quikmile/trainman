@@ -53,7 +53,7 @@
 - name: ensure user has access to database
   become: yes
   become_user: postgres
-  postgresql_user: db={{ db_name }} name={{ db_user }} password={{ db_pass }} priv=ALL
+  postgresql_user: db={{ db_name }} name={{ db_user }} password={{ db_pass }} priv=ALL encrypted=yes
   tags:
     - postgres
     - setup
