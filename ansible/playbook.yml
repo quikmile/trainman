@@ -11,31 +11,36 @@
 
 - hosts: trellio_service
   roles:
+    - common
     - service
 
 - hosts: gateway
   roles:
+    - common
     - nginx
 
 
 - hosts: postgres
   roles:
+    - common
     - postgres
 
 
 - hosts: redis
   roles:
+    - common
     - redis
 
 - hosts: service_registry
   roles:
+    - common
     - trellio
 
-- hosts: trellio_admin
-  roles:
-    - nginx
-    - postgres
-    - django
-    - trellioadmin
+#- hosts: trellio_admin
+#  roles:
+#    - nginx
+#    - postgres
+#    - django
+#    - trellioadmin
 
 
