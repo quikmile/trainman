@@ -91,6 +91,7 @@
 - name: generate certificate
   shell: letsencrypt certonly --webroot -w /var/www/letsencrypt -d {{ hostname }} --email {{ email }} --agree-tos
   ignore_errors: yes
+  sudo: yes
   tags:
     - letsencrypt
     - nginx
