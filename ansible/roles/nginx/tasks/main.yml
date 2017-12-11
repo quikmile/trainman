@@ -82,13 +82,11 @@
 - name: create temporary domain.conf file
   template: src=domain.conf.j2 dest=/etc/nginx/sites-enabled/domain.conf
   sudo: yes
-  notify:
-    - restart nginx
   tags:
     - letsencrypt
     - nginx
 
-- name:
+- name: restart nginx
   command: service nginx restart
   sudo: yes
   tags:
