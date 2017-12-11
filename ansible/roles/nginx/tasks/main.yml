@@ -88,6 +88,13 @@
     - letsencrypt
     - nginx
 
+- name:
+  command: service nginx restart
+  sudo: yes
+  tags:
+    - letsencrypt
+    - nginx
+
 - name: generate certificate
   shell: letsencrypt certonly --webroot -w /var/www/letsencrypt -d {{ hostname }} --email {{ email }} --agree-tos
   ignore_errors: yes
@@ -106,14 +113,14 @@
     - nginx
 
 
-- name: create trellioadmin.conf file
-  template: src=trellioadmin.conf.j2 dest=/etc/nginx/sites-enabled/trellioadmin.conf
-  sudo: yes
-  notify:
-    - reload nginx
-  tags:
-    - trellioadmin
-  ignore_errors: yes
+#- name: create trellioadmin.conf file
+#  template: src=trellioadmin.conf.j2 dest=/etc/nginx/sites-enabled/trellioadmin.conf
+#  sudo: yes
+#  notify:
+#    - reload nginx
+#  tags:
+#    - trellioadmin
+#  ignore_errors: yes
 
 - name: create gateway.conf file
   template: src=gateway.conf.j2 dest=/etc/nginx/sites-enabled/gateway.conf
