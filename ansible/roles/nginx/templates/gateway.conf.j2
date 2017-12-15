@@ -4,7 +4,7 @@ map $http_upgrade $connection_upgrade {
 }
 
 upstream websocket {
-    server 127.0.0.1:9000;
+    server prod-1:9000;
 }
 
 {% for service in services %}
@@ -109,3 +109,23 @@ server {
     }
 }
 
+
+server {
+    listen 80 default_server;
+	listen [::]:80 default_server ipv6only=on;
+    charset     utf-8;
+
+    server_name iot.artificilabs.com;
+
+    location / {
+		try_files $uri $uri/ =404;
+	}
+
+	{% for service in services %}
+        {% if service.service_uri !='iot' %}
+        location /v{{ service.service_version }}/{{ service.service_uri }}/ {
+                proxy_pass http://{{ service.service_uri }}/;
+        }
+        {% endif %}
+    {% endfor %}
+}
