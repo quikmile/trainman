@@ -1,0 +1,19 @@
+server {
+    listen 80;
+	listen [::]:80 ipv6only=on;
+    charset     utf-8;
+
+    server_name iot.artificilabs.com;
+
+    location / {
+		try_files $uri $uri/ =404;
+	}
+
+	{% for service in services %}
+        {% if service.service_uri =='iot' %}
+    location /v{{ service.service_version }}/{{ service.service_uri }}/ {
+        proxy_pass http://{{ service.service_uri }}/;
+    }
+        {% endif %}
+    {% endfor %}
+}
