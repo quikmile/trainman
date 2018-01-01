@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+
 import requests.packages.urllib3
 
 requests.packages.urllib3.disable_warnings()
@@ -155,7 +156,7 @@ MEDIA_URL = '/media/'
 
 AUTH_USER_MODEL = 'xauth.XUser'
 
-GITLAB_ACCESS_TOKEN = 'G8mmrpf5LKNpbRV5JVtY'
+GITLAB_ACCESS_TOKEN = 'Ry69Hmm2k6kwYjHaza6L'
 GITLAB_API = 'https://gitlab.com/api/v3/'
 GITLAB_USERNAME = os.environ.get('GITLAB_USERNAME', 'technomaniac')
 GITLAB_PASSWORD = os.environ.get('GITLAB_PASSWORD', '08101en038')
