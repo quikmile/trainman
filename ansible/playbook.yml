@@ -11,18 +11,15 @@
 
 - hosts: trellio_service
   roles:
-    - common
     - service
 
 - hosts: gateway
   roles:
-    - common
     - nginx
 
 
 - hosts: postgres
   roles:
-    - common
     - postgres
 
 
