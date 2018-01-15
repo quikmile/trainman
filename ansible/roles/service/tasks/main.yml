@@ -21,6 +21,7 @@
     virtualenv=/home/{{ ansible_user }}/venv
     virtualenv_python=python3.6
     editable=false
+    state=latest
   with_items:
      - name: git+{{ pip_repo_url }}
   become_user: "{{ ansible_user }}"
