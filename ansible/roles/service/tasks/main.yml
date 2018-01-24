@@ -30,13 +30,13 @@
     - service
     - deploy
 
-- name: fixing aiohttp bug
-  shell: /home/{{ ansible_user }}/venv/bin/pip install yarl==0.15.0
-  become_user: "{{ ansible_user }}"
-  tags:
-    - setup
-    - service
-    - deploy
+#- name: fixing aiohttp bug
+#  shell: /home/{{ ansible_user }}/venv/bin/pip install yarl==0.15.0
+#  become_user: "{{ ansible_user }}"
+#  tags:
+#    - setup
+#    - service
+#    - deploy
 
 - name: Creating service config.json
   sudo: yes
