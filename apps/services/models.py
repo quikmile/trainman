@@ -131,8 +131,8 @@ class ServiceNode(BaseModel):
         return '{}'.format(self.instance)
 
     def save(self, *args, **kwargs):
-        super(ServiceNode, self).save(*args, **kwargs)
         self.service_config = self.service.get_service_config()
+        super(ServiceNode, self).save(*args, **kwargs)
         options = dict()
         if self.is_created:
             options['database'] = True
@@ -177,7 +177,7 @@ class ServiceNode(BaseModel):
 
     @property
     def service_name(self):
-        config = self.instance.service_node_type.service.service_config
+        config = self.service_config
         if not config.get('SERVICE_NAME'):
             raise Exception('service_name not found service_config')
         return config['SERVICE_NAME']
