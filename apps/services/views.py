@@ -6,8 +6,6 @@ import json
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from apps.services.models import ServiceNode
-from ..base.utils import json_response
 from .models import Service
 
 
