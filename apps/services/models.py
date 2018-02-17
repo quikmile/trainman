@@ -36,7 +36,6 @@ class Service(BaseModel):
     # class Meta:
     #     unique_together = ('database_id', 'content_object')
     def save(self, *args, **kwargs):
-        self.service_config = self.get_service_config()
         super(Service, self).save(*args, **kwargs)
 
     def __unicode__(self):

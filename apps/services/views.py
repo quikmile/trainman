@@ -14,12 +14,11 @@ from .models import Service
 @csrf_exempt
 def webhook_trigger(request):
     response = json.loads(request.body)
-    if response.get('object_kind') == 'push' and response.get('ref') == 'refs/heads/master':
+    if response.get('object_kind') == 'push':
         service = Service.objects.get(gitlab_project_id=response['project_id'], servicenodetype__server_type='STAG')
         service.deploy()
 
     return HttpResponse(status=200)
-
 
 # def get_service_uri(request):
 #     service_name = request.GET.get('name')
