@@ -14,7 +14,7 @@ from .models import Service
 @csrf_exempt
 def webhook_trigger(request):
     response = json.loads(request.body)
-    if response.get('object_kind') == 'push':
+    if response.get('object_kind') == 'push' and response.get('ref') == 'refs/heads/master':
         service = Service.objects.get(gitlab_project_id=response['project_id'], servicenodetype__server_type='STAG')
         service.deploy()
 
