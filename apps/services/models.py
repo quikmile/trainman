@@ -132,6 +132,7 @@ class ServiceNode(BaseModel):
 
     def save(self, *args, **kwargs):
         super(ServiceNode, self).save(*args, **kwargs)
+        self.service_config = self.service.get_service_config()
         options = dict()
         if self.is_created:
             options['database'] = True
