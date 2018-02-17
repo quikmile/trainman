@@ -11,6 +11,7 @@ from ..base.models import BaseDatabaseNode, BaseModel
 from ..custom.gitlab.project_apis import GitlabProject
 from ..custom.utils import get_random_string
 from ..services.models import Service
+from ..services.models import ServiceNode
 
 DEPLOYMENT_SERVER = (
     ('On Service Host', 'On Service Host'),
@@ -52,15 +53,15 @@ class Postgres(BaseModel):
             settings.update(master_db.optional_settings)
         return settings
 
-    def get_service(self):
-        return Service.objects.get(database_id=self.pk)
+    def get_service_node(self):
+        return ServiceNode.objects.get(database_id=self.pk)
 
     def get_foreign_data_wrappers(self):
-        service = self.get_service()
+        service = self.get_service_node()
         fdws = []
         if isinstance(service.dependencies, dict) and service.dependencies.get('postgres_fdw'):
             for service_name in service.dependencies['postgres_fdw']:
-                fdw_service = Service.objects.get(service_name=service_name)
+                fdw_service = ServiceNode.objects.get(service_name=service_name)
                 fdw_database = fdw_service.get_database()
                 fdw_database_settings = fdw_database.get_database_settings()
 
@@ -80,7 +81,7 @@ class Postgres(BaseModel):
         return fdws
 
     def get_sql(self):
-        service = self.get_service()
+        service = self.get_service_node()
         return GitlabProject.get_sql(service.gitlab_project_id)
 
     def deploy(self):

@@ -79,7 +79,7 @@ def deploy_service(service_node_id, **options):
         'gitlab_password': settings.GITLAB_PASSWORD,
         'service_config': json.dumps(config, sort_keys=True, indent=2, separators=(',', ': '))
     }
-    
+
     hostnames = '\n'.join(hosts)
 
     runner = Runner(hostnames=hostnames,

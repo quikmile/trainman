@@ -29,19 +29,9 @@ class Service(BaseModel):
     gitlab_project_id = models.IntegerField(unique=True)
     contributors = ArrayField(models.CharField(max_length=300), null=True, blank=True)
 
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name='Database Type', null=True,
-                                     blank=True)
-
-    service_registry = models.ForeignKey('services.ServiceRegistryNode')
-    trellio_admin = models.ForeignKey('services.TrellioAdmin', null=True, blank=True)
-    database_id = models.PositiveIntegerField(null=True, blank=True)
-    content_object = GenericForeignKey('content_type', 'database_id')
-    dependencies = JSONField(null=True, blank=True)
-
     smtp_server = models.ForeignKey('servers.SMTPServer', null=True, blank=True)
     http_server = models.CharField(choices=HTTP_SERVER, max_length=20, default='NGINX')
     service_uri = models.CharField(max_length=100, unique=True)
-    service_config = JSONField(null=True, blank=True)
 
     # class Meta:
     #     unique_together = ('database_id', 'content_object')
@@ -52,8 +42,8 @@ class Service(BaseModel):
     def __unicode__(self):
         return '{}'.format(self.service_name)
 
-    def get_database(self):
-        return self.content_object
+    # def get_database(self):
+    #     return self.content_object
 
     def deploy(self):
         for snt in self.servicenodetype_set.all():
@@ -64,11 +54,11 @@ class Service(BaseModel):
         config = GitlabProject.get_config(project_id)
         return json.loads(config['config_content'])
 
-    @classmethod
-    def get_service_by_name_version(cls, name, version):
-        service = cls.objects.get(service_config__contains={"service_name": name},
-                                  servicenodetype__version=int(version))
-        return service
+    # @classmethod
+    # def get_service_by_name_version(cls, name, version):
+    #     service = cls.objects.get(service_config__contains={"service_name": name},
+    #                               servicenodetype__version=int(version))
+    #     return service
 
 
 class ServiceNodeType(BaseModel):
@@ -123,6 +113,15 @@ class ServiceNode(BaseModel):
     tcp_host = models.CharField(max_length=100, default='0.0.0.0')
     tcp_port = models.IntegerField(default=DEFAULT_TCP_PORT)
 
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name='Database Type', null=True,
+                                     blank=True)
+
+    service_registry = models.ForeignKey('services.ServiceRegistryNode')
+    database_id = models.PositiveIntegerField(null=True, blank=True)
+    content_object = GenericForeignKey('content_type', 'database_id')
+    dependencies = JSONField(null=True, blank=True)
+
+    service_config = JSONField(null=True, blank=True)
     optional_settings = JSONField(null=True, blank=True)
 
     # class Meta:
@@ -164,6 +163,10 @@ class ServiceNode(BaseModel):
         return self.service.repo_url
 
     @property
+    def gitlab_project_id(self):
+        return self.service.gitlab_project_id
+
+    @property
     def ip_address(self):
         return self.instance.server.ip_address
 
@@ -187,7 +190,7 @@ class ServiceNode(BaseModel):
         return GitlabProject.get_config(project_id)
 
     def get_database(self):
-        return self.service.get_database()
+        return self.content_object
 
     def get_config(self):
         optional_settings = dict()
@@ -198,10 +201,10 @@ class ServiceNode(BaseModel):
         config['HTTP_PORT'] = self.http_port
         config['TCP_HOST'] = self.tcp_host
         config['TCP_PORT'] = self.tcp_port
-        config['REGISTRY_HOST'] = self.service.service_registry.registry_host
-        config['REGISTRY_PORT'] = self.service.service_registry.registry_port
-        config['REDIS_HOST'] = self.service.service_registry.redis.database_host
-        config['REDIS_PORT'] = self.service.service_registry.redis.database_port
+        config['REGISTRY_HOST'] = self.service_registry.registry_host
+        config['REGISTRY_PORT'] = self.service_registry.registry_port
+        config['REDIS_HOST'] = self.service_registry.redis.database_host
+        config['REDIS_PORT'] = self.service_registry.redis.database_port
 
         database = self.get_database()
         if database:
