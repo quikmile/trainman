@@ -22,7 +22,7 @@ def deploy_gateway(gateway_id, email='', extra_tags=()):
         except:
             email = ''
 
-    run_data = {'services': ServiceNode.objects.all(),
+    run_data = {'services': ServiceNode.objects.filter(instance__service_node_type__service__api_gateway_id=gateway_id),
                 'hostname': gateway.domain,
                 'email': email}
 
