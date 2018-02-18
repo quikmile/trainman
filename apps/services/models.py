@@ -131,7 +131,7 @@ class ServiceNode(BaseModel):
         return '{}'.format(self.instance)
 
     def save(self, *args, **kwargs):
-        self.service_config = self.service.get_service_config()
+        #self.service_config = self.service.get_service_config()
         super(ServiceNode, self).save(*args, **kwargs)
         options = dict()
         if self.is_created:
@@ -142,7 +142,7 @@ class ServiceNode(BaseModel):
         deploy_service.delay(self.pk, **options)
 
     def deploy(self):
-        deploy_service.delay(self.pk)
+        deploy_service.delay(self.pk, tags=['deploy'])
 
     @property
     def service(self):
