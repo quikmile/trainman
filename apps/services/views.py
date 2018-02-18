@@ -13,9 +13,12 @@ from .models import Service
 def webhook_trigger(request):
     response = json.loads(request.body)
     if response.get('object_kind') == 'push' and response.get('ref') == 'refs/heads/master':
-        service = Service.objects.get(gitlab_project_id=response['project_id'])
-        for s in service.servicenodetype_set.filter(server_type='STAG'):
-            s.deploy()
+        try:
+            service = Service.objects.get(gitlab_project_id=response['project_id'])
+            for s in service.servicenodetype_set.filter(server_type='STAG'):
+                s.deploy()
+        except:
+            pass
 
     return HttpResponse(status=200)
 
