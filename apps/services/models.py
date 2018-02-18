@@ -32,7 +32,6 @@ class Service(BaseModel):
     smtp_server = models.ForeignKey('servers.SMTPServer', null=True, blank=True)
     http_server = models.CharField(choices=HTTP_SERVER, max_length=20, default='NGINX')
     service_uri = models.CharField(max_length=100, unique=True)
-    api_gateway = models.ForeignKey('servers.APIGateway', null=True, blank=True)
 
     # class Meta:
     #     unique_together = ('database_id', 'content_object')
@@ -65,6 +64,7 @@ class ServiceNodeType(BaseModel):
     service = models.ForeignKey('services.Service')
     version = models.IntegerField(default=1)
     server_type = models.CharField(choices=SERVER_TYPES, max_length=4, default='STAG')
+    api_gateway = models.ForeignKey('servers.APIGateway', null=True, blank=True)
 
     class Meta:
         unique_together = ('service', 'server_type', 'version')
