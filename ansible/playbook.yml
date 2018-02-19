@@ -17,11 +17,9 @@
   roles:
     - nginx
 
-
 - hosts: postgres
   roles:
     - postgres
-
 
 - hosts: redis
   roles:
