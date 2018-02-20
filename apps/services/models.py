@@ -131,7 +131,7 @@ class ServiceNode(BaseModel):
         return '{}'.format(self.instance)
 
     def save(self, *args, **kwargs):
-        #self.service_config = self.service.get_service_config()
+        # self.service_config = self.service.get_service_config()
         super(ServiceNode, self).save(*args, **kwargs)
         options = dict()
         if self.is_created:
@@ -155,6 +155,8 @@ class ServiceNode(BaseModel):
     @property
     def pip_repo_url(self):
         repo_url = self.service.repo_url
+        if self.instance.service_node_type.server_type == 'STAG':
+            repo_url += '@staging'
         if 'http' in repo_url:
             return repo_url
         return 'ssh://{}'.format(repo_url.replace(':', '/'))

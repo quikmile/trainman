@@ -12,12 +12,11 @@ from .models import Service
 @csrf_exempt
 def webhook_trigger(request):
     response = json.loads(request.body)
-    if response.get('object_kind') == 'push' and response.get('ref') == 'refs/heads/master':
+    if response.get('object_kind') == 'push' and response.get('ref') == 'refs/heads/staging':
         try:
             service = Service.objects.get(gitlab_project_id=response['project_id'])
             for s in service.servicenodetype_set.filter(server_type='STAG'):
-                # s.deploy()
-                pass
+                s.deploy()
         except:
             pass
 
