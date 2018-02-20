@@ -16,7 +16,8 @@ def webhook_trigger(request):
         try:
             service = Service.objects.get(gitlab_project_id=response['project_id'])
             for s in service.servicenodetype_set.filter(server_type='STAG'):
-                s.deploy()
+                # s.deploy()
+                pass
         except:
             pass
 
