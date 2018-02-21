@@ -62,7 +62,7 @@ class Postgres(BaseModel):
         if isinstance(service.dependencies, dict) and service.dependencies.get('postgres_fdw'):
             for service_name in service.dependencies['postgres_fdw']:
                 service_type = service.instance.service_node_type.server_type
-                print(service_type)
+                print('-------------', service_type, service_name)
                 fdw_service = ServiceNode.objects.get(instance__service_node_type__service__service_name=service_name,
                                                       instance__service_node_type__server_type=service_type)
                 fdw_database = fdw_service.get_database()
