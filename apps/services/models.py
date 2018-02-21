@@ -163,11 +163,11 @@ class ServiceNode(BaseModel):
 
     @property
     def git_repo_url(self):
-        return self.service.repo_url
+        return self.instance.service_node_type.service.repo_url
 
     @property
     def gitlab_project_id(self):
-        return self.service.gitlab_project_id
+        return self.instance.service_node_type.service.gitlab_project_id
 
     @property
     def ip_address(self):
