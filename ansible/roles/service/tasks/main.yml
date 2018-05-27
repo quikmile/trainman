@@ -15,6 +15,14 @@
     - setup
     - service
 
+- name: fixing pip bug
+  shell: /home/{{ ansible_user }}/venv/bin/pip install pip==9.0.3
+  become_user: "{{ ansible_user }}"
+  tags:
+    - setup
+    - service
+    - deploy
+
 - name: Installing {{ project_name }}
   pip:
     name={{ item.name }}
