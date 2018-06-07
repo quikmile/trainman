@@ -157,7 +157,7 @@ MEDIA_URL = '/media/'
 AUTH_USER_MODEL = 'xauth.XUser'
 
 GITLAB_ACCESS_TOKEN = 'Ry69Hmm2k6kwYjHaza6L'
-GITLAB_API = 'https://gitlab.com/api/v3/'
+GITLAB_API = 'https://gitlab.com/api/v4/'
 GITLAB_USERNAME = os.environ.get('GITLAB_USERNAME', 'technomaniac')
 GITLAB_PASSWORD = os.environ.get('GITLAB_PASSWORD', '08101en038')
 
