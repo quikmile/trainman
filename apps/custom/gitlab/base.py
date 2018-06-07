@@ -9,8 +9,13 @@ class Gitlab:
 
     @classmethod
     def get(cls, path):
-        r = requests.get(settings.GITLAB_API + path, headers=cls.headers)
-        return r.json()
+        api = settings.GITLAB_API + path
+        print("request: {}".format(api))
+        r = requests.get(api, headers=cls.headers)
+        if r.status_code == 200:
+            return r.json()
+        else:
+            raise Exception("gitlab api error: {}".format(r.text))
 
     @staticmethod
     def decode_content(coded_string, decoder='base64'):
