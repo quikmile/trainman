@@ -1,3 +1,5 @@
+from django.utils.http import urlencode
+
 from .base import Gitlab
 
 
@@ -15,7 +17,8 @@ class GitlabProject(Gitlab):
 
     @classmethod
     def read_file(cls, project_id, file_path):
-        url = 'projects/{project_id}/repository/files/?file_path={file_path}&ref=master'
+        file_path = urlencode(file_path)
+        url = 'projects/{project_id}/repository/files/{file_path}?ref=master'
         result = cls.get(url.format(project_id=project_id, file_path=file_path))
         return cls.decode_content(result['content'])
 
